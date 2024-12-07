@@ -79,41 +79,36 @@
     const choicesDiv = document.getElementById("choices");
 
     function startQuiz() {
-      // Zufälliges Insekt auswählen
-      const correct = insects[Math.floor(Math.random() * insects.length)];
-      imgElement.src = correct.image;
+  // Zufälliges Insekt auswählen
+  const correct = insects[Math.floor(Math.random() * insects.length)];
+  imgElement.src = correct.image;
 
-      // Drei Antwortoptionen (eine richtige, zwei zufällige falsche)
-      const options = [correct];
-      while (options.length < 3) {
-        const random = insects[Math.floor(Math.random() * insects.length)];
-        if (!options.includes(random)) {
-          options.push(random);
-        }
-      }
-
-      // Antworten mischen
-      options.sort(() => Math.random() - 0.5);
-
-      // Buttons anzeigen
-      choicesDiv.innerHTML = "";
-      options.forEach(option => {
-        const button = document.createElement("button");
-        button.textContent = option.name;
-        button.onclick = () => {
-          if (option.name === correct.name) {
-            alert("Richtig!");
-          } else {
-            alert("Falsch! Die richtige Antwort war: " + correct.name);
-          }
-          startQuiz(); // Nächste Frage starten
-        };
-        choicesDiv.appendChild(button);
-      });
+  // Drei Antworten generieren (inkl. richtige Antwort)
+  const options = [correct];
+  while (options.length < 3) {
+    const random = insects[Math.floor(Math.random() * insects.length)];
+    if (!options.includes(random)) {
+      options.push(random);
     }
+  }
 
-    // Quiz starten
-    startQuiz();
-  </script>
-</body>
-</html>
+  // Antworten mischen
+  options.sort(() => Math.random() - 0.5);
+
+  // Buttons anzeigen
+  choicesDiv.innerHTML = '';
+  options.forEach(option => {
+    const button = document.createElement('button');
+    button.textContent = option.name;
+    button.onclick = () => {
+      if (option.name === correct.name) {
+        // Keine Bestätigung anzeigen, direkt neue Frage starten
+        startQuiz();
+      } else {
+        alert("Falsch. Die richtige Antwort war: " + correct.name);
+        startQuiz(); // Nächste Frage starten
+      }
+    };
+    choicesDiv.appendChild(button);
+  });
+}
