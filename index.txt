@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Schadinsekten-Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+    img { max-width: 300px; height: auto; }
+    button { margin: 10px; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Schadinsekten Quiz</h1>
+  <div id="quiz">
+    <img id="insect-image" src="" alt="Insekt">
+    <div id="choices"></div>
+  </div>
+  <script>
+    // Datenbank der Insekten
+    const insects = [
+{"image": "reismehlkaefer.jpg", "name": "Reismehlkäfer"}, 
+{"image": "brotkaefer.jpg", "name": "Brotkäfer"}, 
+{"image": "mehlkaefer.jpg", "name": "Mehlkäfer"}, 
+{"image": "getreideplattkaefer.jpg", "name": "Getreideplattkäfer"}, 
+{"image": "kornkaefer.jpg", "name": "Kornkäfer"}, 
+{"image": "reiskaefer.jpg", "name": "Reiskäfer"}, 
+{"image": "doerrobstmotte.jpg","name": "Dörrobstmotte"}, 
+{"image": "mehlmotte.jpg", "name": "Mehlmotte"}, 
+{"image": "kakaomotte.jpg", "name":"Kakaomotte"}, 
+{"image": "mehlmilbe.jpg", "name": "Mehlmilbe"}, 
+{"image": "stubenfliege.jpg", "name": „Stubenfliege"},
+{"image": "schmeissfliege.jpg", "name": "Schmeißfliege"}, 
+{"image": "fruchtfliege.jpg", "name": "Fruchtfliege"}, 
+{"image": "deutsche_schabe.jpg", "name": "Deutsche Schabe"}, 
+{"image": "orientalische_schabe.jpg", "name": "Orientalische Schabe"}, 
+{"image": "amerikanische_schabe.jpg", "name": "Amerikanische Schabe"}, 
+{"image": "schwarze_wegameise.jpg","name": "Schwarze Wegameise"}, 
+{"image": "pharaoameise.jpg", "name": "Pharaoameise"}, 
+{"image": "menschenfloh.jpg","name": "Menschenfloh"}, 
+{"image": "katzenfloh.jpg", "name": "Katzenfloh"}, 
+{"image": "hausbock.jpg", "name":"Hausbock"}, 
+{"image": "gemeiner_nagekaefer.jpg", "name": "Gemeiner Nagekäfer"}, 
+{"image": "kleidermotte.jpg", "name":"Kleidermotte"}, 
+{"image": "pelzmotte.jpg", "name": "Pelzmotte"}, 
+{"image": "deutsche_wespe.jpg", "name": "Deutsche Wespe"}, 
+{"image": "gemeine_wespe.jpg", "name": "Gemeine Wespe"}, 
+{"image": "hausmuecke.jpg", "name":"Hausmücke"}, 
+{"image": "silberfischchen.jpg", "name": "Silberfischchen"}, 
+{"image": "maeuseassel.jpg", „name":"Mäuseassel"},
+    ];
+
+    const quizDiv = document.getElementById('quiz');
+    const imgElement = document.getElementById('insect-image');
+    const choicesDiv = document.getElementById('choices');
+
+    function startQuiz() {
+      // Zufälliges Insekt auswählen
+      const correct = insects[Math.floor(Math.random() * insects.length)];
+      imgElement.src = correct.image;
+
+      // Drei Antworten generieren (inkl. richtige Antwort)
+      const options = [correct];
+      while (options.length < 3) {
+        const random = insects[Math.floor(Math.random() * insects.length)];
+        if (!options.includes(random)) {
+          options.push(random);
+        }
+      }
+      // Antworten mischen
+      options.sort(() => Math.random() - 0.5);
+
+      // Buttons anzeigen
+      choicesDiv.innerHTML = '';
+      options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option.name;
+        button.onclick = () => {
+          if (option.name === correct.name) {
+            alert("Richtig!");
+          } else {
+            alert("Falsch. Die richtige Antwort war: " + correct.name);
+          }
+          startQuiz(); // Nächste Frage starten
+        };
+        choicesDiv.appendChild(button);
+      });
+    }
+
+    // Quiz starten
+    startQuiz();
+  </script>
+</body>
+</html>
