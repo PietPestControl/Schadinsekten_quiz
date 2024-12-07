@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2566">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Insekten-Quiz&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: Arial, sans-serif; text-align: center; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>img { max-width: 300px; height: auto; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>button { margin: 10px; padding: 10px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Schadinsekten Quiz&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="quiz"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;img id="insect-image" src="" alt="Insekt"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="choices"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Datenbank der Insekten</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const insects = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "reismehlkaefer.jpg", "name": "Reismehlkäfer"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "brotkaefer.jpg", "name": "Brotkäfer"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "mehlkaefer.jpg", "name": "Mehlkäfer"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "getreideplattkaefer.jpg", "name": "Getreideplattkäfer"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "kornkaefer.jpg", "name": "Kornkäfer"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "reiskaefer.jpg", "name": "Reiskäfer"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "doerrobstmotte.jpg", "name": "Dörrobstmotte"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "mehlmotte.jpg", "name": "Mehlmotte"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "kakaomotte.jpg", "name": "Kakaomotte"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "mehlmilbe.jpg", "name": "Mehlmilbe"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "stubenfliege.jpg", "name": "Stubenfliege"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "schmeissfliege.jpg", "name": "Schmeißfliege"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "fruchtfliege.jpg", "name": "Fruchtfliege"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "deutsche_schabe.jpg", "name": "Deutsche Schabe"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "orientalische_schabe.jpg", "name": "Orientalische Schabe"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "amerikanische_schabe.jpg", "name": "Amerikanische Schabe"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "schwarze_wegameise.jpg", "name": "Schwarze Wegameise"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "pharaoameise.jpg", "name": "Pharaoameise"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "menschenfloh.jpg", "name": "Menschenfloh"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "katzenfloh.jpg", "name": "Katzenfloh"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "hausbock.jpg", "name": "Hausbock"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "gemeiner_nagekaefer.jpg", "name": "Gemeiner Nagekäfer"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "kleidermotte.jpg", "name": "Kleidermotte"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "pelzmotte.jpg", "name": "Pelzmotte"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "deutsche_wespe.jpg", "name": "Deutsche Wespe"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "gemeine_wespe.jpg", "name": "Gemeine Wespe"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "hausmuecke.jpg", "name": "Hausmücke"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "silberfischchen.jpg", "name": "Silberfischchen"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{"bild": "maeuseassel.jpg", "name": "Mäuseassel"}</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const quizDiv = document.getElementById('quiz');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const imgElement = document.getElementById('insect-image');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const choicesDiv = document.getElementById('choices');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function startQuiz() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Zufälliges Insekt auswählen</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const correct = insects[Math.floor(Math.random() * insects.length)];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>imgElement.src = correct.image;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Drei Antworten generieren (inkl. richtige Antwort)</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const options = [correct];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>while (options.length &lt; 3) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const random = insects[Math.floor(Math.random() * insects.length)];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (!options.includes(random)) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>options.push(random);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Antworten mischen</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options.sort(() =&gt; Math.random() - 0.5);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Buttons anzeigen</p>
+<p class="p1"><span class="Apple-converted-space">      </span>choicesDiv.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options.forEach(option =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const button = document.createElement('button');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>button.textContent = option.name;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>button.onclick = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (option.name === correct.name) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>alert("Richtig!");</p>
+<p class="p1"><span class="Apple-converted-space">          </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>alert("Falsch. Die richtige Antwort war: " + correct.name);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>startQuiz(); // Nächste Frage starten</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>choicesDiv.appendChild(button);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Quiz starten</p>
+<p class="p1"><span class="Apple-converted-space">    </span>startQuiz();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
