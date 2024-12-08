@@ -106,6 +106,7 @@
           button.textContent = option;
           button.onclick = () => {
             if (option === correct.development) {
+              alert("Richtig!");
               startQuiz();
             } else {
               alert(`Falsch! Die richtige Antwort ist: ${correct.development}`);
@@ -135,6 +136,7 @@
           button.textContent = option.name;
           button.onclick = () => {
             if (option.name === correct.name) {
+              alert("Richtig!");
               startQuiz();
             } else {
               alert(`Falsch! Die richtige Antwort ist: ${correct.name}`);
