@@ -78,6 +78,9 @@
       { image: "Nest_saechsische_wespe.jpg", name: "Nest Sächsische Wespe", development: "holometabol" },
       { image: "feldwespe.jpg", name: "Feldwespe", development: "holometabol" },
       { image: "feldwespe_nest.jpg", name: "Nest Feldwespe", development: "holometabol" }
+      { image: "bettwanze.jpg", name: "Bettwanze", development: "hemimetabol" }
+    
+    
     ];
 
     const imgElement = document.getElementById("insect-image");
@@ -103,7 +106,6 @@
           button.textContent = option;
           button.onclick = () => {
             if (option === correct.development) {
-              alert("Richtig!");
               startQuiz();
             } else {
               alert(`Falsch! Die richtige Antwort ist: ${correct.development}`);
@@ -133,7 +135,6 @@
           button.textContent = option.name;
           button.onclick = () => {
             if (option.name === correct.name) {
-              alert("Richtig!");
               startQuiz();
             } else {
               alert(`Falsch! Die richtige Antwort ist: ${correct.name}`);
