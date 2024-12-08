@@ -42,7 +42,6 @@
     <div id="choices"></div>
   </div>
   <script>
-    const insects = [
      const insects = [
   { "image": "reismehlkaefer.jpg", "name": "Reismehlkäfer", "development": "holometabol" },
   { "image": "brotkaefer.jpg", "name": "Brotkäfer", "development": "holometabol" },
@@ -80,77 +79,63 @@
   { "image": "feldwespe_nest.jpg", "name": "Nest Feldwespe", "development": "holometabol" }
 ];
 
-    const quizDiv = document.getElementById("quiz");
+  const quizDiv = document.getElementById("quiz");
     const imgElement = document.getElementById("insect-image");
     const choicesDiv = document.getElementById("choices");
 
-   function startQuiz() {
-  // Zufälliges Insekt auswählen
-  const correct = insects[Math.floor(Math.random() * insects.length)];
-  const showDevelopmentQuestion = Math.random() < 0.5; // Zufällig Bild- oder Entwicklungsfrage wählen
+    function startQuiz() {
+      const correct = insects[Math.floor(Math.random() * insects.length)];
+      const showDevelopmentQuestion = Math.random() < 0.5;
 
-  // Vorherige Inhalte zurücksetzen
-  choicesDiv.innerHTML = '';
-  imgElement.style.display = 'none'; // Bild standardmäßig ausblenden
+      choicesDiv.innerHTML = '';
+      imgElement.style.display = 'none';
 
-  if (showDevelopmentQuestion) {
-    // Frage zur Entwicklungsform stellen
-    const question = document.createElement('p');
-    question.textContent = `Wie entwickelt sich ${correct.name}?`;
-    choicesDiv.appendChild(question);
+      if (showDevelopmentQuestion) {
+        const question = document.createElement('p');
+        question.textContent = `Wie entwickelt sich ${correct.name}?`;
+        choicesDiv.appendChild(question);
 
-    const options = ["holometabol", "hemimetabol", "ametabol"];
-    options.sort(() => Math.random() - 0.5); // Antworten mischen
+        const options = ["holometabol", "hemimetabol", "ametabol"];
+        options.sort(() => Math.random() - 0.5);
 
-    options.forEach(option => {
-      const button = document.createElement('button');
-      button.textContent = option;
-      button.onclick = () => {
-        if (option === correct.development) {
-          alert("Richtig!");
-        } else {
-          alert(`Falsch. Die richtige Antwort war: ${correct.development}`);
+        options.forEach(option => {
+          const button = document.createElement('button');
+          button.textContent = option;
+          button.onclick = () => {
+            alert(option === correct.development ? "Richtig!" : `Falsch. Die richtige Antwort war: ${correct.development}`);
+            startQuiz();
+          };
+          choicesDiv.appendChild(button);
+        });
+      } else {
+        imgElement.style.display = 'block';
+        imgElement.src = correct.image;
+
+        const question = document.createElement('p');
+        question.textContent = `Welches Insekt ist auf dem Bild zu sehen?`;
+        choicesDiv.appendChild(question);
+
+        const options = [correct];
+        while (options.length < 3) {
+          const random = insects[Math.floor(Math.random() * insects.length)];
+          if (!options.includes(random)) {
+            options.push(random);
+          }
         }
-        startQuiz(); // Nächste Frage starten
-      };
-      choicesDiv.appendChild(button);
-    });
-  } else {
-    // Bildfrage stellen
-    imgElement.style.display = 'block'; // Bild anzeigen
-    imgElement.src = correct.image;
+        options.sort(() => Math.random() - 0.5);
 
-    const question = document.createElement('p');
-    question.textContent = `Welches Insekt ist auf dem Bild zu sehen?`;
-    choicesDiv.appendChild(question);
-
-    // Drei Antworten generieren (inkl. richtige Antwort)
-    const options = [correct];
-    while (options.length < 3) {
-      const random = insects[Math.floor(Math.random() * insects.length)];
-      if (!options.includes(random)) {
-        options.push(random);
+        options.forEach(option => {
+          const button = document.createElement('button');
+          button.textContent = option.name;
+          button.onclick = () => {
+            alert(option.name === correct.name ? "Richtig!" : `Falsch. Die richtige Antwort war: ${correct.name}`);
+            startQuiz();
+          };
+          choicesDiv.appendChild(button);
+        });
       }
     }
-    options.sort(() => Math.random() - 0.5); // Antworten mischen
 
-    options.forEach(option => {
-      const button = document.createElement('button');
-      button.textContent = option.name;
-      button.onclick = () => {
-        if (option.name === correct.name) {
-          alert("Richtig!");
-        } else {
-          alert(`Falsch. Die richtige Antwort war: ${correct.name}`);
-        }
-        startQuiz(); // Nächste Frage starten
-      };
-      choicesDiv.appendChild(button);
-    });
-  }
-}
-
-    // Quiz starten
     startQuiz();
   </script>
 </body>
