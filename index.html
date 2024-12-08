@@ -42,55 +42,54 @@
     <div id="choices"></div>
   </div>
   <script>
-     const insects = [
-  { "image": "reismehlkaefer.jpg", "name": "Reismehlkäfer", "development": "holometabol" },
-  { "image": "brotkaefer.jpg", "name": "Brotkäfer", "development": "holometabol" },
-  { "image": "mehlkaefer.jpg", "name": "Mehlkäfer", "development": "holometabol" },
-  { "image": "getreideplattkaefer.jpg", "name": "Getreideplattkäfer", "development": "holometabol" },
-  { "image": "kornkaefer.jpg", "name": "Kornkäfer", "development": "holometabol" },
-  { "image": "reiskaefer.jpg", "name": "Reiskäfer", "development": "holometabol" },
-  { "image": "doerrobstmotte.jpg", "name": "Dörrobstmotte", "development": "holometabol" },
-  { "image": "mehlmotte.jpg", "name": "Mehlmotte", "development": "holometabol" },
-  { "image": "mehlmilbe.jpg", "name": "Mehlmilbe", "development": "ametabol" },
-  { "image": "stubenfliege.jpg", "name": "Stubenfliege", "development": "holometabol" },
-  { "image": "schmeissfliege.jpg", "name": "Schmeißfliege", "development": "holometabol" },
-  { "image": "fruchtfliege.jpg", "name": "Fruchtfliege", "development": "holometabol" },
-  { "image": "deutsche_schabe.jpg", "name": "Deutsche Schabe", "development": "hemimetabol" },
-  { "image": "orientalische_schabe.jpg", "name": "Orientalische Schabe", "development": "hemimetabol" },
-  { "image": "amerikanische_schabe.jpg", "name": "Amerikanische Schabe", "development": "hemimetabol" },
-  { "image": "schwarze_wegameise.jpg", "name": "Schwarze Wegameise", "development": "holometabol" },
-  { "image": "pharaoameise.jpg", "name": "Pharaoameise", "development": "holometabol" },
-  { "image": "menschenfloh.jpg", "name": "Menschenfloh", "development": "holometabol" },
-  { "image": "katzenfloh.jpg", "name": "Katzenfloh", "development": "holometabol" },
-  { "image": "hausbock.jpg", "name": "Hausbock", "development": "holometabol" },
-  { "image": "gemeiner_nagekaefer.jpg", "name": "Gemeiner Nagekäfer", "development": "holometabol" },
-  { "image": "kleidermotte.jpg", "name": "Kleidermotte", "development": "holometabol" },
-  { "image": "pelzmotte.jpg", "name": "Pelzmotte", "development": "holometabol" },
-  { "image": "deutsche_wespe.jpg", "name": "Deutsche Wespe", "development": "holometabol" },
-  { "image": "gemeine_wespe.jpg", "name": "Gemeine Wespe", "development": "holometabol" },
-  { "image": "hausmuecke.jpg", "name": "Hausmücke", "development": "holometabol" },
-  { "image": "silberfischchen.jpg", "name": "Silberfischchen", "development": "ametabol" },
-  { "image": "maeuseassel.jpg", "name": "Mäuseassel", "development": "ametabol" },
-  { "image": "wollkrautbluetenkaefer.jpg", "name": "Wollkrautblütenkäfer", "development": "holometabol" },
-  { "image": "wollkrautbluetenkaefer_larve.jpg", "name": "Wollkrautblütenkäfer Larve", "development": "holometabol" },
-  { "image": "papierfischchen.jpg", "name": "Papierfischchen", "development": "ametabol" },
-  { "image": "Nest_saechsische_wespe.jpg", "name": "Nest Sächsische Wespe", "development": "holometabol" },
-  { "image": "feldwespe.jpg", "name": "Feldwespe", "development": "holometabol" },
-  { "image": "feldwespe_nest.jpg", "name": "Nest Feldwespe", "development": "holometabol" }
-];
+    const insects = [
+      { image: "reismehlkaefer.jpg", name: "Reismehlkäfer", development: "holometabol" },
+      { image: "brotkaefer.jpg", name: "Brotkäfer", development: "holometabol" },
+      { image: "mehlkaefer.jpg", name: "Mehlkäfer", development: "holometabol" },
+      { image: "getreideplattkaefer.jpg", name: "Getreideplattkäfer", development: "holometabol" },
+      { image: "kornkaefer.jpg", name: "Kornkäfer", development: "holometabol" },
+      { image: "reiskaefer.jpg", name: "Reiskäfer", development: "holometabol" },
+      { image: "doerrobstmotte.jpg", name: "Dörrobstmotte", development: "holometabol" },
+      { image: "mehlmotte.jpg", name: "Mehlmotte", development: "holometabol" },
+      { image: "mehlmilbe.jpg", name: "Mehlmilbe", development: "ametabol" },
+      { image: "stubenfliege.jpg", name: "Stubenfliege", development: "holometabol" },
+      { image: "schmeissfliege.jpg", name: "Schmeißfliege", development: "holometabol" },
+      { image: "fruchtfliege.jpg", name: "Fruchtfliege", development: "holometabol" },
+      { image: "deutsche_schabe.jpg", name: "Deutsche Schabe", development: "hemimetabol" },
+      { image: "orientalische_schabe.jpg", name: "Orientalische Schabe", development: "hemimetabol" },
+      { image: "amerikanische_schabe.jpg", name: "Amerikanische Schabe", development: "hemimetabol" },
+      { image: "schwarze_wegameise.jpg", name: "Schwarze Wegameise", development: "holometabol" },
+      { image: "pharaoameise.jpg", name: "Pharaoameise", development: "holometabol" },
+      { image: "menschenfloh.jpg", name: "Menschenfloh", development: "holometabol" },
+      { image: "katzenfloh.jpg", name: "Katzenfloh", development: "holometabol" },
+      { image: "hausbock.jpg", name: "Hausbock", development: "holometabol" },
+      { image: "gemeiner_nagekaefer.jpg", name: "Gemeiner Nagekäfer", development: "holometabol" },
+      { image: "kleidermotte.jpg", name: "Kleidermotte", development: "holometabol" },
+      { image: "pelzmotte.jpg", name: "Pelzmotte", development: "holometabol" },
+      { image: "deutsche_wespe.jpg", name: "Deutsche Wespe", development: "holometabol" },
+      { image: "gemeine_wespe.jpg", name: "Gemeine Wespe", development: "holometabol" },
+      { image: "hausmuecke.jpg", name: "Hausmücke", development: "holometabol" },
+      { image: "silberfischchen.jpg", name: "Silberfischchen", development: "ametabol" },
+      { image: "maeuseassel.jpg", name: "Mäuseassel", development: "ametabol" },
+      { image: "wollkrautbluetenkaefer.jpg", name: "Wollkrautblütenkäfer", development: "holometabol" },
+      { image: "wollkrautbluetenkaefer_larve.jpg", name: "Wollkrautblütenkäfer Larve", development: "holometabol" },
+      { image: "papierfischchen.jpg", name: "Papierfischchen", development: "ametabol" },
+      { image: "Nest_saechsische_wespe.jpg", name: "Nest Sächsische Wespe", development: "holometabol" },
+      { image: "feldwespe.jpg", name: "Feldwespe", development: "holometabol" },
+      { image: "feldwespe_nest.jpg", name: "Nest Feldwespe", development: "holometabol" }
+    ];
 
-  const quizDiv = document.getElementById("quiz");
     const imgElement = document.getElementById("insect-image");
     const choicesDiv = document.getElementById("choices");
 
     function startQuiz() {
       const correct = insects[Math.floor(Math.random() * insects.length)];
-      const showDevelopmentQuestion = Math.random() < 0.5;
+      const isDevelopmentQuestion = Math.random() < 0.5;
 
       choicesDiv.innerHTML = '';
       imgElement.style.display = 'none';
 
-      if (showDevelopmentQuestion) {
+      if (isDevelopmentQuestion) {
         const question = document.createElement('p');
         question.textContent = `Wie entwickelt sich ${correct.name}?`;
         choicesDiv.appendChild(question);
@@ -102,7 +101,7 @@
           const button = document.createElement('button');
           button.textContent = option;
           button.onclick = () => {
-            alert(option === correct.development ? "Richtig!" : `Falsch. Die richtige Antwort war: ${correct.development}`);
+            alert(option === correct.development ? "Richtig!" : `Falsch! Die richtige Antwort ist: ${correct.development}`);
             startQuiz();
           };
           choicesDiv.appendChild(button);
@@ -128,7 +127,7 @@
           const button = document.createElement('button');
           button.textContent = option.name;
           button.onclick = () => {
-            alert(option.name === correct.name ? "Richtig!" : `Falsch. Die richtige Antwort war: ${correct.name}`);
+            alert(option.name === correct.name ? "Richtig!" : `Falsch! Die richtige Antwort ist: ${correct.name}`);
             startQuiz();
           };
           choicesDiv.appendChild(button);
