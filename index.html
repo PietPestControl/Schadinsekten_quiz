@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,97 +45,88 @@
     <div id="quiz-container">
         <h1>Insekten Quiz</h1>
         <div id="quiz-content">
-            <img id="question-image" alt="Insektenbild">
+            <img id="question-image" alt="Insektenbild" style="display: none;">
             <div id="options-container"></div>
         </div>
     </div>
     <script>
         const insects = {
             Wespen: [
-    { image: "deutsche_wespe.jpg", name: "Deutsche Wespe", development: "holometabol" },
-    { image: "gemeine_wespe.jpg", name: "Gemeine Wespe", development: "holometabol" },
-    { image: "Nest_saechsische_wespe.jpg", name: "Nest Sächsische Wespe", development: "holometabol" },
-    { image: "feldwespe.jpg", name: "Feldwespe", development: "holometabol" },
-    { image: "feldwespe_nest.jpg", name: "Nest Feldwespe", development: "holometabol" }
-  ],
-  Käfer: [
-    { image: "reismehlkaefer.jpg", name: "Reismehlkäfer", development: "holometabol" },
-    { image: "brotkaefer.jpg", name: "Brotkäfer", development: "holometabol" },
-    { image: "mehlkaefer.jpg", name: "Mehlkäfer", development: "holometabol" },
-    { image: "getreideplattkaefer.jpg", name: "Getreideplattkäfer", development: "holometabol" },
-    { image: "kornkaefer.jpg", name: "Kornkäfer", development: "holometabol" },
-    { image: "reiskaefer.jpg", name: "Reiskäfer", development: "holometabol" },
-    { image: "gemeiner_nagekaefer.jpg", name: "Gemeiner Nagekäfer", development: "holometabol" },
-    { image: "wollkrautbluetenkaefer.jpg", name: "Wollkrautblütenkäfer", development: "holometabol" },
-    { image: "wollkrautbluetenkaefer_larve.jpg", name: "Wollkrautblütenkäfer Larve", development: "holometabol" },
-    { image: "hausbock.jpg", name: "Hausbock", development: "holometabol" },
-    { image: "getreidekapuziner.jpg", name: "Getreidekapuziner", development: "holometabol" },
-    { image: "maiskaefer.jpg", name: "Maiskäfer", development: "holometabol" },
-    { image: "khaprakaefer.jpg", name: "Khaprakäfer", development: "holometabol" },
-    { image: "speisebohnenkaefer.jpg", name: "Speisebohnenkäfer", development: "holometabol" },
-    { image: "tabakkaefer.jpg", name: "Tabakkäfer", development: "holometabol" },
-    { image: "gemeiner_speckkaefer.jpg", name: "Gemeiner Speckkäfer", development: "holometabol" },
-    { image: "pelzkaefer.jpg", name: "Pelzkäfer", development: "holometabol" },
-    { image: "messingkaefer.jpg", name: "Messingkäfer", development: "holometabol" },
-    { image: "kugelkaefer.jpg", name: "Kugelkäfer", development: "holometabol" },
-    { image: "kraeuterdieb.jpg", name: "Kräuterdieb", development: "holometabol" },
-    { image: "moderkaefer.jpg", name: "Moderkäfer", development: "holometabol" }
-  ],
-  Schaben: [
-    { image: "deutsche_schabe.jpg", name: "Deutsche Schabe", development: "hemimetabol" },
-    { image: "orientalische_schabe.jpg", name: "Orientalische Schabe", development: "hemimetabol" },
-    { image: "amerikanische_schabe.jpg", name: "Amerikanische Schabe", development: "hemimetabol" },
-    { image: "braunbandschabe.jpg", name: "Braunbandschabe", development: "hemimetabol" },
-    { image: "australische_schabe.jpg", name: "Australische Schabe", development: "hemimetabol" }
-  ],
-  Motten: [
-    { image: "doerrobstmotte.jpg", name: "Dörrobstmotte", development: "holometabol" },
-    { image: "mehlmotte.jpg", name: "Mehlmotte", development: "holometabol" },
-    { image: "kleidermotte.jpg", name: "Kleidermotte", development: "holometabol" },
-    { image: "pelzmotte.jpg", name: "Pelzmotte", development: "holometabol" }
-  ],
-  Fischchen: [
-    { image: "silberfischchen.JPG", name: "Silberfischchen", development: "ametabol" },
-    { image: "papierfischchen.jpg", name: "Papierfischchen", development: "ametabol" },
-    { image: "ofenfischchen.jpg", name: "Ofenfischchen", development: "ametabol" }
-  ],
-  Ameisen: [
-    { image: "schwarze_wegameise.jpg", name: "Schwarze Wegameise", development: "holometabol" },
-    { image: "braune_wegameise.jpg", name: "Braune Wegameise", development: "holometabol" },
-    { image: "pharaoameise.jpg", name: "Pharaoameise", development: "holometabol" }
-  ],
-  Wanzen: [
-    { image: "feuerwanze.jpg", name: "Feuerwanze", development: "hemimetabol" },
-    { image: "kiefernzapfenwanze.jpg", name: "Kiefernzapfenwanze", development: "hemimetabol" }
-  ],
-  Fliegen und Mücken: [
-    { image: "stubenfliege.jpg", name: "Stubenfliege", development: "holometabol" },
-    { image: "schmeissfliege.jpg", name: "Schmeißfliege", development: "holometabol" },
-    { image: "fruchtfliege.jpg", name: "Fruchtfliege", development: "holometabol" },
-    { image: "hausmuecke.jpg", name: "Hausmücke", development: "holometabol" },
-    { image: "schmetterlingsmuecke.jpg", name: "Schmetterlingsmücke", development: "holometabol" }
-  ],
-  Sonstige: [
-    { image: "katzenfloh.jpg", name: "Floh", development: "holometabol" },
-    { image: "maeuseassel.jpg", name: "Assel", development: "ametabol" },
-    { image: "bettwanze.jpg", name: "Bettwanze", development: "hemimetabol" },
-    { image: "rote_vogelmilbe.jpg", name: "Rote Vogelmilbe", development: "hemimetabol" },
-    { image: "taubenzecke.jpg", name: "Taubenzecke", development: "hemimetabol" },
-    { image: "heimchen.jpg", name: "Heimchen", development: "hemimetabol" }
-  ]
+                { image: "deutsche_wespe.jpg", name: "Deutsche Wespe" },
+                { image: "gemeine_wespe.jpg", name: "Gemeine Wespe" },
+                { image: "Nest_saechsische_wespe.jpg", name: "Nest Sächsische Wespe" },
+                { image: "feldwespe.jpg", name: "Feldwespe" },
+                { image: "feldwespe_nest.jpg", name: "Nest Feldwespe" }
+            ],
+            Käfer: [
+                { image: "reismehlkaefer.jpg", name: "Reismehlkäfer" },
+                { image: "brotkaefer.jpg", name: "Brotkäfer" },
+                { image: "mehlkaefer.jpg", name: "Mehlkäfer" },
+                { image: "getreideplattkaefer.jpg", name: "Getreideplattkäfer" },
+                { image: "kornkaefer.jpg", name: "Kornkäfer" },
+                { image: "reiskaefer.jpg", name: "Reiskäfer" },
+                { image: "gemeiner_nagekaefer.jpg", name: "Gemeiner Nagekäfer" },
+                { image: "wollkrautbluetenkaefer.jpg", name: "Wollkrautblütenkäfer" },
+                { image: "wollkrautbluetenkaefer_larve.jpg", name: "Wollkrautblütenkäfer Larve" },
+                { image: "hausbock.jpg", name: "Hausbock" },
+                { image: "getreidekapuziner.jpg", name: "Getreidekapuziner" },
+                { image: "maiskaefer.jpg", name: "Maiskäfer" },
+                { image: "khaprakaefer.jpg", name: "Khaprakäfer" },
+                { image: "speisebohnenkaefer.jpg", name: "Speisebohnenkäfer" },
+                { image: "tabakkaefer.jpg", name: "Tabakkäfer" },
+                { image: "gemeiner_speckkaefer.jpg", name: "Gemeiner Speckkäfer" },
+                { image: "pelzkaefer.jpg", name: "Pelzkäfer" },
+                { image: "messingkaefer.jpg", name: "Messingkäfer" },
+                { image: "kugelkaefer.jpg", name: "Kugelkäfer" },
+                { image: "kraeuterdieb.jpg", name: "Kräuterdieb" },
+                { image: "moderkaefer.jpg", name: "Moderkäfer" }
+            ],
+            Schaben: [
+                { image: "deutsche_schabe.jpg", name: "Deutsche Schabe" },
+                { image: "orientalische_schabe.jpg", name: "Orientalische Schabe" },
+                { image: "amerikanische_schabe.jpg", name: "Amerikanische Schabe" },
+                { image: "braunbandschabe.jpg", name: "Braunbandschabe" },
+                { image: "australische_schabe.jpg", name: "Australische Schabe" }
+            ],
+            Motten: [
+                { image: "doerrobstmotte.jpg", name: "Dörrobstmotte" },
+                { image: "mehlmotte.jpg", name: "Mehlmotte" },
+                { image: "kleidermotte.jpg", name: "Kleidermotte" },
+                { image: "pelzmotte.jpg", name: "Pelzmotte" }
+            ],
+            Fischchen: [
+                { image: "silberfischchen.JPG", name: "Silberfischchen" },
+                { image: "papierfischchen.jpg", name: "Papierfischchen" },
+                { image: "ofenfischchen.jpg", name: "Ofenfischchen" }
+            ],
+            Ameisen: [
+                { image: "schwarze_wegameise.jpg", name: "Schwarze Wegameise" },
+                { image: "braune_wegameise.jpg", name: "Braune Wegameise" },
+                { image: "pharaoameise.jpg", name: "Pharaoameise" }
+            ],
+            Wanzen: [
+                { image: "feuerwanze.jpg", name: "Feuerwanze" },
+                { image: "kiefernzapfenwanze.jpg", name: "Kiefernzapfenwanze" }
+            ],
+            Fliegen_und_Muecken: [
+                { image: "stubenfliege.jpg", name: "Stubenfliege" },
+                { image: "schmeissfliege.jpg", name: "Schmeißfliege" },
+                { image: "fruchtfliege.jpg", name: "Fruchtfliege" },
+                { image: "hausmuecke.jpg", name: "Hausmücke" },
+                { image: "schmetterlingsmuecke.jpg", name: "Schmetterlingsmücke" }
+            ],
+            Sonstige: [
+                { image: "katzenfloh.jpg", name: "Floh" },
+                { image: "maeuseassel.jpg", name: "Assel" },
+                { image: "bettwanze.jpg", name: "Bettwanze" },
+                { image: "rote_vogelmilbe.jpg", name: "Rote Vogelmilbe" },
+                { image: "taubenzecke.jpg", name: "Taubenzecke" },
+                { image: "heimchen.jpg", name: "Heimchen" }
+            ]
         };
 
         let currentCategory = "";
         let currentInsect = null;
-
-        // Funktion zum Mischen eines Arrays
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
 
         function getRandomCategory() {
             const categories = Object.keys(insects);
@@ -154,22 +145,17 @@
             const imageElement = document.getElementById("question-image");
             const optionsContainer = document.getElementById("options-container");
 
-            // Bild anzeigen
             imageElement.src = currentInsect.image;
             imageElement.alt = currentInsect.name;
 
-            // Optionen erstellen
             const categoryInsects = insects[currentCategory];
-            let options = shuffle([...categoryInsects]).slice(0, 4);
+            const options = [...categoryInsects].sort(() => Math.random() - 0.5).slice(0, 4);
 
-            // Sicherstellen, dass die richtige Antwort enthalten ist
             if (!options.some(option => option.name === currentInsect.name)) {
                 options[Math.floor(Math.random() * options.length)] = currentInsect;
             }
 
-            // Buttons anzeigen
             optionsContainer.innerHTML = "";
-            options = shuffle(options); // Nochmal mischen, um richtige Antwort nicht vorhersehbar zu machen
             options.forEach(option => {
                 const button = document.createElement("button");
                 button.classList.add("option");
