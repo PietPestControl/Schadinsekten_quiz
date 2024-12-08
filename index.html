@@ -89,12 +89,14 @@
   const correct = insects[Math.floor(Math.random() * insects.length)];
   const showDevelopmentQuestion = Math.random() < 0.5; // Zufällig Bild- oder Entwicklungsfrage wählen
 
+  // Vorherige Inhalte zurücksetzen
+  choicesDiv.innerHTML = '';
+  imgElement.style.display = 'none'; // Bild standardmäßig ausblenden
+
   if (showDevelopmentQuestion) {
     // Frage zur Entwicklungsform stellen
-    imgElement.style.display = "none"; // Bild ausblenden
     const question = document.createElement('p');
     question.textContent = `Wie entwickelt sich ${correct.name}?`;
-    choicesDiv.innerHTML = ''; // Vorherige Optionen löschen
     choicesDiv.appendChild(question);
 
     const options = ["holometabol", "hemimetabol", "ametabol"];
@@ -115,12 +117,11 @@
     });
   } else {
     // Bildfrage stellen
-    imgElement.style.display = "block"; // Bild anzeigen
+    imgElement.style.display = 'block'; // Bild anzeigen
     imgElement.src = correct.image;
 
     const question = document.createElement('p');
     question.textContent = `Welches Insekt ist auf dem Bild zu sehen?`;
-    choicesDiv.innerHTML = ''; // Vorherige Optionen löschen
     choicesDiv.appendChild(question);
 
     // Drei Antworten generieren (inkl. richtige Antwort)
