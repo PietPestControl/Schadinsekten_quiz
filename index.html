@@ -219,7 +219,6 @@
 
         function checkAnswer(selectedName) {
             if (selectedName === currentInsect.name) {
-                alert("Richtig!");
                 loadNewQuestion();
             } else {
                 alert("Falsch. Versuche es erneut!");
@@ -228,7 +227,6 @@
 
         function checkDevelopmentAnswer(selectedDevelopment) {
             if (selectedDevelopment.toLowerCase().includes(currentInsect.development)) {
-                alert("Richtig!");
                 loadNewQuestion();
             } else {
                 alert("Falsch. Versuche es erneut!");
