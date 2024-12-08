@@ -43,79 +43,111 @@
   </div>
   <script>
     const insects = [
-      { "image": "reismehlkaefer.jpg", "name": "Reismehlkäfer" },
-      { "image": "brotkaefer.jpg", "name": "Brotkäfer" },
-      { "image": "mehlkaefer.jpg", "name": "Mehlkäfer" },
-      { "image": "getreideplattkaefer.jpg", "name": "Getreideplattkäfer" },
-      { "image": "kornkaefer.jpg", "name": "Kornkäfer" },
-      { "image": "reiskaefer.jpg", "name": "Reiskäfer" },
-      { "image": "doerrobstmotte.jpg", "name": "Dörrobstmotte" },
-      { "image": "mehlmotte.jpg", "name": "Mehlmotte" },
-      { "image": "mehlmilbe.jpg", "name": "Mehlmilbe" },
-      { "image": "stubenfliege.jpg", "name": "Stubenfliege" },
-      { "image": "schmeissfliege.jpg", "name": "Schmeißfliege" },
-      { "image": "fruchtfliege.jpg", "name": "Fruchtfliege" },
-      { "image": "deutsche_schabe.jpg", "name": "Deutsche Schabe" },
-      { "image": "orientalische_schabe.jpg", "name": "Orientalische Schabe" },
-      { "image": "amerikanische_schabe.jpg", "name": "Amerikanische Schabe" },
-      { "image": "schwarze_wegameise.jpg", "name": "Schwarze Wegameise" },
-      { "image": "pharaoameise.jpg", "name": "Pharaoameise" },
-      { "image": "menschenfloh.jpg", "name": "Menschenfloh" },
-      { "image": "katzenfloh.jpg", "name": "Katzenfloh" },
-      { "image": "hausbock.jpg", "name": "Hausbock" },
-      { "image": "gemeiner_nagekaefer.jpg", "name": "Gemeiner Nagekäfer" },
-      { "image": "kleidermotte.jpg", "name": "Kleidermotte" },
-      { "image": "pelzmotte.jpg", "name": "Pelzmotte" },
-      { "image": "deutsche_wespe.jpg", "name": "Deutsche Wespe" },
-      { "image": "gemeine_wespe.jpg", "name": "Gemeine Wespe" },
-      { "image": "hausmuecke.jpg", "name": "Hausmücke" },
-      { "image": "silberfischchen.jpg", "name": "Silberfischchen" },
-      { "image": "maeuseassel.jpg", "name": "Mäuseassel" }
-      { "image": "wollkrautbluetenkaefer.jpg", "name": "Wollkraublütenkäfer" }
-      { "image": "wollkrautbluetenkaefer_larve.jpg", "name": "Wollkraublütenkäfer Larve" }
-      { "image": "papierfischchen.jpg", "name": "Papierfischchen" }
-      { "image": "Nest_saechsische_wespe.jpg", "name": "Nest Sächsische Wespe" }
-      { "image": "feldwespe.jpg", "name": "feldwespe" }
-      { "image": "feldwespe_nest.jpg", "name": "Nest Feldwespe" } 
-    ];
+     const insects = [
+  { "image": "reismehlkaefer.jpg", "name": "Reismehlkäfer", "development": "holometabol" },
+  { "image": "brotkaefer.jpg", "name": "Brotkäfer", "development": "holometabol" },
+  { "image": "mehlkaefer.jpg", "name": "Mehlkäfer", "development": "holometabol" },
+  { "image": "getreideplattkaefer.jpg", "name": "Getreideplattkäfer", "development": "holometabol" },
+  { "image": "kornkaefer.jpg", "name": "Kornkäfer", "development": "holometabol" },
+  { "image": "reiskaefer.jpg", "name": "Reiskäfer", "development": "holometabol" },
+  { "image": "doerrobstmotte.jpg", "name": "Dörrobstmotte", "development": "holometabol" },
+  { "image": "mehlmotte.jpg", "name": "Mehlmotte", "development": "holometabol" },
+  { "image": "mehlmilbe.jpg", "name": "Mehlmilbe", "development": "ametabol" },
+  { "image": "stubenfliege.jpg", "name": "Stubenfliege", "development": "holometabol" },
+  { "image": "schmeissfliege.jpg", "name": "Schmeißfliege", "development": "holometabol" },
+  { "image": "fruchtfliege.jpg", "name": "Fruchtfliege", "development": "holometabol" },
+  { "image": "deutsche_schabe.jpg", "name": "Deutsche Schabe", "development": "hemimetabol" },
+  { "image": "orientalische_schabe.jpg", "name": "Orientalische Schabe", "development": "hemimetabol" },
+  { "image": "amerikanische_schabe.jpg", "name": "Amerikanische Schabe", "development": "hemimetabol" },
+  { "image": "schwarze_wegameise.jpg", "name": "Schwarze Wegameise", "development": "holometabol" },
+  { "image": "pharaoameise.jpg", "name": "Pharaoameise", "development": "holometabol" },
+  { "image": "menschenfloh.jpg", "name": "Menschenfloh", "development": "holometabol" },
+  { "image": "katzenfloh.jpg", "name": "Katzenfloh", "development": "holometabol" },
+  { "image": "hausbock.jpg", "name": "Hausbock", "development": "holometabol" },
+  { "image": "gemeiner_nagekaefer.jpg", "name": "Gemeiner Nagekäfer", "development": "holometabol" },
+  { "image": "kleidermotte.jpg", "name": "Kleidermotte", "development": "holometabol" },
+  { "image": "pelzmotte.jpg", "name": "Pelzmotte", "development": "holometabol" },
+  { "image": "deutsche_wespe.jpg", "name": "Deutsche Wespe", "development": "holometabol" },
+  { "image": "gemeine_wespe.jpg", "name": "Gemeine Wespe", "development": "holometabol" },
+  { "image": "hausmuecke.jpg", "name": "Hausmücke", "development": "holometabol" },
+  { "image": "silberfischchen.jpg", "name": "Silberfischchen", "development": "ametabol" },
+  { "image": "maeuseassel.jpg", "name": "Mäuseassel", "development": "ametabol" },
+  { "image": "wollkrautbluetenkaefer.jpg", "name": "Wollkrautblütenkäfer", "development": "holometabol" },
+  { "image": "wollkrautbluetenkaefer_larve.jpg", "name": "Wollkrautblütenkäfer Larve", "development": "holometabol" },
+  { "image": "papierfischchen.jpg", "name": "Papierfischchen", "development": "ametabol" },
+  { "image": "Nest_saechsische_wespe.jpg", "name": "Nest Sächsische Wespe", "development": "holometabol" },
+  { "image": "feldwespe.jpg", "name": "Feldwespe", "development": "holometabol" },
+  { "image": "feldwespe_nest.jpg", "name": "Nest Feldwespe", "development": "holometabol" }
+];
 
     const quizDiv = document.getElementById("quiz");
     const imgElement = document.getElementById("insect-image");
     const choicesDiv = document.getElementById("choices");
 
-    function startQuiz() {
-      // Zufälliges Insekt auswählen
-      const correct = insects[Math.floor(Math.random() * insects.length)];
-      imgElement.src = correct.image;
+   function startQuiz() {
+  // Zufälliges Insekt auswählen
+  const correct = insects[Math.floor(Math.random() * insects.length)];
+  const showDevelopmentQuestion = Math.random() < 0.5; // Zufällig Bild- oder Entwicklungsfrage wählen
 
-      // Drei Antwortoptionen (eine richtige, zwei zufällige falsche)
-      const options = [correct];
-      while (options.length < 3) {
-        const random = insects[Math.floor(Math.random() * insects.length)];
-        if (!options.includes(random)) {
-          options.push(random);
+  if (showDevelopmentQuestion) {
+    // Frage zur Entwicklungsform stellen
+    imgElement.style.display = "none"; // Bild ausblenden
+    const question = document.createElement('p');
+    question.textContent = `Wie entwickelt sich ${correct.name}?`;
+    choicesDiv.innerHTML = ''; // Vorherige Optionen löschen
+    choicesDiv.appendChild(question);
+
+    const options = ["holometabol", "hemimetabol", "ametabol"];
+    options.sort(() => Math.random() - 0.5); // Antworten mischen
+
+    options.forEach(option => {
+      const button = document.createElement('button');
+      button.textContent = option;
+      button.onclick = () => {
+        if (option === correct.development) {
+          alert("Richtig!");
+        } else {
+          alert(`Falsch. Die richtige Antwort war: ${correct.development}`);
         }
+        startQuiz(); // Nächste Frage starten
+      };
+      choicesDiv.appendChild(button);
+    });
+  } else {
+    // Bildfrage stellen
+    imgElement.style.display = "block"; // Bild anzeigen
+    imgElement.src = correct.image;
+
+    const question = document.createElement('p');
+    question.textContent = `Welches Insekt ist auf dem Bild zu sehen?`;
+    choicesDiv.innerHTML = ''; // Vorherige Optionen löschen
+    choicesDiv.appendChild(question);
+
+    // Drei Antworten generieren (inkl. richtige Antwort)
+    const options = [correct];
+    while (options.length < 3) {
+      const random = insects[Math.floor(Math.random() * insects.length)];
+      if (!options.includes(random)) {
+        options.push(random);
       }
-
-      // Antworten mischen
-      options.sort(() => Math.random() - 0.5);
-
-      // Buttons anzeigen
-      choicesDiv.innerHTML = "";
-      options.forEach(option => {
-        const button = document.createElement("button");
-        button.textContent = option.name;
-        button.onclick = () => {
-          if (option.name === correct.name) {
-            startQuiz(); // Direkt zur nächsten Frage springen.
-          } else {
-            alert("Falsch! Die richtige Antwort war: " + correct.name);
-          }
-          startQuiz(); // Nächste Frage starten
-        };
-        choicesDiv.appendChild(button);
-      });
     }
+    options.sort(() => Math.random() - 0.5); // Antworten mischen
+
+    options.forEach(option => {
+      const button = document.createElement('button');
+      button.textContent = option.name;
+      button.onclick = () => {
+        if (option.name === correct.name) {
+          alert("Richtig!");
+        } else {
+          alert(`Falsch. Die richtige Antwort war: ${correct.name}`);
+        }
+        startQuiz(); // Nächste Frage starten
+      };
+      choicesDiv.appendChild(button);
+    });
+  }
+}
 
     // Quiz starten
     startQuiz();
