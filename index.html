@@ -1,171 +1,177 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Schadinsekten-Quiz</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-    h1 {
-      margin-top: 20px;
-    }
-    img {
-      max-width: 300px;
-      height: auto;
-      margin: 20px auto;
-      display: block; /* Stellt sicher, dass das Bild zentriert ist */
-    }
-    button {
-      display: block;
-      margin: 10px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: #fff;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #f0f0f0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insekten Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        #quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .option {
+            margin: 10px 0;
+            padding: 10px 15px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .option:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <h1>Schadinsekten-Quiz</h1>
-  <div id="quiz">
-    <img id="insect-image" src="" alt="Insekt">
-    <div id="choices"></div>
-  </div>
-  <script>
-    const insects = [
-      { image: "reismehlkaefer.jpg", name: "Reismehlkäfer", development: "holometabol" },
-      { image: "brotkaefer.jpg", name: "Brotkäfer", development: "holometabol" },
-      { image: "mehlkaefer.jpg", name: "Mehlkäfer", development: "holometabol" },
-      { image: "getreideplattkaefer.jpg", name: "Getreideplattkäfer", development: "holometabol" },
-      { image: "kornkaefer.jpg", name: "Kornkäfer", development: "holometabol" },
-      { image: "reiskaefer.jpg", name: "Reiskäfer", development: "holometabol" },
-      { image: "doerrobstmotte.jpg", name: "Dörrobstmotte", development: "holometabol" },
-      { image: "mehlmotte.jpg", name: "Mehlmotte", development: "holometabol" },
-      { image: "stubenfliege.jpg", name: "Stubenfliege", development: "holometabol" },
-      { image: "schmeissfliege.jpg", name: "Schmeißfliege", development: "holometabol" },
-      { image: "fruchtfliege.jpg", name: "Fruchtfliege", development: "holometabol" },
-      { image: "deutsche_schabe.jpg", name: "Deutsche Schabe", development: "hemimetabol" } ,
-      { image: "orientalische_schabe.jpg", name: "Orientalische Schabe", development: "hemimetabol" } ,
-      { image: "amerikanische_schabe.jpg", name: "Amerikanische Schabe", development: "hemimetabol" } ,
-      { image: "schwarze_wegameise.jpg", name: "Schwarze Wegameise", development: "holometabol" } ,
-      { image: "pharaoameise.jpg", name: "Pharaoameise", development: "holometabol" } ,
-      { image: "katzenfloh.jpg", name: "Floh", development: "holometabol" } ,
-      { image: "hausbock.jpg", name: "Hausbock", development: "holometabol" } ,
-      { image: "gemeiner_nagekaefer.jpg", name: "Gemeiner Nagekäfer", development: "holometabol" },
-      { image: "kleidermotte.jpg", name: "Kleidermotte", development: "holometabol" } ,
-      { image: "pelzmotte.jpg", name: "Pelzmotte", development: "holometabol" } ,
-      { image: "deutsche_wespe.jpg", name: "Deutsche Wespe", development: "holometabol" } ,
-      { image: "gemeine_wespe.jpg", name: "Gemeine Wespe", development: "holometabol" } ,
-      { image: "hausmuecke.jpg", name: "Hausmücke", development: "holometabol" } ,
-      { image: "silberfischchen.JPG", name: "Silberfischchen", development: "ametabol" } ,
-      { image: "maeuseassel.jpg", name: "Assel", development: "ametabol" } ,
-      { image: "wollkrautbluetenkaefer.jpg", name: "Wollkrautblütenkäfer", development: "holometabol" },
-      { image: "wollkrautbluetenkaefer_larve.jpg", name: "Wollkrautblütenkäfer Larve", development: "holometabol" },
-      { image: "papierfischchen.jpg", name: "Papierfischchen", development: "ametabol" } ,
-      { image: "Nest_saechsische_wespe.jpg", name: "Nest Sächsische Wespe", development: "holometabol" },
-      { image: "feldwespe.jpg", name: "Feldwespe", development: "holometabol" } ,
-      { image: "feldwespe_nest.jpg", name: "Nest Feldwespe", development: "holometabol" } ,
-      { image: "bettwanze.jpg", name: "Bettwanze", development: "hemimetabol" } ,
-      { image: "kiefernzapfenwanze.jpg", name: "Kiefernzapfenwanze", development: "hemimetabol" } ,
-      { image: "braune_wegameise.jpg", name: "Breune Wegameise", development: "holometabol" } ,
-      { image: "schmetterlingsmuecke.jpg", name: "Schmetterlingsmücke", development: "holometabol" } ,
-      { image: "braunbandschabe.jpg", name: "Braunbandschabe", development: "hemimetabol" } ,
-      { image: "australische_schabe.jpg", name: "Australische Schabe", development: "hemimetabol" } ,
-      { image: "heimchen.jpg", name: "Heimchen", development: "hemimetabol" } ,
-      { image: "rote_vogelmilbe.jpg", name: "Rote Vogelmilbe", development: "hemimetabol" } ,
-      { image: "taubenzecke.jpg", name: "Taubenzecke", development: "hemimetabol" } ,
-      { image: "getreidekapuziner.jpg", name: "Getreidekapuziner", development: "holometabol" } ,
-      { image: "maiskaefer.jpg", name: "Maiskäfer", development: "holometabol" } ,
-      { image: "eichenprozessionsspinner.jpg", name: "Eichenprozessionsspinner", development: "holometabol" } ,
-      { image: "vierhornkaefer.jpg", name: "Vierhornkäfer", development: "holometabol" } ,
-      { image: "khaprakaefer.jpg", name: "Khaprakäfer", development: "holometabol" } ,
-      { image: "speisebohnenkaefer.jpg", name: "Speisebohnenkäfer", development: "holometabol" } ,
-      { image: "tabakkaefer.jpg", name: "Tabakkäfer", development: "holometabol" } ,
-      { image: "gemeiner_speckkaefer.jpg", name: "Gemeiner Speckkäfer", development: "holometabol" } ,
-      { image: "pelzkaefer.jpg", name: "Pelzkäfer", development: "holometabol" } ,
-      { image: "feuerwanze.jpg", name: "Feuerwanze", development: "hemimetabol" } ,
-      { image: "messingkaefer.jpg", name: "Messingkäfer", development: "holometabol" } ,
-      { image: "kugelkaefer.jpg", name: "Kugelkäfer", development: "holometabol" } ,
-      { image: "kraeuterdieb.jpg", name: "räuterdieb", development: "holometabol" } ,
-      { image: "moderkaefer.jpg", name: "Moderkäfer", development: "holometabol" } ,
-      { image: "ofenfischchen.jpg", name: "Ofenfischchen", development: "ametabol" } ,
-      { image: "schwebfliege.jpg", name: "Schwebfliege", development: "holometabol" } ,
-    ];
+    <div id="quiz-container">
+        <h1>Insekten Quiz</h1>
+        <div id="quiz-content">
+            <img id="question-image" alt="Insektenbild">
+            <div id="options-container"></div>
+        </div>
+    </div>
+    <script>
+       const insects = {
+  Wespen: [
+    { image: "deutsche_wespe.jpg", name: "Deutsche Wespe", development: "holometabol" },
+    { image: "gemeine_wespe.jpg", name: "Gemeine Wespe", development: "holometabol" },
+    { image: "Nest_saechsische_wespe.jpg", name: "Nest Sächsische Wespe", development: "holometabol" },
+    { image: "feldwespe.jpg", name: "Feldwespe", development: "holometabol" },
+    { image: "feldwespe_nest.jpg", name: "Nest Feldwespe", development: "holometabol" }
+  ],
+  Käfer: [
+    { image: "reismehlkaefer.jpg", name: "Reismehlkäfer", development: "holometabol" },
+    { image: "brotkaefer.jpg", name: "Brotkäfer", development: "holometabol" },
+    { image: "mehlkaefer.jpg", name: "Mehlkäfer", development: "holometabol" },
+    { image: "getreideplattkaefer.jpg", name: "Getreideplattkäfer", development: "holometabol" },
+    { image: "kornkaefer.jpg", name: "Kornkäfer", development: "holometabol" },
+    { image: "reiskaefer.jpg", name: "Reiskäfer", development: "holometabol" },
+    { image: "gemeiner_nagekaefer.jpg", name: "Gemeiner Nagekäfer", development: "holometabol" },
+    { image: "wollkrautbluetenkaefer.jpg", name: "Wollkrautblütenkäfer", development: "holometabol" },
+    { image: "wollkrautbluetenkaefer_larve.jpg", name: "Wollkrautblütenkäfer Larve", development: "holometabol" },
+    { image: "hausbock.jpg", name: "Hausbock", development: "holometabol" },
+    { image: "getreidekapuziner.jpg", name: "Getreidekapuziner", development: "holometabol" },
+    { image: "maiskaefer.jpg", name: "Maiskäfer", development: "holometabol" },
+    { image: "khaprakaefer.jpg", name: "Khaprakäfer", development: "holometabol" },
+    { image: "speisebohnenkaefer.jpg", name: "Speisebohnenkäfer", development: "holometabol" },
+    { image: "tabakkaefer.jpg", name: "Tabakkäfer", development: "holometabol" },
+    { image: "gemeiner_speckkaefer.jpg", name: "Gemeiner Speckkäfer", development: "holometabol" },
+    { image: "pelzkaefer.jpg", name: "Pelzkäfer", development: "holometabol" },
+    { image: "messingkaefer.jpg", name: "Messingkäfer", development: "holometabol" },
+    { image: "kugelkaefer.jpg", name: "Kugelkäfer", development: "holometabol" },
+    { image: "kraeuterdieb.jpg", name: "Kräuterdieb", development: "holometabol" },
+    { image: "moderkaefer.jpg", name: "Moderkäfer", development: "holometabol" }
+  ],
+  Schaben: [
+    { image: "deutsche_schabe.jpg", name: "Deutsche Schabe", development: "hemimetabol" },
+    { image: "orientalische_schabe.jpg", name: "Orientalische Schabe", development: "hemimetabol" },
+    { image: "amerikanische_schabe.jpg", name: "Amerikanische Schabe", development: "hemimetabol" },
+    { image: "braunbandschabe.jpg", name: "Braunbandschabe", development: "hemimetabol" },
+    { image: "australische_schabe.jpg", name: "Australische Schabe", development: "hemimetabol" }
+  ],
+  Motten: [
+    { image: "doerrobstmotte.jpg", name: "Dörrobstmotte", development: "holometabol" },
+    { image: "mehlmotte.jpg", name: "Mehlmotte", development: "holometabol" },
+    { image: "kleidermotte.jpg", name: "Kleidermotte", development: "holometabol" },
+    { image: "pelzmotte.jpg", name: "Pelzmotte", development: "holometabol" }
+  ],
+  Fischchen: [
+    { image: "silberfischchen.JPG", name: "Silberfischchen", development: "ametabol" },
+    { image: "papierfischchen.jpg", name: "Papierfischchen", development: "ametabol" },
+    { image: "ofenfischchen.jpg", name: "Ofenfischchen", development: "ametabol" }
+  ],
+  Ameisen: [
+    { image: "schwarze_wegameise.jpg", name: "Schwarze Wegameise", development: "holometabol" },
+    { image: "braune_wegameise.jpg", name: "Braune Wegameise", development: "holometabol" },
+    { image: "pharaoameise.jpg", name: "Pharaoameise", development: "holometabol" }
+  ],
+  Wanzen: [
+    { image: "feuerwanze.jpg", name: "Feuerwanze", development: "hemimetabol" },
+    { image: "kiefernzapfenwanze.jpg", name: "Kiefernzapfenwanze", development: "hemimetabol" }
+  ],
+  Fliegen und Mücken: [
+    { image: "stubenfliege.jpg", name: "Stubenfliege", development: "holometabol" },
+    { image: "schmeissfliege.jpg", name: "Schmeißfliege", development: "holometabol" },
+    { image: "fruchtfliege.jpg", name: "Fruchtfliege", development: "holometabol" },
+    { image: "hausmuecke.jpg", name: "Hausmücke", development: "holometabol" },
+    { image: "schmetterlingsmuecke.jpg", name: "Schmetterlingsmücke", development: "holometabol" }
+  ],
+  Sonstige: [
+    { image: "katzenfloh.jpg", name: "Floh", development: "holometabol" },
+    { image: "maeuseassel.jpg", name: "Assel", development: "ametabol" },
+    { image: "bettwanze.jpg", name: "Bettwanze", development: "hemimetabol" },
+    { image: "rote_vogelmilbe.jpg", name: "Rote Vogelmilbe", development: "hemimetabol" },
+    { image: "taubenzecke.jpg", name: "Taubenzecke", development: "hemimetabol" },
+    { image: "heimchen.jpg", name: "Heimchen", development: "hemimetabol" }
+  ]
+};
 
-    const imgElement = document.getElementById("insect-image");
-    const choicesDiv = document.getElementById("choices");
+        let currentCategory = "";
+        let currentInsect = null;
 
-    function startQuiz() {
-      const correct = insects[Math.floor(Math.random() * insects.length)];
-      const isDevelopmentQuestion = Math.random() < 0.5;
-
-      choicesDiv.innerHTML = '';
-      imgElement.style.display = 'none';
-
-      if (isDevelopmentQuestion) {
-        const question = document.createElement('p');
-        question.textContent = `Wie entwickelt sich ${correct.name}?`;
-        choicesDiv.appendChild(question);
-
-        const options = ["holometabol", "hemimetabol", "ametabol"];
-        options.sort(() => Math.random() - 0.5);
-
-        options.forEach(option => {
-          const button = document.createElement('button');
-          button.textContent = option;
-          button.onclick = () => {
-            if (option === correct.development) {
-              startQuiz();
-            } else {
-              alert(`Falsch! Die richtige Antwort ist: ${correct.development}`);
-            }
-          };
-          choicesDiv.appendChild(button);
-        });
-      } else {
-        imgElement.style.display = 'block';
-        imgElement.src = correct.image;
-
-        const question = document.createElement('p');
-        question.textContent = `Welches Insekt ist auf dem Bild zu sehen?`;
-        choicesDiv.appendChild(question);
-
-        const options = [correct];
-        while (options.length < 3) {
-          const random = insects[Math.floor(Math.random() * insects.length)];
-          if (!options.includes(random)) {
-            options.push(random);
-          }
+        function getRandomCategory() {
+            const categories = Object.keys(insects);
+            return categories[Math.floor(Math.random() * categories.length)];
         }
-        options.sort(() => Math.random() - 0.5);
 
-        options.forEach(option => {
-          const button = document.createElement('button');
-          button.textContent = option.name;
-          button.onclick = () => {
-            if (option.name === correct.name) {
-              startQuiz();
+        function getRandomInsect(category) {
+            const categoryInsects = insects[category];
+            return categoryInsects[Math.floor(Math.random() * categoryInsects.length)];
+        }
+
+        function loadNewQuestion() {
+            currentCategory = getRandomCategory();
+            currentInsect = getRandomInsect(currentCategory);
+
+            const imageElement = document.getElementById("question-image");
+            const optionsContainer = document.getElementById("options-container");
+
+            imageElement.src = currentInsect.image;
+            imageElement.alt = currentInsect.name;
+
+            const options = insects[currentCategory]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 4);
+
+            optionsContainer.innerHTML = "";
+            options.forEach(option => {
+                const button = document.createElement("button");
+                button.classList.add("option");
+                button.textContent = option.name;
+                button.onclick = () => checkAnswer(option.name);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedName) {
+            if (selectedName === currentInsect.name) {
+                alert("Richtig!");
+                loadNewQuestion();
             } else {
-              alert(`Falsch! Die richtige Antwort ist: ${correct.name}`);
+                alert("Falsch. Versuche es erneut!");
             }
-          };
-          choicesDiv.appendChild(button);
-        });
-      }
-    }
+        }
 
-    startQuiz();
-  </script>
+        window.onload = loadNewQuestion;
+    </script>
 </body>
 </html>
