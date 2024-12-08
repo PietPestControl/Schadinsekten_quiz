@@ -124,7 +124,6 @@
     { image: "heimchen.jpg", name: "Heimchen", development: "hemimetabol" }
   ]
 };
-
         let currentCategory = "";
         let currentInsect = null;
 
@@ -148,9 +147,12 @@
             imageElement.src = currentInsect.image;
             imageElement.alt = currentInsect.name;
 
-            const options = insects[currentCategory]
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 4);
+            const categoryInsects = insects[currentCategory];
+            const options = [...categoryInsects].sort(() => Math.random() - 0.5).slice(0, 4);
+
+            if (!options.some(option => option.name === currentInsect.name)) {
+                options[Math.floor(Math.random() * options.length)] = currentInsect;
+            }
 
             optionsContainer.innerHTML = "";
             options.forEach(option => {
