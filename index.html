@@ -50,8 +50,8 @@
         </div>
     </div>
     <script>
-       const insects = {
-  Wespen: [
+        const insects = {
+            Wespen: [
     { image: "deutsche_wespe.jpg", name: "Deutsche Wespe", development: "holometabol" },
     { image: "gemeine_wespe.jpg", name: "Gemeine Wespe", development: "holometabol" },
     { image: "Nest_saechsische_wespe.jpg", name: "Nest Sächsische Wespe", development: "holometabol" },
@@ -123,9 +123,19 @@
     { image: "taubenzecke.jpg", name: "Taubenzecke", development: "hemimetabol" },
     { image: "heimchen.jpg", name: "Heimchen", development: "hemimetabol" }
   ]
-};
+        };
+
         let currentCategory = "";
         let currentInsect = null;
+
+        // Funktion zum Mischen eines Arrays
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
         function getRandomCategory() {
             const categories = Object.keys(insects);
@@ -144,17 +154,22 @@
             const imageElement = document.getElementById("question-image");
             const optionsContainer = document.getElementById("options-container");
 
+            // Bild anzeigen
             imageElement.src = currentInsect.image;
             imageElement.alt = currentInsect.name;
 
+            // Optionen erstellen
             const categoryInsects = insects[currentCategory];
-            const options = [...categoryInsects].sort(() => Math.random() - 0.5).slice(0, 4);
+            let options = shuffle([...categoryInsects]).slice(0, 4);
 
+            // Sicherstellen, dass die richtige Antwort enthalten ist
             if (!options.some(option => option.name === currentInsect.name)) {
                 options[Math.floor(Math.random() * options.length)] = currentInsect;
             }
 
+            // Buttons anzeigen
             optionsContainer.innerHTML = "";
+            options = shuffle(options); // Nochmal mischen, um richtige Antwort nicht vorhersehbar zu machen
             options.forEach(option => {
                 const button = document.createElement("button");
                 button.classList.add("option");
