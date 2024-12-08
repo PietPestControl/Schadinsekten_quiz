@@ -17,7 +17,8 @@
     img {
       max-width: 300px;
       height: auto;
-      margin: 20px 0;
+      margin: 20px auto;
+      display: block; /* Stellt sicher, dass das Bild zentriert ist */
     }
     button {
       display: block;
@@ -101,8 +102,12 @@
           const button = document.createElement('button');
           button.textContent = option;
           button.onclick = () => {
-            alert(option === correct.development ? "Richtig!" : `Falsch! Die richtige Antwort ist: ${correct.development}`);
-            startQuiz();
+            if (option === correct.development) {
+              alert("Richtig!");
+              startQuiz();
+            } else {
+              alert(`Falsch! Die richtige Antwort ist: ${correct.development}`);
+            }
           };
           choicesDiv.appendChild(button);
         });
@@ -127,8 +132,12 @@
           const button = document.createElement('button');
           button.textContent = option.name;
           button.onclick = () => {
-            alert(option.name === correct.name ? "Richtig!" : `Falsch! Die richtige Antwort ist: ${correct.name}`);
-            startQuiz();
+            if (option.name === correct.name) {
+              alert("Richtig!");
+              startQuiz();
+            } else {
+              alert(`Falsch! Die richtige Antwort ist: ${correct.name}`);
+            }
           };
           choicesDiv.appendChild(button);
         });
