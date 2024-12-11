@@ -1,32 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz 2</title>
+    <title>Wirkstoff Quiz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f0f8ff;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
         }
-        a {
-            text-decoration: none;
-            color: #007BFF;
-            font-size: 18px;
-            margin: 10px;
-            display: inline-block;
+        #quiz-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
-        a:hover {
-            color: #0056b3;
+        .question {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+        .option {
+            margin: 10px 0;
+            padding: 10px 15px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .option:hover {
+            background: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Willkommen bei Quiz 2!</h1>
-    <p>Hier kannst du dein Wissen über Insekten testen.</p>
-    <a href="/">Zurück zu Quiz 1</a>
+    <div id="quiz-container">
+        <h1>Wirkstoff Quiz</h1>
+        <div id="quiz-content">
+            <div class="question" id="question-text"></div>
+            <div id="options-container"></div>
+        </div>
+    </div>
+    <script>
+        const data = [
+            {
+                art: "Nervengift",
+                wirkungsort: "Axon",
+                funktionsweise: "Halten die spannungsabhängigen Natriumkanäle offen",
+                wirkstoffgruppe: "Pyrethroide Typ I",
+                wirkstoffe: ["Esbiothrin", "Tetramethrin", "Permethrin", "Vaporthrin"]
+            },
+            {
+                art: "Nervengift",
+                wirkungsort: "Synapse",
+                funktionsweise: "Acetylcholinesterasehemmer",
+                wirkstoffgruppe: "Carbamate",
+                wirkstoffe: ["Bendiocarb"]
+            },
+            {
+                art: "Nervengift",
+                wirkungsort: "Synapse",
+                funktionsweise: "Acetylcholinesterasehemmer",
+                wirkstoffgruppe: "Organophosphate",
+                wirkstoffe: ["Chlorpyrifos", "Diazinon"]
+            },
+            {
+                art: "Nervengift",
+                wirkungsort: "Axon",
+                funktionsweise: "Blockieren die spannungsabhängigen Natriumkanäle",
+                wirkstoffgruppe: "Pyrethroide Typ II",
+                wirkstoffe: ["Cypermethrin", "Deltamethrin"]
+            },
+            {
+                art: "Nervengift",
+                wirkungsort: "Synapse",
+                funktionsweise: "Bindung an GABA-Rezeptoren",
+                wirkstoffgruppe: "Phenylpyrazole",
+                wirkstoffe: ["Fipronil"]
+            },
+            {
+                art: "Zellgift",
+                wirkungsort: "Mitochondrien",
+                funktionsweise: "ATP-Produktion wird unterbunden",
+                wirkstoffgruppe: "Pyrrole",
+                wirkstoffe: ["Chlorfenapyr"]
+            },
+            {
+                art: "IWR (Insektenwachstumsregulator)",
+                wirkungsort: "Hormonsystem",
+                funktionsweise: "Gestörte Larvalentwicklung durch Juvenoide",
+                wirkstoffgruppe: "Juvenoide",
+                wirkstoffe: ["S-Methopren", "Pyriproxifen"]
+            },
+            {
+                art: "IWR (Insektenwachstumsregulator)",
+                wirkungsort: "Hormonsystem",
+                funktionsweise: "Chitinsynthesehemmer",
+                wirkstoffgruppe: "Benzoylharnstoffe",
+                wirkstoffe: ["Diflubenzuron", "Lufenuron"]
+            },
+            {
+                art: "Bakteriengift",
+                wirkungsort: "Darmwand",
+                funktionsweise: "Toxinbildung durch Abtötung von Bakterien",
+                wirkstoffgruppe: "Toxine aus Bakterienproteinen",
+                wirkstoffe: ["Bacillus thuringiensis"]
+            }
+        ];
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function loadNewQuestion() {
+            const randomEntry = data[Math.floor(Math.random() * data.length)];
+            const questionType = Math.random() < 0.5 ? "art" : "wirkstoff";
+            const questionText = document.getElementById("question-text");
+            const optionsContainer = document.getElementById("options-container");
+
+            if (questionType === "art") {
+                questionText.textContent = `Welche Art gehört zur Wirkungsweise: "${randomEntry.funktionsweise}"?`;
+                const options = shuffle(data.map(entry => entry.art));
+                displayOptions(options, randomEntry.art);
+            } else {
+                questionText.textContent = `Welcher Wirkstoff gehört zur Gruppe: "${randomEntry.wirkstoffgruppe}"?`;
+                const options = shuffle(data.flatMap(entry => entry.wirkstoffe));
+                displayOptions(options, randomEntry.wirkstoffe[0]);
+            }
+        }
+
+        function displayOptions(options, correctAnswer) {
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+            options.forEach(option => {
+                const button = document.createElement("button");
+                button.classList.add("option");
+                button.textContent = option;
+                button.onclick = () => {
+                    if (option === correctAnswer) {
+                        alert("Richtig!");
+                        loadNewQuestion();
+                    } else {
+                        alert("Falsch. Versuche es erneut!");
+                    }
+                };
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        window.onload = loadNewQuestion;
+    </script>
 </body>
 </html>
