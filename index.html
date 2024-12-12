@@ -58,76 +58,77 @@
     <script>
         const insects = {
             Wespen: [
-                { image: ["deutsche_wespe.jpg"], name: "Deutsche Wespe", development: "holometabol" },
-                { image: ["gemeine_wespe.jpg"], name: "Gemeine Wespe", development: "holometabol" },
-                { image: ["Nest_saechsische_wespe.jpg"], name: "Nest Sächsische Wespe", development: "holometabol" },
-                { image: ["feldwespe.jpg"], name: "Feldwespe", development: "holometabol" },
-                { image: ["feldwespe_nest.jpg"], name: "Nest Feldwespe", development: "holometabol" }
+               
+                { images: ["deutsche_wespe.jpg"], name: "Deutsche Wespe", development: "holometabol" },
+                { images: ["gemeine_wespe.jpg"], name: "Gemeine Wespe", development: "holometabol" },
+                { images: ["Nest_saechsische_wespe.jpg"], name: "Nest Sächsische Wespe", development: "holometabol" },
+                { images: ["feldwespe.jpg"], name: "Feldwespe", development: "holometabol" },
+                { images: ["feldwespe_nest.jpg"], name: "Nest Feldwespe", development: "holometabol" }
             ],
             Käfer: [
-                { image: ["reismehlkaefer.jpg"], name: "Reismehlkäfer", development: "holometabol" },
-                { image: ["brotkaefer.jpg"], name: "Brotkäfer", development: "holometabol" },
-                { image: ["mehlkaefer.jpg"], name: "Mehlkäfer", development: "holometabol" },
-                { image: ["getreideplattkaefer.jpg"], name: "Getreideplattkäfer", development: "holometabol" },
-                { image: ["kornkaefer.jpg"], name: "Kornkäfer", development: "holometabol" },
-                { image: ["reiskaefer.jpg"], name: "Reiskäfer", development: "holometabol" },
-                { image: ["gemeiner_nagekaefer.jpg"], name: "Gemeiner Nagekäfer", development: "holometabol" },
-                { image: ["wollkrautbluetenkaefer.jpg"], name: "Wollkrautblütenkäfer", development: "holometabol" },
-                { image: ["wollkrautbluetenkaefer_larve.jpg"], name: "Wollkrautblütenkäfer Larve", development: "holometabol" },
-                { image: ["hausbock.jpg"], name: "Hausbock", development: "holometabol" },
-                { image: ["getreidekapuziner.jpg"], name: "Getreidekapuziner", development: "holometabol" },
-                { image: ["maiskaefer.jpg"], name: "Maiskäfer", development: "holometabol" },
-                { image: ["khaprakaefer.jpg"], name: "Khaprakäfer", development: "holometabol" },
-                { image: ["speisebohnenkaefer.jpg"], name: "Speisebohnenkäfer", development: "holometabol" },
-                { image: ["tabakkaefer.jpg"], name: "Tabakkäfer", development: "holometabol" },
-                { image: ["gemeiner_speckkaefer.jpg"], name: "Gemeiner Speckkäfer", development: "holometabol" },
-                { image: ["pelzkaefer.jpg"], name: "Pelzkäfer", development: "holometabol" },
-                { image: ["messingkaefer.jpg"], name: "Messingkäfer", development: "holometabol" },
-                { image: ["kugelkaefer.jpg"], name: "Kugelkäfer", development: "holometabol" },
-                { image: ["kraeuterdieb.jpg"], name: "Kräuterdieb", development: "holometabol" },
-                { image: ["moderkaefer.jpg"], name: "Moderkäfer", development: "holometabol" }
+                { images: ["reismehlkaefer.jpg"], name: "Reismehlkäfer", development: "holometabol" },
+                { images: ["brotkaefer.jpg"], name: "Brotkäfer", development: "holometabol" },
+                { images: ["mehlkaefer.jpg"], name: "Mehlkäfer", development: "holometabol" },
+                { images: ["getreideplattkaefer.jpg"], name: "Getreideplattkäfer", development: "holometabol" },
+                { images: ["kornkaefer.jpg"], name: "Kornkäfer", development: "holometabol" },
+                { images: ["reiskaefer.jpg"], name: "Reiskäfer", development: "holometabol" },
+                { images: ["gemeiner_nagekaefer.jpg"], name: "Gemeiner Nagekäfer", development: "holometabol" },
+                { images: ["wollkrautbluetenkaefer.jpg"], name: "Wollkrautblütenkäfer", development: "holometabol" },
+                { images: ["wollkrautbluetenkaefer_larve.jpg"], name: "Wollkrautblütenkäfer Larve", development: "holometabol" },
+                { images: ["hausbock.jpg"], name: "Hausbock", development: "holometabol" },
+                { images: ["getreidekapuziner.jpg"], name: "Getreidekapuziner", development: "holometabol" },
+                { images: ["maiskaefer.jpg"], name: "Maiskäfer", development: "holometabol" },
+                { images: ["khaprakaefer.jpg"], name: "Khaprakäfer", development: "holometabol" },
+                { images: ["speisebohnenkaefer.jpg"], name: "Speisebohnenkäfer", development: "holometabol" },
+                { images: ["tabakkaefer.jpg"], name: "Tabakkäfer", development: "holometabol" },
+                { images: ["gemeiner_speckkaefer.jpg"], name: "Gemeiner Speckkäfer", development: "holometabol" },
+                { images: ["pelzkaefer.jpg"], name: "Pelzkäfer", development: "holometabol" },
+                { images: ["messingkaefer.jpg"], name: "Messingkäfer", development: "holometabol" },
+                { images: ["kugelkaefer.jpg"], name: "Kugelkäfer", development: "holometabol" },
+                { images: ["kraeuterdieb.jpg"], name: "Kräuterdieb", development: "holometabol" },
+                { images: ["moderkaefer.jpg"], name: "Moderkäfer", development: "holometabol" }
             ],
             Schaben: [
-                { image: ["deutsche_schabe.jpg"], name: "Deutsche Schabe", development: "hemimetabol" },
-                { image: ["orientalische_schabe.jpg"], name: "Orientalische Schabe", development: "hemimetabol" },
-                { image: ["amerikanische_schabe.jpg"], name: "Amerikanische Schabe", development: "hemimetabol" },
-                { image: ["braunbandschabe.jpg"], name: "Braunbandschabe", development: "hemimetabol" },
-                { image: ["australische_schabe.jpg"], name: "Australische Schabe", development: "hemimetabol" }
+                { images: ["deutsche_schabe.jpg"], name: "Deutsche Schabe", development: "hemimetabol" },
+                { images: ["orientalische_schabe.jpg"], name: "Orientalische Schabe", development: "hemimetabol" },
+                { images: ["amerikanische_schabe.jpg"], name: "Amerikanische Schabe", development: "hemimetabol" },
+                { images: ["braunbandschabe.jpg"], name: "Braunbandschabe", development: "hemimetabol" },
+                { images: ["australische_schabe.jpg"], name: "Australische Schabe", development: "hemimetabol" }
             ],
             Motten: [
-                { image: ["doerrobstmotte.jpg"], name: "Dörrobstmotte", development: "holometabol" },
-                { image: ["mehlmotte.jpg"], name: "Mehlmotte", development: "holometabol" },
-                { image: ["kleidermotte.jpg"], name: "Kleidermotte", development: "holometabol" },
-                { image: ["pelzmotte.jpg"], name: "Pelzmotte", development: "holometabol" }
+                { images: ["doerrobstmotte.jpg"], name: "Dörrobstmotte", development: "holometabol" },
+                { images: ["mehlmotte.jpg"], name: "Mehlmotte", development: "holometabol" },
+                { images: ["kleidermotte.jpg"], name: "Kleidermotte", development: "holometabol" },
+                { images: ["pelzmotte.jpg"], name: "Pelzmotte", development: "holometabol" }
             ],
             Fischchen: [
-                { image: ["silberfischchen.JPG"], name: "Silberfischchen", development: "ametabol" },
-                { image: ["papierfischchen.jpg"], name: "Papierfischchen", development: "ametabol" },
-                { image: ["ofenfischchen.jpg"], name: "Ofenfischchen", development: "ametabol" }
+                { images: ["silberfischchen.JPG"], name: "Silberfischchen", development: "ametabol" },
+                { images: ["papierfischchen.jpg"], name: "Papierfischchen", development: "ametabol" },
+                { images: ["ofenfischchen.jpg"], name: "Ofenfischchen", development: "ametabol" }
             ],
             Ameisen: [
-                { image: ["schwarze_wegameise.jpg"], name: "Schwarze Wegameise", development: "holometabol" },
-                { image: ["braune_wegameise.jpg"], name: "Braune Wegameise", development: "holometabol" },
-                { image: ["pharaoameise.jpg"], name: "Pharaoameise", development: "holometabol" }
+                { images: ["schwarze_wegameise.jpg"], name: "Schwarze Wegameise", development: "holometabol" },
+                { images: ["braune_wegameise.jpg"], name: "Braune Wegameise", development: "holometabol" },
+                { images: ["pharaoameise.jpg"], name: "Pharaoameise", development: "holometabol" }
             ],
             Wanzen: [
-                { image: ["feuerwanze.jpg"], name: "Feuerwanze", development: "hemimetabol" },
-                { image: ["kiefernzapfenwanze.jpg"], name: "Kiefernzapfenwanze", development: "hemimetabol" }
+                { images: ["feuerwanze.jpg"], name: "Feuerwanze", development: "hemimetabol" },
+                { images: ["kiefernzapfenwanze.jpg"], name: "Kiefernzapfenwanze", development: "hemimetabol" }
             ],
             FliegenUndMuecken: [
-                { image: ["stubenfliege.jpg"], name: "Stubenfliege", development: "holometabol" },
-                { image: ["schmeissfliege.jpg"], name: "Schmeißfliege", development: "holometabol" },
-                { image: ["fruchtfliege.jpg"], name: "Fruchtfliege", development: "holometabol" },
-                { image: ["hausmuecke.jpg"], name: "Hausmücke", development: "holometabol" },
-                { image: ["schmetterlingsmuecke.jpg"], name: "Schmetterlingsmücke", development: "holometabol" }
+                { images: ["stubenfliege.jpg"], name: "Stubenfliege", development: "holometabol" },
+                { images: ["schmeissfliege.jpg"], name: "Schmeißfliege", development: "holometabol" },
+                { images: ["fruchtfliege.jpg"], name: "Fruchtfliege", development: "holometabol" },
+                { images: ["hausmuecke.jpg"], name: "Hausmücke", development: "holometabol" },
+                { images: ["schmetterlingsmuecke.jpg"], name: "Schmetterlingsmücke", development: "holometabol" }
             ],
             Sonstige: [
-                { image: ["katzenfloh.jpg"], name: "Floh", development: "holometabol" },
-                { image: ["maeuseassel.jpg"], name: "Assel", development: "ametabol" },
-                { image: ["bettwanze.jpg"], name: "Bettwanze", development: "hemimetabol" },
-                { image: ["rote_vogelmilbe.jpg"], name: "Rote Vogelmilbe", development: "hemimetabol" },
-                { image: ["taubenzecke.jpg"], name: "Taubenzecke", development: "hemimetabol" },
-                { image: ["heimchen.jpg"], name: "Heimchen", development: "hemimetabol" }
+                { images: ["katzenfloh.jpg"], name: "Floh", development: "holometabol" },
+                { images: ["maeuseassel.jpg"], name: "Assel", development: "ametabol" },
+                { images: ["bettwanze.jpg"], name: "Bettwanze", development: "hemimetabol" },
+                { images: ["rote_vogelmilbe.jpg"], name: "Rote Vogelmilbe", development: "hemimetabol" },
+                { images: ["taubenzecke.jpg"], name: "Taubenzecke", development: "hemimetabol" },
+                { images: ["heimchen.jpg"], name: "Heimchen", development: "hemimetabol" }
             ]
          };
 
