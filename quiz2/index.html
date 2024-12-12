@@ -187,7 +187,7 @@
             }
         }
 
-        function displayOptions(options, correctAnswer) {
+         function displayOptions(options, correctAnswer) {
             const optionsContainer = document.getElementById("options-container");
             optionsContainer.innerHTML = "";
             options.forEach(option => {
@@ -196,14 +196,22 @@
                 button.textContent = option;
                 button.onclick = () => {
                     if (option === correctAnswer) {
-                        alert("Richtig!");
-                        loadNewQuestion();
+                        flashBackground("correct");
+                        setTimeout(loadNewQuestion, 500);
                     } else {
-                        alert("Falsch. Versuche es erneut!");
+                        flashBackground("incorrect");
                     }
                 };
                 optionsContainer.appendChild(button);
             });
+        }
+
+        function flashBackground(className) {
+            const quizContainer = document.getElementById("quiz-container");
+            quizContainer.classList.add(className);
+            setTimeout(() => {
+                quizContainer.classList.remove(className);
+            }, 300);
         }
 
         window.onload = loadNewQuestion;
