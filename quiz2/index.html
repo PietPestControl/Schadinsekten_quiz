@@ -148,18 +148,42 @@
 
         function loadNewQuestion() {
             const randomEntry = data[Math.floor(Math.random() * data.length)];
-            const questionType = Math.random() < 0.5 ? "art" : "wirkstoff";
+            const questionType = Math.random();
             const questionText = document.getElementById("question-text");
             const optionsContainer = document.getElementById("options-container");
 
-            if (questionType === "art") {
+            if (questionType < 0.25) {
                 questionText.textContent = `Welche Art gehört zur Wirkungsweise: "${randomEntry.funktionsweise}"?`;
                 const options = shuffle(data.map(entry => entry.art));
-                displayOptions(options, randomEntry.art);
-            } else {
+                const limitedOptions = options.slice(0, 4);
+                if (!limitedOptions.includes(randomEntry.art)) {
+                    limitedOptions[Math.floor(Math.random() * 4)] = randomEntry.art;
+                }
+                displayOptions(limitedOptions, randomEntry.art);
+            } else if (questionType < 0.5) {
                 questionText.textContent = `Welcher Wirkstoff gehört zur Gruppe: "${randomEntry.wirkstoffgruppe}"?`;
                 const options = shuffle(data.flatMap(entry => entry.wirkstoffe));
-                displayOptions(options, randomEntry.wirkstoffe[0]);
+                const limitedOptions = options.slice(0, 4);
+                if (!limitedOptions.includes(randomEntry.wirkstoffe[0])) {
+                    limitedOptions[Math.floor(Math.random() * 4)] = randomEntry.wirkstoffe[0];
+                }
+                displayOptions(limitedOptions, randomEntry.wirkstoffe[0]);
+            } else if (questionType < 0.75) {
+                questionText.textContent = `Was ist der Wirkungsort der Gruppe: "${randomEntry.wirkstoffgruppe}"?`;
+                const options = shuffle(data.map(entry => entry.wirkungsort));
+                const limitedOptions = options.slice(0, 4);
+                if (!limitedOptions.includes(randomEntry.wirkungsort)) {
+                    limitedOptions[Math.floor(Math.random() * 4)] = randomEntry.wirkungsort;
+                }
+                displayOptions(limitedOptions, randomEntry.wirkungsort);
+            } else {
+                questionText.textContent = `Welche Wirkungsweise hat die Gruppe: "${randomEntry.wirkstoffgruppe}"?`;
+                const options = shuffle(data.map(entry => entry.funktionsweise));
+                const limitedOptions = options.slice(0, 4);
+                if (!limitedOptions.includes(randomEntry.funktionsweise)) {
+                    limitedOptions[Math.floor(Math.random() * 4)] = randomEntry.funktionsweise;
+                }
+                displayOptions(limitedOptions, randomEntry.funktionsweise);
             }
         }
 
@@ -172,9 +196,10 @@
                 button.textContent = option;
                 button.onclick = () => {
                     if (option === correctAnswer) {
+                        alert("Richtig!");
                         loadNewQuestion();
                     } else {
-                        alert("Möörp. Versuche es erneut!");
+                        alert("Falsch. Versuche es erneut!");
                     }
                 };
                 optionsContainer.appendChild(button);
