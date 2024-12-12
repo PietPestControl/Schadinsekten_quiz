@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<a href="https://PietPestControl.github.io/Schadinsekten_quiz/quiz2/">Wirkstoff Quiz</a>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insekten Quiz</title>
@@ -25,7 +24,7 @@
             max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
+            margin: 20px auto;
         }
         .option {
             margin: 10px 5px;
@@ -36,7 +35,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            font-size: 20px; 
+            font-size: 20px;
         }
         .option:hover {
             background: #0056b3;
@@ -130,17 +129,11 @@
                 { image: ["taubenzecke.jpg"], name: "Taubenzecke", development: "hemimetabol" },
                 { image: ["heimchen.jpg"], name: "Heimchen", development: "hemimetabol" }
             ]
-        };
-
-        const developmentTypes = {
-            holometabol: "holometabol",
-            hemimetabol: "hemimetabol",
-            ametabol: "ametabol"
-        };
+         };
 
         let currentCategory = "";
         let currentInsect = null;
-        let questionType = "image"; // Start with a question that shows an insect image
+        let questionType = "image"; // Wechselt zwischen "image" und "development"
 
         function getRandomCategory() {
             const categories = Object.keys(insects);
@@ -152,79 +145,76 @@
             return categoryInsects[Math.floor(Math.random() * categoryInsects.length)];
         }
 
-      function loadNewQuestion() {
-    if (questionType === "image") {
-        // Normal question: Show insect image and ask for the insect name
-        currentCategory = getRandomCategory();
-        currentInsect = getRandomInsect(currentCategory);
+        function loadNewQuestion() {
+            if (questionType === "image") {
+                // Bildfrage
+                currentCategory = getRandomCategory();
+                currentInsect = getRandomInsect(currentCategory);
 
-        const imageElement = document.getElementById("question-image");
-        const optionsContainer = document.getElementById("options-container");
-        const questionText = document.getElementById("question-text");
+                const imageElement = document.getElementById("question-image");
+                const questionText = document.getElementById("question-text");
+                const optionsContainer = document.getElementById("options-container");
 
-        // Zufälliges Bild aus dem Array auswählen
-        const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
+                const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
 
-        imageElement.src = randomImage;
-        imageElement.alt = currentInsect.name;
+                imageElement.src = randomImage;
+                imageElement.alt = currentInsect.name;
+                imageElement.style.display = "block";
 
-        questionText.textContent = "Welches Insekt ist das?";
+                questionText.textContent = "Welches Insekt ist das?";
 
-        const categoryInsects = insects[currentCategory];
-        const options = [...categoryInsects].sort(() => Math.random() - 0.5).slice(0, 4);
+                const categoryInsects = insects[currentCategory];
+                const options = [...categoryInsects].sort(() => Math.random() - 0.5).slice(0, 4);
 
-        if (!options.some(option => option.name === currentInsect.name)) {
-            options[Math.floor(Math.random() * options.length)] = currentInsect;
+                if (!options.some(option => option.name === currentInsect.name)) {
+                    options[Math.floor(Math.random() * options.length)] = currentInsect;
+                }
+
+                optionsContainer.innerHTML = "";
+                options.forEach(option => {
+                    const button = document.createElement("button");
+                    button.classList.add("option");
+                    button.textContent = option.name;
+                    button.onclick = () => checkAnswer(option.name);
+                    optionsContainer.appendChild(button);
+                });
+
+                questionType = "development"; // Nächste Frage ist zur Entwicklungsart
+            } else {
+                // Entwicklungsfrage
+                currentCategory = getRandomCategory();
+                currentInsect = getRandomInsect(currentCategory);
+
+                const imageElement = document.getElementById("question-image");
+                const questionText = document.getElementById("question-text");
+                const optionsContainer = document.getElementById("options-container");
+
+                const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
+
+                imageElement.src = randomImage;
+                imageElement.alt = currentInsect.name;
+                imageElement.style.display = "block";
+
+                questionText.textContent = `Wie entwickelt sich die ${currentInsect.name}?`;
+
+                const options = [
+                    "holometabol (Komplette Metamorphose)",
+                    "hemimetabol (Unvollständige Metamorphose)",
+                    "ametabol (Keine Metamorphose)"
+                ];
+
+                optionsContainer.innerHTML = "";
+                options.forEach(option => {
+                    const button = document.createElement("button");
+                    button.classList.add("option");
+                    button.textContent = option;
+                    button.onclick = () => checkDevelopmentAnswer(option);
+                    optionsContainer.appendChild(button);
+                });
+
+                questionType = "image"; // Nächste Frage ist zur Bildauswahl
+            }
         }
-
-        optionsContainer.innerHTML = "";
-        options.forEach(option => {
-            const button = document.createElement("button");
-            button.classList.add("option");
-            button.textContent = option.name;
-            button.onclick = () => checkAnswer(option.name);
-            optionsContainer.appendChild(button);
-        });
-
-        imageElement.style.display = "block";
-        questionType = "development"; // Next question should be about development
-    } else if (questionType === "development") {
-        // Development question: Show an insect and ask for the development type
-        currentCategory = getRandomCategory();
-        currentInsect = getRandomInsect(currentCategory);
-
-        const imageElement = document.getElementById("question-image");
-        const optionsContainer = document.getElementById("options-container");
-        const questionText = document.getElementById("question-text");
-
-        // Zufälliges Bild aus dem Array auswählen
-        const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
-
-        imageElement.src = randomImage;
-        imageElement.alt = currentInsect.name;
-
-        questionText.textContent = `Wie entwickelt sich die ${currentInsect.name}?`;
-
-        const options = [
-            "holometabol (Komplette Metamorphose)",
-            "hemimetabol (Unvollständige Metamorphose)",
-            "ametabol (Keine Metamorphose)"
-        ];
-
-        optionsContainer.innerHTML = "";
-        options.forEach(option => {
-            const button = document.createElement("button");
-            button.classList.add("option");
-            button.textContent = option;
-            button.onclick = () => checkDevelopmentAnswer(option);
-            optionsContainer.appendChild(button);
-        });
-
-        imageElement.style.display = "block";
-        questionType = "image"; // Next question should be about insect image
-    }
-}
-
 
         function checkAnswer(selectedName) {
             if (selectedName === currentInsect.name) {
@@ -244,6 +234,5 @@
 
         window.onload = loadNewQuestion;
     </script>
-    <a href="https://PietPestControl.github.io/Schadinsekten_quiz/quiz2/">Wirkstoff Quiz</a>
 </body>
 </html>
