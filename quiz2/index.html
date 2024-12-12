@@ -196,22 +196,13 @@
                 button.textContent = option;
                 button.onclick = () => {
                     if (option === correctAnswer) {
-                        flashBackground("correct");
-                        setTimeout(loadNewQuestion, 500);
+                        loadNewQuestion();
                     } else {
-                        flashBackground("incorrect");
+                        alert("Mörrp. Versuche es erneut!");
                     }
                 };
                 optionsContainer.appendChild(button);
             });
-        }
-
-        function flashBackground(className) {
-            const quizContainer = document.getElementById("quiz-container");
-            quizContainer.classList.add(className);
-            setTimeout(() => {
-                quizContainer.classList.remove(className);
-            }, 300);
         }
 
         window.onload = loadNewQuestion;
