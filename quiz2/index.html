@@ -143,7 +143,7 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
-     ];
+ ];
 
         let currentInsect = null;
 
@@ -153,20 +153,21 @@
 
         function loadNewQuestion() {
             console.log("Neue Frage wird geladen...");
+            // Wähle zufällig ein Insekt aus
             currentInsect = insects[Math.floor(Math.random() * insects.length)];
 
             const questionText = document.getElementById("question-text");
             const optionsContainer = document.getElementById("options-container");
 
             // Frage mit den Eigenschaften des aktuellen Insekts anzeigen
-            questionText.textContent = `Welcher Wirkstoff hat folgende Eigenschaften? \n\nArt: ${currentInsect.art}\nWirkungsort: ${currentInsect.wirkungsort}\nFunktionsweise: ${currentInsect.funktionsweise}`;
+            questionText.textContent = `Welcher Wirkstoff gehört zu den folgenden Eigenschaften? \n\nArt: ${currentInsect.art}\nWirkungsort: ${currentInsect.wirkungsort}\nFunktionsweise: ${currentInsect.funktionsweise}`;
 
-            const correctAnswer = currentInsect.name;
+            const correctAnswer = currentInsect.wirkstoffe[0]; // Nimm den ersten Wirkstoff als korrekte Antwort
 
             // Generiere drei falsche Antworten
             const wrongAnswers = insects
-                .filter(insect => insect.name !== correctAnswer)
-                .map(insect => insect.name)
+                .filter(insect => insect.wirkstoffe[0] !== correctAnswer)
+                .map(insect => insect.wirkstoffe[0])
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 3);
 
@@ -186,7 +187,7 @@
         }
 
         function checkAnswer(selectedName) {
-            if (selectedName === currentInsect.name) {
+            if (selectedName === currentInsect.wirkstoffe[0]) {
                 alert("Richtig! Lade die nächste Frage.");
                 loadNewQuestion();
             } else {
