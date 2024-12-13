@@ -136,75 +136,120 @@
                 { images: ["taubenzecke.jpg"], name: "Taubenzecke", development: "hemimetabol" },
                 { images: ["heimchen.jpg"], name: "Heimchen", development: "hemimetabol" }
             ]
-         };
+          };
 
-    const categories = Object.keys(insects); // Liste der Kategorien
-    let categoryIndex = 0; // Start mit der ersten Kategorie
-    const queues = {}; // Warteschlangen für jede Kategorie
+    let shuffledCategories = [];
+    let currentCategoryIndex = 0;
+    let insectQueues = {};
+    let questionType = "image"; // Wechsel zwischen Bild- und Entwicklungsfragen
 
-    // Initialisiere Warteschlangen
-    categories.forEach(category => {
-        queues[category] = [...insects[category]];
-    });
+    // Fisher-Yates-Mischfunktion
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function initializeQuiz() {
+        // Kategorien mischen
+        shuffledCategories = shuffle(Object.keys(insects));
+
+        // Insekten innerhalb jeder Kategorie mischen
+        shuffledCategories.forEach(category => {
+            insectQueues[category] = shuffle([...insects[category]]);
+        });
+    }
 
     function getNextCategory() {
-        // Hole die nächste Kategorie in der Rotation
-        const category = categories[categoryIndex];
-        categoryIndex = (categoryIndex + 1) % categories.length;
+        // Hole die nächste Kategorie, rotiere bei Bedarf
+        const category = shuffledCategories[currentCategoryIndex];
+        currentCategoryIndex = (currentCategoryIndex + 1) % shuffledCategories.length;
         return category;
     }
 
     function getNextInsect(category) {
-        // Hole das nächste Insekt aus der Warteschlange
-        const queue = queues[category];
+        // Hole das nächste Insekt aus der Warteschlange, rotiere die Warteschlange
+        const queue = insectQueues[category];
         const insect = queue.shift();
-        queue.push(insect); // Ans Ende der Warteschlange schieben
+        queue.push(insect); // Nach hinten schieben
         return insect;
     }
 
     function loadNewQuestion() {
-        const category = getNextCategory(); // Hole nächste Kategorie
-        const insect = getNextInsect(category); // Hole nächstes Insekt
+        const category = getNextCategory();
+        const insect = getNextInsect(category);
 
         const imageElement = document.getElementById("question-image");
         const questionText = document.getElementById("question-text");
         const optionsContainer = document.getElementById("options-container");
 
-        // Zufälliges Bild auswählen
-        const randomImage = insect.images[Math.floor(Math.random() * insect.images.length)];
+        if (questionType === "image") {
+            // Bildfrage
+            const randomImage = insect.images[Math.floor(Math.random() * insect.images.length)];
+            imageElement.src = randomImage;
+            imageElement.alt = insect.name;
+            imageElement.style.display = "block";
 
-        imageElement.src = randomImage;
-        imageElement.alt = insect.name;
-        imageElement.style.display = "block";
+            questionText.textContent = "Welches Insekt ist das?";
 
-        // Frage zur Kategorie
-        questionText.textContent = "Welches Insekt ist das?";
+            const options = [...insectQueues[category]].sort(() => Math.random() - 0.5).slice(0, 4);
+            if (!options.some(option => option.name === insect.name)) {
+                options[Math.floor(Math.random() * options.length)] = insect;
+            }
 
-        // Optionen erstellen
-        const categoryInsects = queues[category];
-        const options = [...categoryInsects].sort(() => Math.random() - 0.5).slice(0, 4);
+            optionsContainer.innerHTML = "";
+            options.forEach(option => {
+                const button = document.createElement("button");
+                button.classList.add("option");
+                button.textContent = option.name;
+                button.onclick = () => checkAnswer(option.name, insect.name);
+                optionsContainer.appendChild(button);
+            });
 
-        if (!options.some(option => option.name === insect.name)) {
-            options[Math.floor(Math.random() * options.length)] = insect;
+            questionType = "development"; // Nächste Frage: Entwicklungsfrage
+        } else {
+            // Entwicklungsfrage
+            const randomImage = insect.images[Math.floor(Math.random() * insect.images.length)];
+            imageElement.src = randomImage;
+            imageElement.alt = insect.name;
+            imageElement.style.display = "block";
+
+            questionText.textContent = `Wie entwickelt sich die ${insect.name}?`;
+
+            const options = ["holometabol", "hemimetabol", "ametabol"];
+            optionsContainer.innerHTML = "";
+            options.forEach(option => {
+                const button = document.createElement("button");
+                button.classList.add("option");
+                button.textContent = option;
+                button.onclick = () => checkDevelopmentAnswer(option, insect.development);
+                optionsContainer.appendChild(button);
+            });
+
+            questionType = "image"; // Nächste Frage: Bildfrage
         }
-
-        optionsContainer.innerHTML = "";
-        options.forEach(option => {
-            const button = document.createElement("button");
-            button.classList.add("option");
-            button.textContent = option.name;
-            button.onclick = () => checkAnswer(option.name, insect.name);
-            optionsContainer.appendChild(button);
-        });
     }
 
     function checkAnswer(selectedName, correctName) {
         if (selectedName === correctName) {
             loadNewQuestion();
         } else {
-            alert("Mörrp. Versuche es erneut!");
+            alert("Falsch. Versuche es erneut!");
         }
     }
 
-    window.onload = loadNewQuestion;
+    function checkDevelopmentAnswer(selectedDevelopment, correctDevelopment) {
+        if (selectedDevelopment === correctDevelopment) {
+            loadNewQuestion();
+        } else {
+            alert("Falsch. Versuche es erneut!");
+        }
+    }
+
+    window.onload = () => {
+        initializeQuiz();
+        loadNewQuestion();
+    };
 </script>
