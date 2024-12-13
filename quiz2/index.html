@@ -51,7 +51,6 @@
     </div>
 
     <script>
-        const insects = [
             {
                 art: "Nervengift",
                 wirkungsort: "Axon",
@@ -143,7 +142,7 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
-       ];
+      ];
 
         let currentInsect = null;
 
@@ -163,11 +162,23 @@
             // Frage mit den Eigenschaften des aktuellen Insekts anzeigen
             questionText.textContent = `Welcher Wirkstoff hat folgende Eigenschaften? \n\nArt: ${currentInsect.art}\nWirkungsort: ${currentInsect.wirkungsort}\nFunktionsweise: ${currentInsect.funktionsweise}`;
 
-            // Optionen generieren und anzeigen
-            const options = currentInsect.wirkstoffe.sort(() => Math.random() - 0.5).slice(0, 4);  // Wählt zufällig 4 Wirkstoffe
+            // Eine richtige Antwort wählen
+            const correctAnswer = currentInsect.name;
+
+            // Drei falsche Antworten generieren
+            const wrongAnswers = insects
+                .filter(insect => insect.name !== correctAnswer)  // Filtert das korrekte Insekt heraus
+                .map(insect => insect.name)  // Extrahiert nur die Wirkstoffe
+                .sort(() => Math.random() - 0.5)  // Zufällig mischen
+                .slice(0, 3);  // Drei falsche Antworten
+
+            // Alle Antworten (richtige und falsche) zusammenstellen und mischen
+            const allAnswers = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
+
+            // Optionen anzeigen
             optionsContainer.innerHTML = "";  // Vorherige Optionen entfernen
 
-            options.forEach(option => {
+            allAnswers.forEach(option => {
                 const button = document.createElement("button");
                 button.classList.add("option");
                 button.textContent = option;  // Text der Antwortoption hinzufügen
@@ -179,10 +190,9 @@
         // Überprüft die Antwort
         function checkAnswer(selectedName) {
             if (selectedName === currentInsect.name) {
-                alert("Richtig! Lade die nächste Frage.");
                 loadNewQuestion();
             } else {
-                alert("Falsch. Versuche es erneut!");
+                alert("Mörrp. Versuche es erneut!");
             }
         }
     </script>
