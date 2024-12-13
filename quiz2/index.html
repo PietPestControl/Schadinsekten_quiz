@@ -36,7 +36,7 @@
             font-size: 20px;
         }
         .option:hover {
-            background: #5a9e22;
+            background: #7ac728;
         }
     </style>
 </head>
@@ -160,16 +160,18 @@
             const questionText = document.getElementById("question-text");
             const optionsContainer = document.getElementById("options-container");
 
+            // Frage mit den Eigenschaften des aktuellen Insekts anzeigen
             questionText.textContent = `Welcher Wirkstoff hat folgende Eigenschaften? \n\nArt: ${currentInsect.art}\nWirkungsort: ${currentInsect.wirkungsort}\nFunktionsweise: ${currentInsect.funktionsweise}`;
 
-            // Optionen generieren
-            const options = insects.sort(() => Math.random() - 0.5).slice(0, 4);
-            optionsContainer.innerHTML = "";
+            // Optionen generieren und anzeigen
+            const options = currentInsect.wirkstoffe.sort(() => Math.random() - 0.5).slice(0, 4);  // Wählt zufällig 4 Wirkstoffe
+            optionsContainer.innerHTML = "";  // Vorherige Optionen entfernen
+
             options.forEach(option => {
                 const button = document.createElement("button");
                 button.classList.add("option");
-                button.textContent = option.name;
-                button.onclick = () => checkAnswer(option.name);
+                button.textContent = option;  // Text der Antwortoption hinzufügen
+                button.onclick = () => checkAnswer(option);
                 optionsContainer.appendChild(button);
             });
         }
