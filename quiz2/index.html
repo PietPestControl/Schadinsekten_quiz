@@ -144,95 +144,61 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
-        ];
+        };
 
-       
-    let currentCategory = "";
-    let currentInsect = null;
-    let questionType = "image";
+        let currentCategory = "";
+        let currentInsect = null;
+        let questionType = "image";
 
-    function getRandomCategory() {
-        const categories = Object.keys(insects);
-        return categories[Math.floor(Math.random() * categories.length)];
-    }
+        function getRandomCategory() {
+            const categories = Object.keys(insects);
+            return categories[Math.floor(Math.random() * categories.length)];
+        }
 
-    function getRandomInsect(category) {
-        const categoryInsects = insects[category];
-        return categoryInsects[Math.floor(Math.random() * categoryInsects.length)];
-    }
+        function getRandomInsect(category) {
+            const categoryInsects = insects[category];
+            return categoryInsects[Math.floor(Math.random() * categoryInsects.length)];
+        }
 
-    function loadNewQuestion() {
-        console.log(`Fragetyp: ${questionType}`); // Debug-Ausgabe
-        if (questionType === "image") {
-            currentCategory = getRandomCategory();
-            currentInsect = getRandomInsect(currentCategory);
+        function loadNewQuestion() {
+            console.log(`Fragetyp: ${questionType}`); // Debug-Ausgabe
+            if (questionType === "image") {
+                currentCategory = getRandomCategory();
+                currentInsect = getRandomInsect(currentCategory);
 
-            const imageElement = document.getElementById("question-image");
-            const questionText = document.getElementById("question-text");
-            const optionsContainer = document.getElementById("options-container");
+                const imageElement = document.getElementById("question-image");
+                const questionText = document.getElementById("question-text");
+                const optionsContainer = document.getElementById("options-container");
 
-            const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
-            imageElement.src = randomImage;
-            imageElement.alt = currentInsect.name;
-            imageElement.style.display = "block";
+                const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
+                imageElement.src = randomImage;
+                imageElement.alt = currentInsect.name;
+                imageElement.style.display = "block";
 
-            questionText.textContent = "Welches Insekt ist das?";
-            const options = [...insects[currentCategory]].sort(() => Math.random() - 0.5).slice(0, 4);
-            if (!options.some(option => option.name === currentInsect.name)) {
-                options[Math.floor(Math.random() * options.length)] = currentInsect;
+                questionText.textContent = "Welches Insekt ist das?";
+                const options = [currentInsect].sort(() => Math.random() - 0.5).slice(0, 4);
+                optionsContainer.innerHTML = "";
+                options.forEach(option => {
+                    const button = document.createElement("button");
+                    button.classList.add("option");
+                    button.textContent = option.name;
+                    button.onclick = () => checkAnswer(option.name);
+                    optionsContainer.appendChild(button);
+                });
             }
 
-            optionsContainer.innerHTML = "";
-            options.forEach(option => {
-                const button = document.createElement("button");
-                button.classList.add("option");
-                button.textContent = option.name;
-                button.onclick = () => checkAnswer(option.name);
-                optionsContainer.appendChild(button);
-            });
-        } else {
-            const imageElement = document.getElementById("question-image");
-            const questionText = document.getElementById("question-text");
-            const optionsContainer = document.getElementById("options-container");
-
-            const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
-            imageElement.src = randomImage;
-            imageElement.alt = currentInsect.name;
-            imageElement.style.display = "block";
-
-            questionText.textContent = `Wie entwickelt sich die ${currentInsect.name}?`;
-            const options = ["holometabol", "hemimetabol", "ametabol"];
-            optionsContainer.innerHTML = "";
-            options.forEach(option => {
-                const button = document.createElement("button");
-                button.classList.add("option");
-                button.textContent = option;
-                button.onclick = () => checkDevelopmentAnswer(option);
-                optionsContainer.appendChild(button);
-            });
+            questionType = questionType === "image" ? "development" : "image";
         }
 
-        // Wechsel zwischen Bild- und Entwicklungsfragen
-        questionType = questionType === "image" ? "development" : "image";
-    }
-
-    function checkAnswer(selectedName) {
-        if (selectedName === currentInsect.name) {
-            loadNewQuestion();
-        } else {
-            alert("Falsch. Versuche es erneut!");
+        function checkAnswer(selectedName) {
+            if (selectedName === currentInsect.name) {
+                loadNewQuestion();
+            } else {
+                alert("Falsch. Versuche es erneut!");
+            }
         }
-    }
 
-    function checkDevelopmentAnswer(selectedDevelopment) {
-        if (selectedDevelopment.toLowerCase() === currentInsect.development) {
-            loadNewQuestion();
-        } else {
-            alert("Falsch. Versuche es erneut!");
-        }
-    }
-
-    window.onload = loadNewQuestion;
-</script>
+        window.onload = loadNewQuestion;
+    </script>
 </body>
 </html>
