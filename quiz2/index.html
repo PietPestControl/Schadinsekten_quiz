@@ -144,70 +144,93 @@
             }
         ];
 
-        function shuffle(array) {
-            return array.sort(() => Math.random() - 0.5);
-        }
+       
+    let currentCategory = "";
+    let currentInsect = null;
+    let questionType = "image";
 
-        function loadNewQuestion() {
-            const randomEntry = data[Math.floor(Math.random() * data.length)];
-            const questionType = Math.random();
+    function getRandomCategory() {
+        const categories = Object.keys(insects);
+        return categories[Math.floor(Math.random() * categories.length)];
+    }
+
+    function getRandomInsect(category) {
+        const categoryInsects = insects[category];
+        return categoryInsects[Math.floor(Math.random() * categoryInsects.length)];
+    }
+
+    function loadNewQuestion() {
+        console.log(`Fragetyp: ${questionType}`); // Debug-Ausgabe
+        if (questionType === "image") {
+            currentCategory = getRandomCategory();
+            currentInsect = getRandomInsect(currentCategory);
+
+            const imageElement = document.getElementById("question-image");
             const questionText = document.getElementById("question-text");
             const optionsContainer = document.getElementById("options-container");
 
-            if (questionType < 0.25) {
-                questionText.textContent = `Welche Art gehört zur Wirkungsweise: "${randomEntry.funktionsweise}"?`;
-                const options = shuffle(data.map(entry => entry.art));
-                const limitedOptions = options.slice(0, 4);
-                if (!limitedOptions.includes(randomEntry.art)) {
-                    limitedOptions[Math.floor(Math.random() * 4)] = randomEntry.art;
-                }
-                displayOptions(limitedOptions, randomEntry.art);
-            } else if (questionType < 0.5) {
-                questionText.textContent = `Welcher Wirkstoff gehört zur Gruppe: "${randomEntry.wirkstoffgruppe}"?`;
-                const options = shuffle(data.flatMap(entry => entry.wirkstoffe));
-                const limitedOptions = options.slice(0, 4);
-                if (!limitedOptions.includes(randomEntry.wirkstoffe[0])) {
-                    limitedOptions[Math.floor(Math.random() * 4)] = randomEntry.wirkstoffe[0];
-                }
-                displayOptions(limitedOptions, randomEntry.wirkstoffe[0]);
-            } else if (questionType < 0.75) {
-                questionText.textContent = `Was ist der Wirkungsort der Gruppe: "${randomEntry.wirkstoffgruppe}"?`;
-                const options = shuffle(data.map(entry => entry.wirkungsort));
-                const limitedOptions = options.slice(0, 4);
-                if (!limitedOptions.includes(randomEntry.wirkungsort)) {
-                    limitedOptions[Math.floor(Math.random() * 4)] = randomEntry.wirkungsort;
-                }
-                displayOptions(limitedOptions, randomEntry.wirkungsort);
-            } else {
-                questionText.textContent = `Welche Wirkungsweise hat die Gruppe: "${randomEntry.wirkstoffgruppe}"?`;
-                const options = shuffle(data.map(entry => entry.funktionsweise));
-                const limitedOptions = options.slice(0, 4);
-                if (!limitedOptions.includes(randomEntry.funktionsweise)) {
-                    limitedOptions[Math.floor(Math.random() * 4)] = randomEntry.funktionsweise;
-                }
-                displayOptions(limitedOptions, randomEntry.funktionsweise);
-            }
-        }
+            const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
+            imageElement.src = randomImage;
+            imageElement.alt = currentInsect.name;
+            imageElement.style.display = "block";
 
-         function displayOptions(options, correctAnswer) {
+            questionText.textContent = "Welches Insekt ist das?";
+            const options = [...insects[currentCategory]].sort(() => Math.random() - 0.5).slice(0, 4);
+            if (!options.some(option => option.name === currentInsect.name)) {
+                options[Math.floor(Math.random() * options.length)] = currentInsect;
+            }
+
+            optionsContainer.innerHTML = "";
+            options.forEach(option => {
+                const button = document.createElement("button");
+                button.classList.add("option");
+                button.textContent = option.name;
+                button.onclick = () => checkAnswer(option.name);
+                optionsContainer.appendChild(button);
+            });
+        } else {
+            const imageElement = document.getElementById("question-image");
+            const questionText = document.getElementById("question-text");
             const optionsContainer = document.getElementById("options-container");
+
+            const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
+            imageElement.src = randomImage;
+            imageElement.alt = currentInsect.name;
+            imageElement.style.display = "block";
+
+            questionText.textContent = `Wie entwickelt sich die ${currentInsect.name}?`;
+            const options = ["holometabol", "hemimetabol", "ametabol"];
             optionsContainer.innerHTML = "";
             options.forEach(option => {
                 const button = document.createElement("button");
                 button.classList.add("option");
                 button.textContent = option;
-                button.onclick = () => {
-                    if (option === correctAnswer) {
-                        loadNewQuestion();
-                    } else {
-                        alert("Mörrp. Versuche es erneut!");
-                    }
-                };
+                button.onclick = () => checkDevelopmentAnswer(option);
                 optionsContainer.appendChild(button);
             });
         }
 
-        window.onload = loadNewQuestion;
-    </script>
+        // Wechsel zwischen Bild- und Entwicklungsfragen
+        questionType = questionType === "image" ? "development" : "image";
+    }
+
+    function checkAnswer(selectedName) {
+        if (selectedName === currentInsect.name) {
+            loadNewQuestion();
+        } else {
+            alert("Falsch. Versuche es erneut!");
+        }
+    }
+
+    function checkDevelopmentAnswer(selectedDevelopment) {
+        if (selectedDevelopment.toLowerCase() === currentInsect.development) {
+            loadNewQuestion();
+        } else {
+            alert("Falsch. Versuche es erneut!");
+        }
+    }
+
+    window.onload = loadNewQuestion;
+</script>
 </body>
 </html>
