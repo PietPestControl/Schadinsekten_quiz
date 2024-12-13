@@ -115,14 +115,14 @@
                 wirkstoffgruppe: "Oxadiazine",
                 wirkstoffe: ["Indoxacarb"]
             },
-             {
+            {
                 art: "Kontaktgift",
                 wirkungsort: "Atmung",
                 funktionsweise: "ersticken bei einatmung oder verschlucken",
                 wirkstoffgruppe: "Kontaktgiftgruppe",
                 wirkstoffe: ["Geraniol"]
             },
-             {
+            {
                 art: "Synergist",
                 wirkungsort: "Axon",
                 funktionsweise: "Verhindert den Abbau von Pyrethrum/ Pyrethroiden an den spannungsabhängigen Natrium-Kanälen",
@@ -143,7 +143,7 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
-  ];
+        ];
 
         let currentInsect = null;
 
@@ -158,36 +158,35 @@
             let questionText = '';
             let options = [];
             let correctAnswer = '';
-            let allOptions = [];
+            let wrongAnswers = [];
 
             if (questionType === 0) {
                 questionText = `Welcher Wirkstoff gehört zu der folgenden Art: ${currentInsect.art}?`;
                 correctAnswer = currentInsect.wirkstoffe[0]; // Correct answer is the first one
-                allOptions = [...currentInsect.wirkstoffe];
+                wrongAnswers = insects.filter(insect => insect.art !== currentInsect.art)
+                    .map(insect => insect.wirkstoffe[0]);
             } else if (questionType === 1) {
                 questionText = `Welcher Wirkstoff hat folgende Funktion: ${currentInsect.funktionsweise}?`;
                 correctAnswer = currentInsect.wirkstoffe[0];
-                allOptions = [...currentInsect.wirkstoffe];
+                wrongAnswers = insects.filter(insect => insect.funktionsweise !== currentInsect.funktionsweise)
+                    .map(insect => insect.wirkstoffe[0]);
             } else if (questionType === 2) {
                 questionText = `Welcher Wirkstoff hat folgenden Wirkungsort: ${currentInsect.wirkungsort}?`;
                 correctAnswer = currentInsect.wirkstoffe[0];
-                allOptions = [...currentInsect.wirkstoffe];
+                wrongAnswers = insects.filter(insect => insect.wirkungsort !== currentInsect.wirkungsort)
+                    .map(insect => insect.wirkstoffe[0]);
             } else {
                 questionText = `Zu welcher Wirkstoffgruppe gehört ${currentInsect.wirkstoffe[0]}?`;
                 correctAnswer = currentInsect.wirkstoffgruppe;
-                allOptions = [currentInsect.wirkstoffgruppe, 'Unbekannte Gruppe', 'Andere Gruppe', 'Falsche Gruppe'];
+                wrongAnswers = insects.filter(insect => insect.wirkstoffgruppe !== currentInsect.wirkstoffgruppe)
+                    .map(insect => insect.wirkstoffgruppe);
             }
 
-            // Add three wrong answers
-            let wrongAnswers = [];
-            insects.forEach(insect => {
-                if (insect.wirkstoffe[0] !== correctAnswer) {
-                    wrongAnswers.push(insect.wirkstoffe[0]);
-                }
-            });
-            wrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 3); // Pick 3 random wrong answers
+            // Pick 3 random wrong answers
+            wrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 3);
+
             options = [correctAnswer, ...wrongAnswers];
-            
+
             // Shuffle the options
             options = options.sort(() => Math.random() - 0.5);
 
@@ -213,7 +212,4 @@
             }
         }
 
-        window.onload = loadNewQuestion;
-    </script>
-</body>
-</html>
+        window.onload
