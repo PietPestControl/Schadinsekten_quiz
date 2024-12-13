@@ -20,6 +20,17 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
+        img {
+    max-width: 300px; /* Maximale Breite des Bildes */
+    max-height: 300px; /* Maximale Höhe des Bildes */
+    width: auto; /* Beibehaltung des Seitenverhältnisses */
+    height: auto; /* Beibehaltung des Seitenverhältnisses */
+    display: block; /* Zentrierung */
+    margin: 20px auto; /* Abstand und zentrierte Darstellung */
+    object-fit: contain; /* Passt das Bild an, ohne es zu beschneiden */
+    border: 1px solid #ddd; /* Optional: Rahmen für bessere Sichtbarkeit */
+    border-radius: 8px; /* Optional: Abgerundete Ecken */
+}
         .question {
             font-size: 20px;
             margin: 20px 0;
