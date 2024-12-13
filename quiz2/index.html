@@ -36,7 +36,7 @@
             font-size: 20px;
         }
         .option:hover {
-            background: #7ac728;
+            background: #5a9e22;
         }
     </style>
 </head>
@@ -51,6 +51,7 @@
     </div>
 
     <script>
+        const insects = [
             {
                 art: "Nervengift",
                 wirkungsort: "Axon",
@@ -142,18 +143,16 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
-      ];
+     ];
 
         let currentInsect = null;
 
-        // Diese Funktion wird beim Laden der Seite aufgerufen
         window.onload = function() {
             loadNewQuestion();
         };
 
-        // Lädt eine neue Frage
         function loadNewQuestion() {
-            console.log("Neue Frage wird geladen..."); // Debug-Ausgabe
+            console.log("Neue Frage wird geladen...");
             currentInsect = insects[Math.floor(Math.random() * insects.length)];
 
             const questionText = document.getElementById("question-text");
@@ -162,17 +161,16 @@
             // Frage mit den Eigenschaften des aktuellen Insekts anzeigen
             questionText.textContent = `Welcher Wirkstoff hat folgende Eigenschaften? \n\nArt: ${currentInsect.art}\nWirkungsort: ${currentInsect.wirkungsort}\nFunktionsweise: ${currentInsect.funktionsweise}`;
 
-            // Eine richtige Antwort wählen
             const correctAnswer = currentInsect.name;
 
-            // Drei falsche Antworten generieren
+            // Generiere drei falsche Antworten
             const wrongAnswers = insects
-                .filter(insect => insect.name !== correctAnswer)  // Filtert das korrekte Insekt heraus
-                .map(insect => insect.name)  // Extrahiert nur die Wirkstoffe
-                .sort(() => Math.random() - 0.5)  // Zufällig mischen
-                .slice(0, 3);  // Drei falsche Antworten
+                .filter(insect => insect.name !== correctAnswer)
+                .map(insect => insect.name)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3);
 
-            // Alle Antworten (richtige und falsche) zusammenstellen und mischen
+            // Alle Antworten zusammenstellen und mischen
             const allAnswers = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
 
             // Optionen anzeigen
@@ -181,18 +179,18 @@
             allAnswers.forEach(option => {
                 const button = document.createElement("button");
                 button.classList.add("option");
-                button.textContent = option;  // Text der Antwortoption hinzufügen
+                button.textContent = option;
                 button.onclick = () => checkAnswer(option);
                 optionsContainer.appendChild(button);
             });
         }
 
-        // Überprüft die Antwort
         function checkAnswer(selectedName) {
             if (selectedName === currentInsect.name) {
+                alert("Richtig! Lade die nächste Frage.");
                 loadNewQuestion();
             } else {
-                alert("Mörrp. Versuche es erneut!");
+                alert("Falsch. Versuche es erneut!");
             }
         }
     </script>
