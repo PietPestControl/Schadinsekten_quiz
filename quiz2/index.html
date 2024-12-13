@@ -143,56 +143,65 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
- ];
+  ];
 
         let currentInsect = null;
 
-        window.onload = function() {
-            loadNewQuestion();
-        };
+        function getRandomInsect() {
+            return insects[Math.floor(Math.random() * insects.length)];
+        }
 
         function loadNewQuestion() {
-            console.log("Neue Frage wird geladen...");
-            // Wähle zufällig ein Insekt aus
-            currentInsect = insects[Math.floor(Math.random() * insects.length)];
+            currentInsect = getRandomInsect();
 
-            const questionText = document.getElementById("question-text");
+            const questionType = Math.floor(Math.random() * 4); // Randomly choose one type of question
+            let questionText = '';
+            let options = [];
+            let correctAnswer = '';
+
+            if (questionType === 0) {
+                questionText = `Welcher Wirkstoff gehört zu der folgenden Art: ${currentInsect.art}?`;
+                correctAnswer = currentInsect.wirkstoffe[0]; // Correct answer is the first one
+                options = [...currentInsect.wirkstoffe];
+            } else if (questionType === 1) {
+                questionText = `Welcher Wirkstoff hat folgende Funktion: ${currentInsect.funktionsweise}?`;
+                correctAnswer = currentInsect.wirkstoffe[0];
+                options = [...currentInsect.wirkstoffe];
+            } else if (questionType === 2) {
+                questionText = `Welcher Wirkstoff hat folgenden Wirkungsort: ${currentInsect.wirkungsort}?`;
+                correctAnswer = currentInsect.wirkstoffe[0];
+                options = [...currentInsect.wirkstoffe];
+            } else {
+                questionText = `Zu welcher Wirkstoffgruppe gehört ${currentInsect.wirkstoffe[0]}?`;
+                correctAnswer = currentInsect.wirkstoffgruppe;
+                options = [currentInsect.wirkstoffgruppe, 'Unbekannte Gruppe', 'Andere Gruppe', 'Falsche Gruppe'];
+            }
+
+            // Shuffle the options
+            options = options.sort(() => Math.random() - 0.5);
             const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = '';
 
-            // Frage mit den Eigenschaften des aktuellen Insekts anzeigen
-            questionText.textContent = `Welcher Wirkstoff gehört zu den folgenden Eigenschaften? \n\nArt: ${currentInsect.art}\nWirkungsort: ${currentInsect.wirkungsort}\nFunktionsweise: ${currentInsect.funktionsweise}`;
+            document.getElementById("question-text").textContent = questionText;
 
-            const correctAnswer = currentInsect.wirkstoffe[0]; // Nimm den ersten Wirkstoff als korrekte Antwort
-
-            // Generiere drei falsche Antworten
-            const wrongAnswers = insects
-                .filter(insect => insect.wirkstoffe[0] !== correctAnswer)
-                .map(insect => insect.wirkstoffe[0])
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 3);
-
-            // Alle Antworten zusammenstellen und mischen
-            const allAnswers = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
-
-            // Optionen anzeigen
-            optionsContainer.innerHTML = "";  // Vorherige Optionen entfernen
-
-            allAnswers.forEach(option => {
+            options.forEach(option => {
                 const button = document.createElement("button");
                 button.classList.add("option");
                 button.textContent = option;
-                button.onclick = () => checkAnswer(option);
+                button.onclick = () => checkAnswer(option, correctAnswer);
                 optionsContainer.appendChild(button);
             });
         }
 
-        function checkAnswer(selectedName) {
-            if (selectedName === currentInsect.wirkstoffe[0]) {
+        function checkAnswer(selectedAnswer, correctAnswer) {
+            if (selectedAnswer === correctAnswer) {
                 loadNewQuestion();
             } else {
                 alert("Mörrp. Versuche es erneut!");
             }
         }
+
+        window.onload = loadNewQuestion;
     </script>
 </body>
 </html>
