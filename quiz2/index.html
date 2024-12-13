@@ -36,21 +36,23 @@
             font-size: 20px;
         }
         .option:hover {
-            background: #7ac728;
+            background: #5a9e22;
         }
     </style>
 </head>
 <body>
-     <a href="https://PietPestControl.github.io/Schadinsekten_quiz/">Zurück zum Insekten Quiz</a>
+    <a href="https://PietPestControl.github.io/Schadinsekten_quiz/">Zurück zum Insekten Quiz</a>
     <div id="quiz-container">
         <h1>Wirkstoff Quiz</h1>
         <div id="quiz-content">
             <div class="question" id="question-text"></div>
+            <img id="question-image" src="" alt="" style="display: none;">
             <div id="options-container"></div>
         </div>
     </div>
+
     <script>
-        const data = [
+        const insects = {
             {
                 art: "Nervengift",
                 wirkungsort: "Axon",
