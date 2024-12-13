@@ -52,7 +52,7 @@
     </div>
 
     <script>
-        const insects = {
+        const insects = [
             {
                 art: "Nervengift",
                 wirkungsort: "Axon",
@@ -144,48 +144,37 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
-        };
+        ];
 
-        let currentCategory = "";
         let currentInsect = null;
         let questionType = "image";
 
-        function getRandomCategory() {
-            const categories = Object.keys(insects);
-            return categories[Math.floor(Math.random() * categories.length)];
-        }
-
-        function getRandomInsect(category) {
-            const categoryInsects = insects[category];
-            return categoryInsects[Math.floor(Math.random() * categoryInsects.length)];
-        }
-
         function loadNewQuestion() {
             console.log(`Fragetyp: ${questionType}`); // Debug-Ausgabe
-            if (questionType === "image") {
-                currentCategory = getRandomCategory();
-                currentInsect = getRandomInsect(currentCategory);
+            currentInsect = insects[Math.floor(Math.random() * insects.length)];
 
-                const imageElement = document.getElementById("question-image");
-                const questionText = document.getElementById("question-text");
-                const optionsContainer = document.getElementById("options-container");
+            const imageElement = document.getElementById("question-image");
+            const questionText = document.getElementById("question-text");
+            const optionsContainer = document.getElementById("options-container");
 
-                const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
-                imageElement.src = randomImage;
-                imageElement.alt = currentInsect.name;
-                imageElement.style.display = "block";
+            // Bild zufällig auswählen, falls es mehrere gibt
+            const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
+            imageElement.src = randomImage;
+            imageElement.alt = currentInsect.name;
+            imageElement.style.display = "block";
 
-                questionText.textContent = "Welches Insekt ist das?";
-                const options = [currentInsect].sort(() => Math.random() - 0.5).slice(0, 4);
-                optionsContainer.innerHTML = "";
-                options.forEach(option => {
-                    const button = document.createElement("button");
-                    button.classList.add("option");
-                    button.textContent = option.name;
-                    button.onclick = () => checkAnswer(option.name);
-                    optionsContainer.appendChild(button);
-                });
-            }
+            questionText.textContent = "Welches Insekt ist das?";
+
+            // Optionen generieren
+            const options = insects.sort(() => Math.random() - 0.5).slice(0, 4);
+            optionsContainer.innerHTML = "";
+            options.forEach(option => {
+                const button = document.createElement("button");
+                button.classList.add("option");
+                button.textContent = option.name;
+                button.onclick = () => checkAnswer(option.name);
+                optionsContainer.appendChild(button);
+            });
 
             questionType = questionType === "image" ? "development" : "image";
         }
