@@ -133,108 +133,74 @@
             ]
          };
 
-        let currentCategory = "";
-        let currentInsect = null;
-        let questionType = "image"; // Wechselt zwischen "image" und "development"
+    const categories = Object.keys(insects); // Liste der Kategorien
+    let categoryIndex = 0; // Start mit der ersten Kategorie
+    const queues = {}; // Warteschlangen für jede Kategorie
 
-        function getRandomCategory() {
-            const categories = Object.keys(insects);
-            return categories[Math.floor(Math.random() * categories.length)];
+    // Initialisiere Warteschlangen
+    categories.forEach(category => {
+        queues[category] = [...insects[category]];
+    });
+
+    function getNextCategory() {
+        // Hole die nächste Kategorie in der Rotation
+        const category = categories[categoryIndex];
+        categoryIndex = (categoryIndex + 1) % categories.length;
+        return category;
+    }
+
+    function getNextInsect(category) {
+        // Hole das nächste Insekt aus der Warteschlange
+        const queue = queues[category];
+        const insect = queue.shift();
+        queue.push(insect); // Ans Ende der Warteschlange schieben
+        return insect;
+    }
+
+    function loadNewQuestion() {
+        const category = getNextCategory(); // Hole nächste Kategorie
+        const insect = getNextInsect(category); // Hole nächstes Insekt
+
+        const imageElement = document.getElementById("question-image");
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+
+        // Zufälliges Bild auswählen
+        const randomImage = insect.images[Math.floor(Math.random() * insect.images.length)];
+
+        imageElement.src = randomImage;
+        imageElement.alt = insect.name;
+        imageElement.style.display = "block";
+
+        // Frage zur Kategorie
+        questionText.textContent = "Welches Insekt ist das?";
+
+        // Optionen erstellen
+        const categoryInsects = queues[category];
+        const options = [...categoryInsects].sort(() => Math.random() - 0.5).slice(0, 4);
+
+        if (!options.some(option => option.name === insect.name)) {
+            options[Math.floor(Math.random() * options.length)] = insect;
         }
 
-        function getRandomInsect(category) {
-            const categoryInsects = insects[category];
-            return categoryInsects[Math.floor(Math.random() * categoryInsects.length)];
+        optionsContainer.innerHTML = "";
+        options.forEach(option => {
+            const button = document.createElement("button");
+            button.classList.add("option");
+            button.textContent = option.name;
+            button.onclick = () => checkAnswer(option.name, insect.name);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function checkAnswer(selectedName, correctName) {
+        if (selectedName === correctName) {
+            alert("Richtig!");
+            loadNewQuestion();
+        } else {
+            alert("Falsch. Versuche es erneut!");
         }
+    }
 
-        function loadNewQuestion() {
-            if (questionType === "image") {
-                // Bildfrage
-                currentCategory = getRandomCategory();
-                currentInsect = getRandomInsect(currentCategory);
-
-                const imageElement = document.getElementById("question-image");
-                const questionText = document.getElementById("question-text");
-                const optionsContainer = document.getElementById("options-container");
-
-                const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
-
-                imageElement.src = randomImage;
-                imageElement.alt = currentInsect.name;
-                imageElement.style.display = "block";
-
-                questionText.textContent = "Welches Insekt ist das?";
-
-                const categoryInsects = insects[currentCategory];
-                const options = [...categoryInsects].sort(() => Math.random() - 0.5).slice(0, 4);
-
-                if (!options.some(option => option.name === currentInsect.name)) {
-                    options[Math.floor(Math.random() * options.length)] = currentInsect;
-                }
-
-                optionsContainer.innerHTML = "";
-                options.forEach(option => {
-                    const button = document.createElement("button");
-                    button.classList.add("option");
-                    button.textContent = option.name;
-                    button.onclick = () => checkAnswer(option.name);
-                    optionsContainer.appendChild(button);
-                });
-
-                questionType = "development"; // Nächste Frage ist zur Entwicklungsart
-            } else {
-                // Entwicklungsfrage
-                currentCategory = getRandomCategory();
-                currentInsect = getRandomInsect(currentCategory);
-
-                const imageElement = document.getElementById("question-image");
-                const questionText = document.getElementById("question-text");
-                const optionsContainer = document.getElementById("options-container");
-
-                const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
-
-                imageElement.src = randomImage;
-                imageElement.alt = currentInsect.name;
-                imageElement.style.display = "block";
-
-                questionText.textContent = `Wie entwickelt sich die ${currentInsect.name}?`;
-
-                const options = [
-                    "holometabol (Komplette Metamorphose)",
-                    "hemimetabol (Unvollständige Metamorphose)",
-                    "ametabol (Keine Metamorphose)"
-                ];
-
-                optionsContainer.innerHTML = "";
-                options.forEach(option => {
-                    const button = document.createElement("button");
-                    button.classList.add("option");
-                    button.textContent = option;
-                    button.onclick = () => checkDevelopmentAnswer(option);
-                    optionsContainer.appendChild(button);
-                });
-
-                questionType = "image"; // Nächste Frage ist zur Bildauswahl
-            }
-        }
-
-        function checkAnswer(selectedName) {
-            if (selectedName === currentInsect.name) {
-                loadNewQuestion();
-            } else {
-                alert("Falsch. Versuche es erneut!");
-            }
-        }
-
-        function checkDevelopmentAnswer(selectedDevelopment) {
-            if (selectedDevelopment.toLowerCase().includes(currentInsect.development)) {
-                loadNewQuestion();
-            } else {
-                alert("Falsch. Versuche es erneut!");
-            }
-        }
-
-        window.onload = loadNewQuestion;
-    </script>
-</body>
-</html>
+    window.onload = loadNewQuestion;
+</script>
