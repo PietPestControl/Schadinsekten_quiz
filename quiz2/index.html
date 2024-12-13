@@ -51,7 +51,6 @@
     </div>
 
     <script>
-        const insects = [
             {
                 art: "Nervengift",
                 wirkungsort: "Axon",
@@ -143,7 +142,7 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
-  ];
+     ];
 
         let currentInsect = null;
 
@@ -158,27 +157,39 @@
             let questionText = '';
             let options = [];
             let correctAnswer = '';
+            let allOptions = [];
 
             if (questionType === 0) {
                 questionText = `Welcher Wirkstoff gehört zu der folgenden Art: ${currentInsect.art}?`;
                 correctAnswer = currentInsect.wirkstoffe[0]; // Correct answer is the first one
-                options = [...currentInsect.wirkstoffe];
+                allOptions = [...currentInsect.wirkstoffe];
             } else if (questionType === 1) {
                 questionText = `Welcher Wirkstoff hat folgende Funktion: ${currentInsect.funktionsweise}?`;
                 correctAnswer = currentInsect.wirkstoffe[0];
-                options = [...currentInsect.wirkstoffe];
+                allOptions = [...currentInsect.wirkstoffe];
             } else if (questionType === 2) {
                 questionText = `Welcher Wirkstoff hat folgenden Wirkungsort: ${currentInsect.wirkungsort}?`;
                 correctAnswer = currentInsect.wirkstoffe[0];
-                options = [...currentInsect.wirkstoffe];
+                allOptions = [...currentInsect.wirkstoffe];
             } else {
                 questionText = `Zu welcher Wirkstoffgruppe gehört ${currentInsect.wirkstoffe[0]}?`;
                 correctAnswer = currentInsect.wirkstoffgruppe;
-                options = [currentInsect.wirkstoffgruppe, 'Unbekannte Gruppe', 'Andere Gruppe', 'Falsche Gruppe'];
+                allOptions = [currentInsect.wirkstoffgruppe, 'Unbekannte Gruppe', 'Andere Gruppe', 'Falsche Gruppe'];
             }
 
+            // Add three wrong answers
+            let wrongAnswers = [];
+            insects.forEach(insect => {
+                if (insect.wirkstoffe[0] !== correctAnswer) {
+                    wrongAnswers.push(insect.wirkstoffe[0]);
+                }
+            });
+            wrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 3); // Pick 3 random wrong answers
+            options = [correctAnswer, ...wrongAnswers];
+            
             // Shuffle the options
             options = options.sort(() => Math.random() - 0.5);
+
             const optionsContainer = document.getElementById("options-container");
             optionsContainer.innerHTML = '';
 
@@ -197,7 +208,7 @@
             if (selectedAnswer === correctAnswer) {
                 loadNewQuestion();
             } else {
-                alert("Mörrp. Versuche es erneut!");
+                alert("Falsch. Versuche es erneut!");
             }
         }
 
