@@ -46,7 +46,6 @@
         <h1>Wirkstoff Quiz</h1>
         <div id="quiz-content">
             <div class="question" id="question-text"></div>
-            <img id="question-image" src="" alt="" style="display: none;">
             <div id="options-container"></div>
         </div>
     </div>
@@ -144,26 +143,24 @@
                 wirkstoffgruppe: "Toxine aus Bakterienproteinen",
                 wirkstoffe: ["Bacillus thuringiensis israelensis"]
             }
-        ];
+       ];
 
         let currentInsect = null;
-        let questionType = "image";
 
+        // Diese Funktion wird beim Laden der Seite aufgerufen
+        window.onload = function() {
+            loadNewQuestion();
+        };
+
+        // Lädt eine neue Frage
         function loadNewQuestion() {
-            console.log(`Fragetyp: ${questionType}`); // Debug-Ausgabe
+            console.log("Neue Frage wird geladen..."); // Debug-Ausgabe
             currentInsect = insects[Math.floor(Math.random() * insects.length)];
 
-            const imageElement = document.getElementById("question-image");
             const questionText = document.getElementById("question-text");
             const optionsContainer = document.getElementById("options-container");
 
-            // Bild zufällig auswählen, falls es mehrere gibt
-            const randomImage = currentInsect.images[Math.floor(Math.random() * currentInsect.images.length)];
-            imageElement.src = randomImage;
-            imageElement.alt = currentInsect.name;
-            imageElement.style.display = "block";
-
-            questionText.textContent = "Welches Insekt ist das?";
+            questionText.textContent = `Welcher Wirkstoff hat folgende Eigenschaften? \n\nArt: ${currentInsect.art}\nWirkungsort: ${currentInsect.wirkungsort}\nFunktionsweise: ${currentInsect.funktionsweise}`;
 
             // Optionen generieren
             const options = insects.sort(() => Math.random() - 0.5).slice(0, 4);
@@ -175,19 +172,17 @@
                 button.onclick = () => checkAnswer(option.name);
                 optionsContainer.appendChild(button);
             });
-
-            questionType = questionType === "image" ? "development" : "image";
         }
 
+        // Überprüft die Antwort
         function checkAnswer(selectedName) {
             if (selectedName === currentInsect.name) {
+                alert("Richtig! Lade die nächste Frage.");
                 loadNewQuestion();
             } else {
                 alert("Falsch. Versuche es erneut!");
             }
         }
-
-        window.onload = loadNewQuestion;
     </script>
 </body>
 </html>
