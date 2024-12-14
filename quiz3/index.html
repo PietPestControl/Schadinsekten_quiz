@@ -302,11 +302,13 @@
             });
         }
 
-        function checkAnswer(selectedAnswer) {
-            const isCorrect = selectedAnswer === correctAnswer;
-            alert(isCorrect ? "Richtig!" : `Falsch! Die richtige Antwort war: ${correctAnswer}`);
-            questionIndex++;
-            askQuestion();
+       function checkAnswer(selectedAnswer) {
+    const isCorrect = selectedAnswer === correctAnswer;
+    if (!isCorrect) {
+        alert(`Falsch! Die richtige Antwort war: ${correctAnswer}`);
+    }
+    questionIndex++;
+    askQuestion();
         }
 
         function shuffleAnswers(correct, wrong) {
