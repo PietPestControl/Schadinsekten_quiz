@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: monospace;
-            font-size: 20px;
+            font-size: 24px;
             background-color: black;
             color: green;
             padding: 20px;
@@ -20,7 +20,7 @@
         }
 
         .screen {
-            border: 2px solid green;
+            border: 4px solid green;
             padding: 20px;
             width: 80%;
             max-width: 600px;
@@ -33,6 +33,29 @@
 
         .hidden {
             display: none;
+        }
+
+        button {
+            background-color: black;
+            color: green;
+            border: 2px solid green;
+            padding: 5px 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: green;
+            color: black;
+        }
+
+        input {
+            background-color: black;
+            color: green;
+            border: 2px solid green;
+            font-size: 24px;
+            padding: 5px;
+            width: calc(100% - 20px);
         }
     </style>
 </head>
@@ -204,23 +227,23 @@
             },
     // Add remaining insect objects here...
   ];
-  
-          let currentInsect = null;
-          let questionIndex = 0;
-          let correctAnswer = "";
-  
-          function startGame() {
-              const message = document.getElementById("message");
-              const options = document.getElementById("options");
-              const input = document.getElementById("answerInput");
-              const submit = document.getElementById("submitButton");
-  
-              input.classList.add("hidden");
-              submit.classList.add("hidden");
-  
-              message.textContent = "Willkommen im Retro Insekten-Lernspiel! Wähle ein Insekt aus:";
-              options.innerHTML = "";
-              insects.forEach((insect, index) => {
+
+        let currentInsect = null;
+        let questionIndex = 0;
+        let correctAnswer = "";
+
+        function startGame() {
+            const message = document.getElementById("message");
+            const options = document.getElementById("options");
+            const input = document.getElementById("answerInput");
+            const submit = document.getElementById("submitButton");
+
+            input.classList.add("hidden");
+            submit.classList.add("hidden");
+
+            message.textContent = "Willkommen im Retro Insekten-Lernspiel! Wähle ein Insekt aus:";
+            options.innerHTML = "";
+            insects.forEach((insect, index) => {
                 const button = document.createElement("button");
                 button.textContent = insect.name;
                 button.onclick = () => selectInsect(index);
@@ -287,5 +310,4 @@
         startGame();
     </script>
 </body>
- </html>
-
+</html>
