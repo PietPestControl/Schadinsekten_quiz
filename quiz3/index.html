@@ -305,11 +305,10 @@
 function checkAnswer(selectedAnswer) {
     const isCorrect = selectedAnswer === correctAnswer;
     if (isCorrect) {
-        alert("Richtig!");
         questionIndex++;
         askQuestion();
     } else {
-        alert("Falsch! Bitte versuche es erneut.");
+        alert("Mörrrp! Bitte versuche es erneut.");
     }
 }
         function shuffleAnswers(correct, wrong) {
