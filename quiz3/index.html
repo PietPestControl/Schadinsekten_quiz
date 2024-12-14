@@ -276,7 +276,8 @@ function checkAnswer(selectedAnswer) {
         feedback.textContent = `Falsch! Die richtige Antwort wäre: ${questionData.lebensweise.join(", ")}`;
     }
 
-    document.getElementById("nextBtn").style.display = "inline-block";
+    // Warte 1 Sekunde und lade die nächste Frage automatisch
+    setTimeout(nextQuestion, 1000);
 }
 
 function nextQuestion() {
@@ -284,16 +285,10 @@ function nextQuestion() {
     if (currentQuestionIndex < insects.length) {
         loadQuestion();
         document.getElementById("feedback").textContent = "";
-        document.getElementById("nextBtn").style.display = "none";
     } else {
         document.getElementById("feedback").textContent = "Das Spiel ist beendet!";
-        document.getElementById("nextBtn").style.display = "none";
     }
 }
 
 // Lade die erste Frage
 loadQuestion();
-    </script>
-
-</body>
-</html>
