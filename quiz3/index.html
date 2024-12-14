@@ -203,24 +203,24 @@
             "wirkungsort": "Zentralnervensystem"
             },
     // Add remaining insect objects here...
-];
-
-        let currentInsect = null;
-        let questionIndex = 0;
-        let correctAnswer = "";
-
-        function startGame() {
-            const message = document.getElementById("message");
-            const options = document.getElementById("options");
-            const input = document.getElementById("answerInput");
-            const submit = document.getElementById("submitButton");
-
-            input.classList.add("hidden");
-            submit.classList.add("hidden");
-
-            message.textContent = "Willkommen im Retro Insekten-Lernspiel! Wähle ein Insekt aus:";
-            options.innerHTML = "";
-            insects.forEach((insect, index) => {
+  ];
+  
+          let currentInsect = null;
+          let questionIndex = 0;
+          let correctAnswer = "";
+  
+          function startGame() {
+              const message = document.getElementById("message");
+              const options = document.getElementById("options");
+              const input = document.getElementById("answerInput");
+              const submit = document.getElementById("submitButton");
+  
+              input.classList.add("hidden");
+              submit.classList.add("hidden");
+  
+              message.textContent = "Willkommen im Retro Insekten-Lernspiel! Wähle ein Insekt aus:";
+              options.innerHTML = "";
+              insects.forEach((insect, index) => {
                 const button = document.createElement("button");
                 button.textContent = insect.name;
                 button.onclick = () => selectInsect(index);
@@ -287,5 +287,5 @@
         startGame();
     </script>
 </body>
-</html>
+ </html>
 
