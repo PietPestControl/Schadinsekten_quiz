@@ -48,14 +48,14 @@
             display: inline-block;
             padding: 10px 20px;
             margin: 10px;
-            background-color: #7ac728;
+            background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         .btn:hover {
-            background-color: #7ac728;
+            background-color: #0056b3;
         }
         .image-container {
             margin-bottom: 20px;
@@ -90,10 +90,7 @@
 
         <div class="question-container" id="question3" style="display:none;">
             <h2>Welche Bekämpfungsmethoden existieren für das Insekt?</h2>
-            <button class="btn" onclick="checkControl('nest_entfernen')">Nest entfernen</button>
-            <button class="btn" onclick="checkControl('insektizide')">Insektizide</button>
-            <button class="btn" onclick="checkControl('chemikalien')">Chemikalien (Falsche Antwort)</button>
-            <button class="btn" onclick="checkControl('nest_giessen')">Nest gießen (Falsche Antwort)</button>
+            <div id="controlMethods"></div>
         </div>
 
         <div class="question-container" id="question4" style="display:none;">
@@ -113,33 +110,162 @@
 
     <script>
         const insekten = [
-            {
-                "name": "Deutsche Wespe",
-                "images": ["deutsche_wespe.jpg"],
-                "development": "holometabol",
-                "lebensweise": ["Staatenbildend", "Agressiv bei Bedrohung"],
-                "lebensraum": "Gärten, Mülltonnen, Gebäude",
-                "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
-                "mittel": "Wespen-Spray",
-                "wirkstoffe": ["Permethrin", "Cypermethrin"],
-                "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
-                "wirkstoffgruppe": "Pyrethroide",
-                "wirkungsort": "Zentralnervensystem"
-            },
-            {
-                "name": "Gemeine Wespe",
-                "images": ["gemeine_wespe.jpg"],
-                "development": "holometabol",
-                "lebensweise": ["Staatenbildend", "Ernährt sich von Süßem und Eiweiß"],
-                "lebensraum": "Gärten, Gebäude, Wälder",
-                "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
-                "mittel": "Wespen-Spray",
-                "wirkstoffe": ["Permethrin", "Cypermethrin"],
-                "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
-                "wirkstoffgruppe": "Pyrethroide",
-                "wirkungsort": "Zentralnervensystem"
-            }
-        ];
+        {
+            "images": ["deutsche_wespe.jpg"],
+            "name": "Deutsche Wespe",
+            "development": "holometabol",
+            "lebensweise": ["Staatenbildend", "Agressiv bei Bedrohung"],
+            "lebensraum": "Gärten, Mülltonnen, Gebäude",
+            "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
+            "wirkstoffe": ["Permethrin", "Cypermethrin"],
+            "mittel": "Wespen-Spray",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["gemeine_wespe.jpg"],
+            "name": "Gemeine Wespe",
+            "development": "holometabol",
+            "lebensweise": ["Staatenbildend", "Ernährt sich von Süßem und Eiweiß"],
+            "lebensraum": "Gärten, Gebäude, Wälder",
+            "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
+            "wirkstoffe": ["Permethrin", "Cypermethrin"],
+            "mittel": "Wespen-Spray",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["nest_saechsische_wespe.jpg"],
+            "name": "Nest Sächsische Wespe",
+            "development": "holometabol",
+            "lebensweise": ["Staatenbildend", "Weniger aggressiv"],
+            "lebensraum": "Dachböden, Schuppen, Gebäude",
+            "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
+            "wirkstoffe": ["Permethrin", "Cypermethrin"],
+            "mittel": "Wespen-Spray",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["feldwespe.jpg"],
+            "name": "Feldwespe",
+            "development": "holometabol",
+            "lebensweise": ["Staatenbildend", "Pflanzenfresser"],
+            "lebensraum": "Felder, Wiesen, Gebäude",
+            "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
+            "wirkstoffe": ["Permethrin", "Cypermethrin"],
+            "mittel": "Wespen-Spray",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["nest_feldwespe.jpg"],
+            "name": "Nest Feldwespe",
+            "development": "holometabol",
+            "lebensweise": ["Staatenbildend", "Weniger aggressiv"],
+            "lebensraum": "Gärten, Gebäude",
+            "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
+            "wirkstoffe": ["Permethrin", "Cypermethrin"],
+            "mittel": "Wespen-Spray",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["reismehlkaefer.jpg"],
+            "name": "Reismehlkäfer",
+            "development": "holometabol",
+            "lebensweise": ["Nahrungsmittel schädigend", "Lagerung in Getreideprodukten"],
+            "lebensraum": "Lager, Lebensmittelvorräte",
+            "bekaempfungsmethoden": ["Insektizide", "Vakuumieren"],
+            "wirkstoffe": ["Permethrin", "Cypermethrin"],
+            "mittel": "Reismehlkäfer Insektizid",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["brotkaefer.jpg"],
+            "name": "Brotkäfer",
+            "development": "holometabol",
+            "lebensweise": ["Lagerung in Lebensmitteln", "Zerstörung von Brot und Backwaren"],
+            "lebensraum": "Getreidelager, Bäckereien",
+            "bekaempfungsmethoden": ["Lager reinigen", "Insektizide"],
+            "wirkstoffe": ["Permethrin", "Deltamethrin"],
+            "mittel": "Brotkäfer Insektizid",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["mehlkaefer.jpg"],
+            "name": "Mehlkäfer",
+            "development": "holometabol",
+            "lebensweise": ["Verursacht Schäden in Lagerhäusern", "Frisst Getreideprodukte"],
+            "lebensraum": "Lager, Lebensmittellagerung",
+            "bekaempfungsmethoden": ["Lager reinigen", "Insektizide"],
+            "wirkstoffe": ["Permethrin", "Cypermethrin"],
+            "mittel": "Mehlkäfer Insektizid",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["getreideplattkaefer.jpg"],
+            "name": "Getreideplattkäfer",
+            "development": "holometabol",
+            "lebensweise": ["Frisst Getreideprodukte", "Lebt in Lebensmittellagern"],
+            "lebensraum": "Getreidelager, Lebensmittelvorräte",
+            "bekaempfungsmethoden": ["Insektizide", "Vakuumieren"],
+            "wirkstoffe": ["Permethrin", "Deltamethrin"],
+            "mittel": "Getreidekäfer Insektizid",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["kornkaefer.jpg"],
+            "name": "Kornkäfer",
+            "development": "holometabol",
+            "lebensweise": ["Verursacht Schäden in Kornvorräten", "Läuft in Getreidelagern"],
+            "lebensraum": "Getreidelager, Lebensmittelvorräte",
+            "bekaempfungsmethoden": ["Insektizide", "Vakuumieren"],
+            "wirkstoffe": ["Permethrin", "Prallethrin"],
+            "mittel": "Kornkäfer Insektizid",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["reiskaefer.jpg"],
+            "name": "Reiskäfer",
+            "development": "holometabol",
+            "lebensweise": ["Verursacht Schäden an Reispaketen", "Lebt in Reislagerhäusern"],
+            "lebensraum": "Lager, Reisspeicher",
+            "bekaempfungsmethoden": ["Insektizide", "Lager reinigen"],
+            "wirkstoffe": ["Permethrin", "Deltamethrin"],
+            "mittel": "Reiskäfer Insektizid",
+            "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
+        {
+            "images": ["gemeiner_nagekaefer.jpg"],
+            "name": "Gemeiner Nagekäfer",
+            "development": "holometabol",
+            "lebensweise": ["Verursacht Schäden an Holz", "Frisst Holz und Leder"],
+            "lebensraum": "Möbel, Lager mit Holzmaterial",
+            "bekaempfungsmethoden": ["Holzschutzmittel", "Insektizide"],
+            "wirkstoffe": ["Permethrin", "Cypermethrin"],
+            "mittel": "Holzinsektizid",
+            "wirkungsweise_funktionsweise": "Blockierung der neuronalen Signalübertragung",
+            "wirkstoffgruppe": "Pyrethroide",
+            "wirkungsort": "Zentralnervensystem"
+        },
 
         let selectedInsekt = null;
 
@@ -162,12 +288,9 @@
 
         function showNotification(message, isCorrect) {
             var notification = document.getElementById('notification');
-            
-            // Text und Farbe anpassen je nach Antwort
             notification.textContent = message;
             notification.style.backgroundColor = isCorrect ? '#28a745' : '#dc3545';  // Grün für richtig, Rot für falsch
 
-            // Sichtbarkeit und Position anpassen
             notification.style.display = 'block';
             setTimeout(function() {
                 notification.style.opacity = '1';
@@ -193,17 +316,20 @@
         }
 
         function showLifeStyleAnswers() {
-            const allLifeStyles = [
-                ...selectedInsekt.lebensweise,
-                "Staatenbildend", "Agressiv bei Bedrohung", "Ernährt sich von Süßem und Eiweiß"
-            ];
-
-            const answers = allLifeStyles.sort(() => Math.random() - 0.5);
+            const correctLifeStyle = selectedInsekt.lebensweise;
+            let allLifeStyles = [];
+            insekten.forEach(insekt => {
+                if (insekt.name !== selectedInsekt.name) {
+                    allLifeStyles = [...allLifeStyles, ...insekt.lebensweise];
+                }
+            });
+            allLifeStyles = [...allLifeStyles, ...correctLifeStyle];
+            allLifeStyles = allLifeStyles.sort(() => Math.random() - 0.5);
 
             let lifeStyleContainer = document.getElementById('lifeStyleAnswers');
             lifeStyleContainer.innerHTML = '';
 
-            answers.forEach(lifeStyle => {
+            allLifeStyles.forEach(lifeStyle => {
                 let btn = document.createElement('button');
                 btn.classList.add('btn');
                 btn.textContent = lifeStyle;
@@ -218,12 +344,38 @@
             if (selectedInsekt.lebensweise.includes(answer)) {
                 showNotification("Richtig!", true);
                 nextQuestion('question3');
+                showControlMethods();
             } else {
                 showNotification("Leider falsch. Versuche es noch einmal.", false);
             }
         }
 
-        function checkControl(answer) {
+        function showControlMethods() {
+            const correctMethods = selectedInsekt.bekaempfungsmethoden;
+            let allMethods = [];
+            insekten.forEach(insekt => {
+                if (insekt.name !== selectedInsekt.name) {
+                    allMethods = [...allMethods, ...insekt.bekaempfungsmethoden];
+                }
+            });
+            allMethods = [...allMethods, ...correctMethods];
+            allMethods = allMethods.sort(() => Math.random() - 0.5);
+
+            let methodContainer = document.getElementById('controlMethods');
+            methodContainer.innerHTML = '';
+
+            allMethods.forEach(method => {
+                let btn = document.createElement('button');
+                btn.classList.add('btn');
+                btn.textContent = method;
+                btn.onclick = function() {
+                    checkMethod(method);
+                };
+                methodContainer.appendChild(btn);
+            });
+        }
+
+        function checkMethod(answer) {
             if (selectedInsekt.bekaempfungsmethoden.includes(answer)) {
                 showNotification("Richtig!", true);
                 nextQuestion('question4');
@@ -232,21 +384,24 @@
             }
         }
 
-        function checkProduct(answer) {
-            if (selectedInsekt.mittel === answer) {
-                showNotification("Richtig! Du hast das Spiel gewonnen.", true);
+        function checkProduct(product) {
+            if (product === selectedInsekt.mittel) {
+                showNotification("Richtig!", true);
                 nextQuestion('result');
             } else {
                 showNotification("Leider falsch. Versuche es noch einmal.", false);
             }
         }
 
-        function nextQuestion(nextQuestionId) {
-            let currentQuestion = document.querySelector('.question-container[style*="display: block"]');
-            currentQuestion.style.display = 'none';
-            document.getElementById(nextQuestionId).style.display = 'block';
+        function nextQuestion(next) {
+            document.getElementById('question1').style.display = 'none';
+            document.getElementById('question2').style.display = 'none';
+            document.getElementById('question3').style.display = 'none';
+            document.getElementById('question4').style.display = 'none';
+            document.getElementById('result').style.display = 'none';
+
+            document.getElementById(next).style.display = 'block';
         }
     </script>
 </body>
 </html>
-
