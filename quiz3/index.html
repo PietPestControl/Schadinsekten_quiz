@@ -70,8 +70,6 @@
 
     <div class="feedback" id="feedback"></div>
 
-    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Nächste Frage</button>
-
     <script>
         const insects = [
         {
@@ -231,60 +229,79 @@
             "wirkungsort": "Zentralnervensystem"
             },
     // Add remaining insect objects here...
- ];
+];
 
-        let currentQuestionIndex = 0;
-        let selectedInsect = null;
+        let currentInsect = null;
+        let questionType = 0;
 
-        // Zufälliges Insekt auswählen
-        function selectInsect() {
-            selectedInsect = insects[Math.floor(Math.random() * insects.length)];
-            loadQuestion();
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function getRandomInsects(correctInsect, property) {
+            const options = [correctInsect[property]];
+            const others = insects.filter(insect => insect.name !== correctInsect.name);
+            while (options.length < 3 && others.length > 0) {
+                const randomIndex = Math.floor(Math.random() * others.length);
+                options.push(others.splice(randomIndex, 1)[0][property]);
+            }
+            return shuffle(options);
         }
 
         function loadQuestion() {
-            const questionData = selectedInsect;
-
-            // Frage 1: Entwicklungsform
-            document.getElementById("question").textContent = `Welche Entwicklungsform hat die ${questionData.name}?`;
-
-            const developmentOptions = ["Holometabol", "Hemimetabol", "Ametabol"];
+            currentInsect = insects[Math.floor(Math.random() * insects.length)];
+            const questionElement = document.getElementById("question");
             const answersDiv = document.getElementById("answers");
             answersDiv.innerHTML = "";
 
-            developmentOptions.forEach(answer => {
-                const button = document.createElement("button");
-                button.textContent = answer;
-                button.classList.add("answer-btn");
-                button.onclick = () => checkAnswer(answer, questionData.development);
-                answersDiv.appendChild(button);
-            });
+            if (questionType === 0) {
+                questionElement.textContent = `Welche Entwicklungsform hat die ${currentInsect.name}?`;
+                const options = getRandomInsects(currentInsect, "development");
+                options.forEach(option => {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.classList.add("answer-btn");
+                    button.onclick = () => checkAnswer(option, currentInsect.development);
+                    answersDiv.appendChild(button);
+                });
+            } else if (questionType === 1) {
+                questionElement.textContent = `Wo lebt die ${currentInsect.name}?`;
+                const options = getRandomInsects(currentInsect, "lebensraum");
+                options.forEach(option => {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.classList.add("answer-btn");
+                    button.onclick = () => checkAnswer(option, currentInsect.lebensraum);
+                    answersDiv.appendChild(button);
+                });
+            } else {
+                resetGame();
+            }
         }
 
         function checkAnswer(selectedAnswer, correctAnswer) {
             const feedback = document.getElementById("feedback");
-
-            if (selectedAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                feedback.textContent = "Richtig! Du hast die richtige Antwort gewählt.";
-            } else {
-                feedback.textContent = `Falsch! Die richtige Antwort wäre: ${correctAnswer}`;
-            }
-
-            // Warte 1 Sekunde und lade die nächste Frage
-            setTimeout(nextQuestion, 1000);
+            feedback.textContent = selectedAnswer === correctAnswer
+                ? "Richtig!"
+                : `Falsch! Die richtige Antwort war: ${correctAnswer}`;
+            setTimeout(() => {
+                questionType++;
+                loadQuestion();
+            }, 1000);
         }
 
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < 1) {  // Wechselt zu Frage 2
-                loadQuestion();
-            } else {
-                document.getElementById("feedback").textContent = "Das Spiel ist beendet!";
-            }
+        function resetGame() {
+            questionType = 0;
+            document.getElementById("feedback").textContent = "";
+            loadQuestion();
         }
 
         // Spiel starten
-        selectInsect();
+        loadQuestion();
     </script>
 
 </body>
