@@ -9,6 +9,20 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             color: #333;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
         .notification {
@@ -28,10 +42,6 @@
         }
         .question-container {
             margin: 20px 0;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .btn {
             display: inline-block;
@@ -57,50 +67,48 @@
     </style>
 </head>
 <body>
-    <h1>Insekten Lernspiel</h1>
-    <div class="question-container" id="start">
-        <h2>Wähle ein Insekt:</h2>
-        <button class="btn" onclick="startGame('deutsche_wespe')">Deutsche Wespe</button>
-        <button class="btn" onclick="startGame('gemeine_wespe')">Gemeine Wespe</button>
-    </div>
+    <div class="container">
+        <h1>Insekten Lernspiel</h1>
+        <div class="question-container" id="start">
+            <h2>Wähle ein Insekt:</h2>
+            <button class="btn" onclick="startGame('deutsche_wespe')">Deutsche Wespe</button>
+            <button class="btn" onclick="startGame('gemeine_wespe')">Gemeine Wespe</button>
+        </div>
 
-    <div class="question-container" id="question1" style="display:none;">
-        <h2>Welche Entwicklungsform hat das Insekt?</h2>
-        <button class="btn" onclick="checkAnswer('holometabol')">Holometabol</button>
-        <button class="btn" onclick="checkAnswer('hemimetabol')">Hemimetabol</button>
-        <button class="btn" onclick="checkAnswer('ametabol')">Ametabol</button>
-        <button class="btn" onclick="checkAnswer('hemimetabol')">Hemimetabol (Falsche Antwort)</button>
-    </div>
+        <div class="question-container" id="question1" style="display:none;">
+            <h2>Welche Entwicklungsform hat das Insekt?</h2>
+            <button class="btn" onclick="checkAnswer('holometabol')">Holometabol</button>
+            <button class="btn" onclick="checkAnswer('hemimetabol')">Hemimetabol</button>
+            <button class="btn" onclick="checkAnswer('ametabol')">Ametabol</button>
+        </div>
 
-    <div class="question-container" id="question2" style="display:none;">
-        <h2>Welche Lebensweise-Eigenschaften hat das Insekt?</h2>
-        <button class="btn" onclick="checkLifeStyle('staatenbildend')">Staatenbildend</button>
-        <button class="btn" onclick="checkLifeStyle('aggressiv')">Agressiv bei Bedrohung</button>
-        <button class="btn" onclick="checkLifeStyle('naehrung_suess')">Ernährt sich von Süßem</button>
-        <button class="btn" onclick="checkLifeStyle('naehrung_protein')">Ernährt sich von Eiweiß</button>
-    </div>
+        <div class="question-container" id="question2" style="display:none;">
+            <h2>Welche Lebensweise-Eigenschaften hat das Insekt?</h2>
+            <div id="lifeStyleAnswers"></div>
+        </div>
 
-    <div class="question-container" id="question3" style="display:none;">
-        <h2>Welche Bekämpfungsmethoden existieren für das Insekt?</h2>
-        <button class="btn" onclick="checkControl('nest_entfernen')">Nest entfernen</button>
-        <button class="btn" onclick="checkControl('insektizide')">Insektizide</button>
-        <button class="btn" onclick="checkControl('chemikalien')">Chemikalien (Falsche Antwort)</button>
-        <button class="btn" onclick="checkControl('nest_giessen')">Nest gießen (Falsche Antwort)</button>
-    </div>
+        <div class="question-container" id="question3" style="display:none;">
+            <h2>Welche Bekämpfungsmethoden existieren für das Insekt?</h2>
+            <button class="btn" onclick="checkControl('nest_entfernen')">Nest entfernen</button>
+            <button class="btn" onclick="checkControl('insektizide')">Insektizide</button>
+            <button class="btn" onclick="checkControl('chemikalien')">Chemikalien (Falsche Antwort)</button>
+            <button class="btn" onclick="checkControl('nest_giessen')">Nest gießen (Falsche Antwort)</button>
+        </div>
 
-    <div class="question-container" id="question4" style="display:none;">
-        <h2>In welchem Mittel ist der Wirkstoff enthalten?</h2>
-        <button class="btn" onclick="checkProduct('wespen_spray')">Wespen-Spray</button>
-        <button class="btn" onclick="checkProduct('flugmittel')">Fliegen-Spray (Falsche Antwort)</button>
-        <button class="btn" onclick="checkProduct('mueckenspray')">Mücken-Spray (Falsche Antwort)</button>
-        <button class="btn" onclick="checkProduct('insektenmittel')">Insektenmittel</button>
-    </div>
+        <div class="question-container" id="question4" style="display:none;">
+            <h2>In welchem Mittel ist der Wirkstoff enthalten?</h2>
+            <button class="btn" onclick="checkProduct('wespen_spray')">Wespen-Spray</button>
+            <button class="btn" onclick="checkProduct('flugmittel')">Fliegen-Spray (Falsche Antwort)</button>
+            <button class="btn" onclick="checkProduct('mueckenspray')">Mücken-Spray (Falsche Antwort)</button>
+            <button class="btn" onclick="checkProduct('insektenmittel')">Insektenmittel</button>
+        </div>
 
-    <div class="question-container" id="result" style="display:none;">
-        <h2>Spiel beendet! Gute Arbeit!</h2>
-    </div>
+        <div class="question-container" id="result" style="display:none;">
+            <h2>Spiel beendet! Gute Arbeit!</h2>
+        </div>
 
-    <div id="notification" class="notification">Richtig!</div>
+        <div id="notification" class="notification">Richtig!</div>
+    </div>
 
     <script>
         const insekten = [
@@ -171,9 +179,32 @@
             if (answer === correctAnswer) {
                 showNotification("Richtig!");
                 nextQuestion('question2');
+                showLifeStyleAnswers();
             } else {
                 showNotification("Leider falsch. Versuche es noch einmal.");
             }
+        }
+
+        function showLifeStyleAnswers() {
+            const allLifeStyles = [
+                ...selectedInsekt.lebensweise,
+                "Staatenbildend", "Agressiv bei Bedrohung", "Ernährt sich von Süßem und Eiweiß"
+            ];
+
+            const answers = allLifeStyles.sort(() => Math.random() - 0.5);
+
+            let lifeStyleContainer = document.getElementById('lifeStyleAnswers');
+            lifeStyleContainer.innerHTML = '';
+
+            answers.forEach(lifeStyle => {
+                let btn = document.createElement('button');
+                btn.classList.add('btn');
+                btn.textContent = lifeStyle;
+                btn.onclick = function() {
+                    checkLifeStyle(lifeStyle);
+                };
+                lifeStyleContainer.appendChild(btn);
+            });
         }
 
         function checkLifeStyle(answer) {
