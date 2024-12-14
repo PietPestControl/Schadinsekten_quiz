@@ -231,68 +231,115 @@
             "wirkungsort": "Zentralnervensystem"
             },
     // Add remaining insect objects here...
-];
+ ];
 
-let currentQuestionIndex = 0;
+        let currentQuestionIndex = 0;
+        let currentInsectIndex = 0;
 
-function loadQuestion() {
-    const questionData = insects[currentQuestionIndex];
-    document.getElementById("question").textContent = `Welche Lebensweise hat die ${questionData.name}?`;
+        function loadQuestion() {
+            const questionData = insects[currentInsectIndex];
+            if (currentQuestionIndex === 0) {
+                document.getElementById("question").textContent = `Wähle ein Insekt aus: ${questionData.name}`;
+                const answersDiv = document.getElementById("answers");
+                answersDiv.innerHTML = "";
+                const button = document.createElement("button");
+                button.textContent = questionData.name;
+                button.classList.add("answer-btn");
+                button.onclick = () => startGame(questionData);
+                answersDiv.appendChild(button);
+            } else if (currentQuestionIndex === 1) {
+                document.getElementById("question").textContent = `Welche Entwicklungsform hat die ${insects[currentInsectIndex].name}?`;
+                const answersDiv = document.getElementById("answers");
+                answersDiv.innerHTML = "";
+                const allAnswers = ["Holometabol", "Hemimetabol", "Ametabol"];
+                allAnswers.forEach(answer => {
+                    const button = document.createElement("button");
+                    button.textContent = answer;
+                    button.classList.add("answer-btn");
+                    button.onclick = () => checkAnswer(answer);
+                    answersDiv.appendChild(button);
+                });
+            } else if (currentQuestionIndex === 2) {
+                document.getElementById("question").textContent = `Welche Lebensweise hat die ${insects[currentInsectIndex].name}?`;
+                const answersDiv = document.getElementById("answers");
+                answersDiv.innerHTML = "";
+                insects[currentInsectIndex].lebensweise.forEach(answer => {
+                    const button = document.createElement("button");
+                    button.textContent = answer;
+                    button.classList.add("answer-btn");
+                    button.onclick = () => checkAnswer(answer);
+                    answersDiv.appendChild(button);
+                });
+            } else if (currentQuestionIndex === 3) {
+                document.getElementById("question").textContent = `Welche Bekämpfungsmethoden existieren für die ${insects[currentInsectIndex].name}?`;
+                const answersDiv = document.getElementById("answers");
+                answersDiv.innerHTML = "";
+                insects[currentInsectIndex].bekaempfungsmethoden.forEach(answer => {
+                    const button = document.createElement("button");
+                    button.textContent = answer;
+                    button.classList.add("answer-btn");
+                    button.onclick = () => checkAnswer(answer);
+                    answersDiv.appendChild(button);
+                });
+            } else if (currentQuestionIndex === 4) {
+                document.getElementById("question").textContent = `In welchem Mittel ist der Wirkstoff enthalten?`;
+                const answersDiv = document.getElementById("answers");
+                answersDiv.innerHTML = "";
+                const allAnswers = [insects[currentInsectIndex].mittel];
+                allAnswers.forEach(answer => {
+                    const button = document.createElement("button");
+                    button.textContent = answer;
+                    button.classList.add("answer-btn");
+                    button.onclick = () => checkAnswer(answer);
+                    answersDiv.appendChild(button);
+                });
+            }
+        }
 
-    // Sammle alle Lebensweisen aller Insekten
-    const allLebensweisen = insects.flatMap(insect => insect.lebensweise);
+        function startGame(insect) {
+            currentInsectIndex = insects.indexOf(insect);
+            currentQuestionIndex = 1;
+            loadQuestion();
+        }
 
-    // Entferne die richtige Antwort aus der Liste der Lebensweisen, um sie nicht als falsche Antwort zu verwenden
-    const wrongAnswers = allLebensweisen.filter(lw => !questionData.lebensweise.includes(lw));
+        function checkAnswer(selectedAnswer) {
+            const questionData = insects[currentInsectIndex];
+            const feedback = document.getElementById("feedback");
 
-    // Mische die falschen Antworten und wähle eine kleine Anzahl aus
-    const shuffledWrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 2);
+            let correctAnswer = "";
+            if (currentQuestionIndex === 1) {
+                correctAnswer = questionData.development;
+            } else if (currentQuestionIndex === 2) {
+                correctAnswer = questionData.lebensweise.join(", ");
+            } else if (currentQuestionIndex === 3) {
+                correctAnswer = questionData.bekaempfungsmethoden.join(", ");
+            } else if (currentQuestionIndex === 4) {
+                correctAnswer = questionData.mittel;
+            }
 
-    // Erstelle die Antwortmöglichkeiten (richtige und falsche Antworten)
-    const allAnswers = [...questionData.lebensweise, ...shuffledWrongAnswers];
-    const shuffledAnswers = allAnswers.sort(() => Math.random() - 0.5);
+            if (selectedAnswer === correctAnswer) {
+                feedback.textContent = "Richtig! Du hast die richtige Antwort gewählt.";
+            } else {
+                feedback.textContent = `Falsch! Die richtige Antwort wäre: ${correctAnswer}`;
+            }
 
-    // Begrenze die Antwortmöglichkeiten auf 2-3
-    const answersDiv = document.getElementById("answers");
-    answersDiv.innerHTML = "";
-    shuffledAnswers.slice(0, 3).forEach(answer => {
-        const button = document.createElement("button");
-        button.textContent = answer;
-        button.classList.add("answer-btn");
-        button.onclick = () => checkAnswer(answer);
-        answersDiv.appendChild(button);
-    });
-}
+            // Warte 1 Sekunde und lade die nächste Frage automatisch
+            setTimeout(nextQuestion, 1000);
+        }
 
-function checkAnswer(selectedAnswer) {
-    const questionData = insects[currentQuestionIndex];
-    const feedback = document.getElementById("feedback");
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < 5) {
+                loadQuestion();
+                document.getElementById("feedback").textContent = "";
+            } else {
+                document.getElementById("feedback").textContent = "Das Spiel ist beendet!";
+            }
+        }
 
-    // Prüfe, ob die Antwort korrekt ist
-    const isCorrect = questionData.lebensweise.includes(selectedAnswer);
-    if (isCorrect) {
-        feedback.textContent = "Richtig! Du hast die richtige Antwort gewählt.";
-    } else {
-        feedback.textContent = `Falsch! Die richtige Antwort wäre: ${questionData.lebensweise.join(", ")}`;
-    }
-
-    // Warte 1 Sekunde und lade die nächste Frage automatisch
-    setTimeout(nextQuestion, 1000);
-}
-
-function nextQuestion() {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < insects.length) {
+        // Lade die erste Frage
         loadQuestion();
-        document.getElementById("feedback").textContent = "";
-    } else {
-        document.getElementById("feedback").textContent = "Das Spiel ist beendet!";
-    }
-}
-
-// Lade die erste Frage
-loadQuestion();
-            </script>
+    </script>
 
 </body>
 </html>
