@@ -11,6 +11,21 @@
             color: #333;
             padding: 20px;
         }
+        .notification {
+            display: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
         .question-container {
             margin: 20px 0;
             padding: 10px;
@@ -54,6 +69,7 @@
         <button class="btn" onclick="checkAnswer('holometabol')">Holometabol</button>
         <button class="btn" onclick="checkAnswer('hemimetabol')">Hemimetabol</button>
         <button class="btn" onclick="checkAnswer('ametabol')">Ametabol</button>
+        <button class="btn" onclick="checkAnswer('hemimetabol')">Hemimetabol (Falsche Antwort)</button>
     </div>
 
     <div class="question-container" id="question2" style="display:none;">
@@ -61,22 +77,30 @@
         <button class="btn" onclick="checkLifeStyle('staatenbildend')">Staatenbildend</button>
         <button class="btn" onclick="checkLifeStyle('aggressiv')">Agressiv bei Bedrohung</button>
         <button class="btn" onclick="checkLifeStyle('naehrung_suess')">Ernährt sich von Süßem</button>
+        <button class="btn" onclick="checkLifeStyle('naehrung_protein')">Ernährt sich von Eiweiß</button>
     </div>
 
     <div class="question-container" id="question3" style="display:none;">
         <h2>Welche Bekämpfungsmethoden existieren für das Insekt?</h2>
         <button class="btn" onclick="checkControl('nest_entfernen')">Nest entfernen</button>
         <button class="btn" onclick="checkControl('insektizide')">Insektizide</button>
+        <button class="btn" onclick="checkControl('chemikalien')">Chemikalien (Falsche Antwort)</button>
+        <button class="btn" onclick="checkControl('nest_giessen')">Nest gießen (Falsche Antwort)</button>
     </div>
 
     <div class="question-container" id="question4" style="display:none;">
         <h2>In welchem Mittel ist der Wirkstoff enthalten?</h2>
         <button class="btn" onclick="checkProduct('wespen_spray')">Wespen-Spray</button>
+        <button class="btn" onclick="checkProduct('flugmittel')">Fliegen-Spray (Falsche Antwort)</button>
+        <button class="btn" onclick="checkProduct('mueckenspray')">Mücken-Spray (Falsche Antwort)</button>
+        <button class="btn" onclick="checkProduct('insektenmittel')">Insektenmittel</button>
     </div>
 
     <div class="question-container" id="result" style="display:none;">
         <h2>Spiel beendet! Gute Arbeit!</h2>
     </div>
+
+    <div id="notification" class="notification">Richtig!</div>
 
     <script>
         const insekten = [
@@ -127,40 +151,55 @@
             document.getElementById('question1').appendChild(imageContainer);
         }
 
+        function showNotification(message) {
+            var notification = document.getElementById('notification');
+            notification.textContent = message; 
+            notification.style.display = 'block'; 
+            setTimeout(function() {
+                notification.style.opacity = '1'; 
+            }, 10);
+            setTimeout(function() {
+                notification.style.opacity = '0'; 
+                setTimeout(function() {
+                    notification.style.display = 'none'; 
+                }, 500);
+            }, 2000);
+        }
+
         function checkAnswer(answer) {
             let correctAnswer = selectedInsekt.development;
             if (answer === correctAnswer) {
-                alert("Richtig!");
+                showNotification("Richtig!");
                 nextQuestion('question2');
             } else {
-                alert("Leider falsch. Versuche es noch einmal.");
+                showNotification("Leider falsch. Versuche es noch einmal.");
             }
         }
 
         function checkLifeStyle(answer) {
             if (selectedInsekt.lebensweise.includes(answer)) {
-                alert("Richtig!");
+                showNotification("Richtig!");
                 nextQuestion('question3');
             } else {
-                alert("Leider falsch. Versuche es noch einmal.");
+                showNotification("Leider falsch. Versuche es noch einmal.");
             }
         }
 
         function checkControl(answer) {
             if (selectedInsekt.bekaempfungsmethoden.includes(answer)) {
-                alert("Richtig!");
+                showNotification("Richtig!");
                 nextQuestion('question4');
             } else {
-                alert("Leider falsch. Versuche es noch einmal.");
+                showNotification("Leider falsch. Versuche es noch einmal.");
             }
         }
 
         function checkProduct(answer) {
             if (selectedInsekt.mittel === answer) {
-                alert("Richtig! Du hast das Spiel gewonnen.");
+                showNotification("Richtig! Du hast das Spiel gewonnen.");
                 nextQuestion('result');
             } else {
-                alert("Leider falsch. Versuche es noch einmal.");
+                showNotification("Leider falsch. Versuche es noch einmal.");
             }
         }
 
