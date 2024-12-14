@@ -233,20 +233,20 @@
     // Add remaining insect objects here...
 ];
 
-       let currentQuestionIndex = 0;
+    let currentQuestionIndex = 0;
 
         function loadQuestion() {
             const questionData = insects[currentQuestionIndex];
-            document.getElementById("question").textContent = questionData.question;
+            document.getElementById("question").textContent = `Welche Lebensweise hat die ${questionData.name}?`;
 
             // Mische die Antworten (richtige Antwort und falsche Antworten)
             const allAnswers = [questionData.correctAnswer, ...questionData.wrongAnswers];
             const shuffledAnswers = allAnswers.sort(() => Math.random() - 0.5);
 
-            // Erstelle die Antwort-Buttons
+            // Begrenze die Antwortmöglichkeiten auf 2-3
             const answersDiv = document.getElementById("answers");
             answersDiv.innerHTML = "";
-            shuffledAnswers.forEach(answer => {
+            shuffledAnswers.slice(0, 3).forEach(answer => {
                 const button = document.createElement("button");
                 button.textContent = answer;
                 button.classList.add("answer-btn");
@@ -262,7 +262,7 @@
             if (selectedAnswer === questionData.correctAnswer) {
                 feedback.textContent = "Richtig! Du hast die richtige Antwort gewählt.";
             } else {
-                feedback.textContent = "Falsch! Die richtige Antwort wäre: " + questionData.correctAnswer;
+                feedback.textContent = `Falsch! Die richtige Antwort wäre: ${questionData.correctAnswer}`;
             }
 
             document.getElementById("nextBtn").style.display = "inline-block";
