@@ -57,11 +57,17 @@
             padding: 10px;
             width: calc(100% - 24px);
         }
+
+        .answers {
+            color: blue;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="screen" id="gameScreen">
         <div id="message"></div>
+        <div class="answers" id="answerOptions"></div>
         <div class="options" id="options"></div>
         <input type="text" id="answerInput" class="hidden" placeholder="Antwort eingeben...">
         <button id="submitButton" class="hidden">Bestätigen</button>
@@ -226,7 +232,7 @@
             "wirkungsort": "Zentralnervensystem"
             },
     // Add remaining insect objects here...
-  ];
+    ];
 
         let currentInsect = null;
         let questionIndex = 0;
@@ -260,30 +266,38 @@
         function askQuestion() {
             const message = document.getElementById("message");
             const options = document.getElementById("options");
+            const answerOptions = document.getElementById("answerOptions");
             const input = document.getElementById("answerInput");
             const submit = document.getElementById("submitButton");
             options.innerHTML = "";
+            answerOptions.innerHTML = "";
             input.value = "";
 
             input.classList.remove("hidden");
             submit.classList.remove("hidden");
 
+            let answers = [];
+
             switch (questionIndex) {
                 case 0:
                     message.textContent = `Frage 1: Welche Entwicklungsform hat die ${currentInsect.name}?`;
                     correctAnswer = currentInsect.development;
+                    answers = shuffleAnswers(correctAnswer, ["ametabol", "hemimetabol"]);
                     break;
                 case 1:
                     message.textContent = `Frage 2: Nenne eine Eigenschaft der Lebensweise der ${currentInsect.name}:`;
                     correctAnswer = currentInsect.lebensweise[0];
+                    answers = shuffleAnswers(correctAnswer, ["pflanzenfressend", "täglich sichtbar"]);
                     break;
                 case 2:
                     message.textContent = `Frage 3: Wie kann die ${currentInsect.name} bekämpft werden?`;
                     correctAnswer = currentInsect.bekaempfungsmethoden[0];
+                    answers = shuffleAnswers(correctAnswer, ["Wasserfallen", "Manuelle Einsammlung"]);
                     break;
                 case 3:
                     message.textContent = `Frage 4: In welchem Mittel ist der Wirkstoff ${currentInsect.wirkstoff} enthalten?`;
                     correctAnswer = currentInsect.mittel;
+                    answers = shuffleAnswers(correctAnswer, ["Baythroid", "NeemAzal"]);
                     break;
                 default:
                     message.textContent = "Glückwunsch! Du hast alle Fragen beantwortet. Zurück zur Startseite.";
@@ -296,6 +310,21 @@
                     options.appendChild(button);
                     return;
             }
+
+            answers.forEach(answer => {
+                const p = document.createElement("p");
+                p.textContent = answer;
+                answerOptions.appendChild(p);
+            });
+        }
+
+        function shuffleAnswers(correct, wrong) {
+            const answers = [correct, ...wrong];
+            for (let i = answers.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [answers[i], answers[j]] = [answers[j], answers[i]];
+            }
+            return answers;
         }
 
         document.getElementById("submitButton").onclick = function() {
