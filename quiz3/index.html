@@ -3,113 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insekten Lernspiel</title>
+    <title>Insekten-Lernspiel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             text-align: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #f4f4f4;
             padding: 20px;
         }
-        .notification {
-            display: none;
-            padding: 10px 20px;
-            margin: 10px 0;
-            background-color: #28a745;  /* Grün für richtige Antwort */
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .question-container {
-            margin: 20px 0;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .image-container {
+
+        .question {
+            font-size: 20px;
             margin-bottom: 20px;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
+
+        .answers {
+            margin-bottom: 30px;
+        }
+
+        .answer-btn {
+            background-color: #7ac728;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .answer-btn:hover {
+            background-color: #5e8e1d;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .next-btn {
+            background-color: #7ac728;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+            transition: background-color 0.3s;
+        }
+
+        .next-btn:hover {
+            background-color: #5e8e1d;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Insekten Lernspiel</h1>
-        <div class="question-container" id="start">
-            <h2>Wähle ein Insekt:</h2>
-            <button class="btn" onclick="startGame('deutsche_wespe')">Deutsche Wespe</button>
-            <button class="btn" onclick="startGame('gemeine_wespe')">Gemeine Wespe</button>
-        </div>
 
-        <div class="question-container" id="question1" style="display:none;">
-            <h2>Welche Entwicklungsform hat das Insekt?</h2>
-            <button class="btn" onclick="checkAnswer('holometabol')">Holometabol</button>
-            <button class="btn" onclick="checkAnswer('hemimetabol')">Hemimetabol</button>
-            <button class="btn" onclick="checkAnswer('ametabol')">Ametabol</button>
-        </div>
+    <h1>Insekten-Lernspiel</h1>
 
-        <div class="question-container" id="question2" style="display:none;">
-            <h2>Welche Lebensweise-Eigenschaften hat das Insekt?</h2>
-            <div id="lifeStyleAnswers"></div>
-        </div>
+    <div class="question" id="question"></div>
 
-        <div class="question-container" id="question3" style="display:none;">
-            <h2>Welche Bekämpfungsmethoden existieren für das Insekt?</h2>
-            <div id="controlMethods"></div>
-        </div>
+    <div class="answers" id="answers"></div>
 
-        <div class="question-container" id="question4" style="display:none;">
-            <h2>In welchem Mittel ist der Wirkstoff enthalten?</h2>
-            <button class="btn" onclick="checkProduct('wespen_spray')">Wespen-Spray</button>
-            <button class="btn" onclick="checkProduct('flugmittel')">Fliegen-Spray (Falsche Antwort)</button>
-            <button class="btn" onclick="checkProduct('mueckenspray')">Mücken-Spray (Falsche Antwort)</button>
-            <button class="btn" onclick="checkProduct('insektenmittel')">Insektenmittel</button>
-        </div>
+    <div class="feedback" id="feedback"></div>
 
-        <div class="question-container" id="result" style="display:none;">
-            <h2>Spiel beendet! Gute Arbeit!</h2>
-        </div>
-
-        <div id="notification" class="notification">Richtig!</div>
-    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Nächste Frage</button>
 
     <script>
-        const insekten = [
+        const insects = [
         {
             "images": ["deutsche_wespe.jpg"],
             "name": "Deutsche Wespe",
@@ -269,141 +233,56 @@
     // Add remaining insect objects here...
 ];
 
-        let selectedInsekt = null;
+       let currentQuestionIndex = 0;
 
-        function startGame(insektName) {
-            selectedInsekt = insekten.find(i => i.name.toLowerCase().replace(' ', '_') === insektName);
-            document.getElementById('start').style.display = 'none';
-            document.getElementById('question1').style.display = 'block';
-            showInsektImage();
-        }
+        function loadQuestion() {
+            const questionData = insects[currentQuestionIndex];
+            document.getElementById("question").textContent = questionData.question;
 
-        function showInsektImage() {
-            let imageContainer = document.createElement('div');
-            imageContainer.classList.add('image-container');
-            let img = document.createElement('img');
-            img.src = selectedInsekt.images[0];
-            img.alt = selectedInsekt.name;
-            imageContainer.appendChild(img);
-            document.getElementById('question1').appendChild(imageContainer);
-        }
+            // Mische die Antworten (richtige Antwort und falsche Antworten)
+            const allAnswers = [questionData.correctAnswer, ...questionData.wrongAnswers];
+            const shuffledAnswers = allAnswers.sort(() => Math.random() - 0.5);
 
-        function showNotification(message, isCorrect) {
-            var notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.backgroundColor = isCorrect ? '#28a745' : '#dc3545';  // Grün für richtig, Rot für falsch
-
-            notification.style.display = 'block';
-            setTimeout(function() {
-                notification.style.opacity = '1';
-            }, 10);
-
-            setTimeout(function() {
-                notification.style.opacity = '0';
-                setTimeout(function() {
-                    notification.style.display = 'none';
-                }, 500);
-            }, 2000);
-        }
-
-        function checkAnswer(answer) {
-            let correctAnswer = selectedInsekt.development;
-            if (answer === correctAnswer) {
-                showNotification("Richtig!", true);  // Grün für korrekt
-                nextQuestion('question2');
-                showLifeStyleAnswers();
-            } else {
-                showNotification("Leider falsch. Versuche es noch einmal.", false);  // Rot für falsch
-            }
-        }
-
-        function showLifeStyleAnswers() {
-            const correctLifeStyle = selectedInsekt.lebensweise;
-            let allLifeStyles = [];
-            insekten.forEach(insekt => {
-                if (insekt.name !== selectedInsekt.name) {
-                    allLifeStyles = [...allLifeStyles, ...insekt.lebensweise];
-                }
-            });
-            allLifeStyles = [...allLifeStyles, ...correctLifeStyle];
-            allLifeStyles = allLifeStyles.sort(() => Math.random() - 0.5);
-
-            let lifeStyleContainer = document.getElementById('lifeStyleAnswers');
-            lifeStyleContainer.innerHTML = '';
-
-            allLifeStyles.forEach(lifeStyle => {
-                let btn = document.createElement('button');
-                btn.classList.add('btn');
-                btn.textContent = lifeStyle;
-                btn.onclick = function() {
-                    checkLifeStyle(lifeStyle);
-                };
-                lifeStyleContainer.appendChild(btn);
+            // Erstelle die Antwort-Buttons
+            const answersDiv = document.getElementById("answers");
+            answersDiv.innerHTML = "";
+            shuffledAnswers.forEach(answer => {
+                const button = document.createElement("button");
+                button.textContent = answer;
+                button.classList.add("answer-btn");
+                button.onclick = () => checkAnswer(answer);
+                answersDiv.appendChild(button);
             });
         }
 
-        function checkLifeStyle(answer) {
-            if (selectedInsekt.lebensweise.includes(answer)) {
-                showNotification("Richtig!", true);
-                nextQuestion('question3');
-                showControlMethods();
+        function checkAnswer(selectedAnswer) {
+            const questionData = insects[currentQuestionIndex];
+            const feedback = document.getElementById("feedback");
+
+            if (selectedAnswer === questionData.correctAnswer) {
+                feedback.textContent = "Richtig! Du hast die richtige Antwort gewählt.";
             } else {
-                showNotification("Leider falsch. Versuche es noch einmal.", false);
+                feedback.textContent = "Falsch! Die richtige Antwort wäre: " + questionData.correctAnswer;
+            }
+
+            document.getElementById("nextBtn").style.display = "inline-block";
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < insects.length) {
+                loadQuestion();
+                document.getElementById("feedback").textContent = "";
+                document.getElementById("nextBtn").style.display = "none";
+            } else {
+                document.getElementById("feedback").textContent = "Das Spiel ist beendet!";
+                document.getElementById("nextBtn").style.display = "none";
             }
         }
 
-        function showControlMethods() {
-            const correctMethods = selectedInsekt.bekaempfungsmethoden;
-            let allMethods = [];
-            insekten.forEach(insekt => {
-                if (insekt.name !== selectedInsekt.name) {
-                    allMethods = [...allMethods, ...insekt.bekaempfungsmethoden];
-                }
-            });
-            allMethods = [...allMethods, ...correctMethods];
-            allMethods = allMethods.sort(() => Math.random() - 0.5);
-
-            let methodContainer = document.getElementById('controlMethods');
-            methodContainer.innerHTML = '';
-
-            allMethods.forEach(method => {
-                let btn = document.createElement('button');
-                btn.classList.add('btn');
-                btn.textContent = method;
-                btn.onclick = function() {
-                    checkMethod(method);
-                };
-                methodContainer.appendChild(btn);
-            });
-        }
-
-        function checkMethod(answer) {
-            if (selectedInsekt.bekaempfungsmethoden.includes(answer)) {
-                showNotification("Richtig!", true);
-                nextQuestion('question4');
-            } else {
-                showNotification("Leider falsch. Versuche es noch einmal.", false);
-            }
-        }
-
-        function checkProduct(product) {
-            if (product === selectedInsekt.mittel) {
-                showNotification("Richtig!", true);
-                nextQuestion('result');
-            } else {
-                showNotification("Leider falsch. Versuche es noch einmal.", false);
-            }
-        }
-
-        function nextQuestion(next) {
-            document.getElementById('question1').style.display = 'none';
-            document.getElementById('question2').style.display = 'none';
-            document.getElementById('question3').style.display = 'none';
-            document.getElementById('question4').style.display = 'none';
-            document.getElementById('result').style.display = 'none';
-
-            document.getElementById(next).style.display = 'block';
-        }
+        // Lade die erste Frage
+        loadQuestion();
     </script>
+
 </body>
 </html>
