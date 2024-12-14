@@ -233,55 +233,66 @@
     // Add remaining insect objects here...
 ];
 
-        let currentQuestionIndex = 0;
+let currentQuestionIndex = 0;
 
-        function loadQuestion() {
-            const questionData = insects[currentQuestionIndex];
-            document.getElementById("question").textContent = `Welche Lebensweise hat die ${questionData.name}?`;
+function loadQuestion() {
+    const questionData = insects[currentQuestionIndex];
+    document.getElementById("question").textContent = `Welche Lebensweise hat die ${questionData.name}?`;
 
-            // Mische die Antworten (richtige Antwort und falsche Antworten)
-            const allAnswers = [questionData.correctAnswer, ...questionData.wrongAnswers];
-            const shuffledAnswers = allAnswers.sort(() => Math.random() - 0.5);
+    // Sammle alle Lebensweisen aller Insekten
+    const allLebensweisen = insects.flatMap(insect => insect.lebensweise);
 
-            // Begrenze die Antwortmöglichkeiten auf 2-3
-            const answersDiv = document.getElementById("answers");
-            answersDiv.innerHTML = "";
-            shuffledAnswers.slice(0, 3).forEach(answer => {
-                const button = document.createElement("button");
-                button.textContent = answer;
-                button.classList.add("answer-btn");
-                button.onclick = () => checkAnswer(answer);
-                answersDiv.appendChild(button);
-            });
-        }
+    // Entferne die richtige Antwort aus der Liste der Lebensweisen, um sie nicht als falsche Antwort zu verwenden
+    const wrongAnswers = allLebensweisen.filter(lw => !questionData.lebensweise.includes(lw));
 
-        function checkAnswer(selectedAnswer) {
-            const questionData = insects[currentQuestionIndex];
-            const feedback = document.getElementById("feedback");
+    // Mische die falschen Antworten und wähle eine kleine Anzahl aus
+    const shuffledWrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 2);
 
-            if (selectedAnswer === questionData.correctAnswer) {
-                feedback.textContent = "Richtig! Du hast die richtige Antwort gewählt.";
-            } else {
-                feedback.textContent = `Falsch! Die richtige Antwort wäre: ${questionData.correctAnswer}`;
-            }
+    // Erstelle die Antwortmöglichkeiten (richtige und falsche Antworten)
+    const allAnswers = [...questionData.lebensweise, ...shuffledWrongAnswers];
+    const shuffledAnswers = allAnswers.sort(() => Math.random() - 0.5);
 
-            document.getElementById("nextBtn").style.display = "inline-block";
-        }
+    // Begrenze die Antwortmöglichkeiten auf 2-3
+    const answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+    shuffledAnswers.slice(0, 3).forEach(answer => {
+        const button = document.createElement("button");
+        button.textContent = answer;
+        button.classList.add("answer-btn");
+        button.onclick = () => checkAnswer(answer);
+        answersDiv.appendChild(button);
+    });
+}
 
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < insects.length) {
-                loadQuestion();
-                document.getElementById("feedback").textContent = "";
-                document.getElementById("nextBtn").style.display = "none";
-            } else {
-                document.getElementById("feedback").textContent = "Das Spiel ist beendet!";
-                document.getElementById("nextBtn").style.display = "none";
-            }
-        }
+function checkAnswer(selectedAnswer) {
+    const questionData = insects[currentQuestionIndex];
+    const feedback = document.getElementById("feedback");
 
-        // Lade die erste Frage
+    // Prüfe, ob die Antwort korrekt ist
+    const isCorrect = questionData.lebensweise.includes(selectedAnswer);
+    if (isCorrect) {
+        feedback.textContent = "Richtig! Du hast die richtige Antwort gewählt.";
+    } else {
+        feedback.textContent = `Falsch! Die richtige Antwort wäre: ${questionData.lebensweise.join(", ")}`;
+    }
+
+    document.getElementById("nextBtn").style.display = "inline-block";
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < insects.length) {
         loadQuestion();
+        document.getElementById("feedback").textContent = "";
+        document.getElementById("nextBtn").style.display = "none";
+    } else {
+        document.getElementById("feedback").textContent = "Das Spiel ist beendet!";
+        document.getElementById("nextBtn").style.display = "none";
+    }
+}
+
+// Lade die erste Frage
+loadQuestion();
     </script>
 
 </body>
