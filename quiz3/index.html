@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insekten Lernspiel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+        .question-container {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .image-container {
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Insekten Lernspiel</h1>
+    <div class="question-container" id="start">
+        <h2>Wähle ein Insekt:</h2>
+        <button class="btn" onclick="startGame('deutsche_wespe')">Deutsche Wespe</button>
+        <button class="btn" onclick="startGame('gemeine_wespe')">Gemeine Wespe</button>
+    </div>
+
+    <div class="question-container" id="question1" style="display:none;">
+        <h2>Welche Entwicklungsform hat das Insekt?</h2>
+        <button class="btn" onclick="checkAnswer('holometabol')">Holometabol</button>
+        <button class="btn" onclick="checkAnswer('hemimetabol')">Hemimetabol</button>
+        <button class="btn" onclick="checkAnswer('ametabol')">Ametabol</button>
+    </div>
+
+    <div class="question-container" id="question2" style="display:none;">
+        <h2>Welche Lebensweise-Eigenschaften hat das Insekt?</h2>
+        <button class="btn" onclick="checkLifeStyle('staatenbildend')">Staatenbildend</button>
+        <button class="btn" onclick="checkLifeStyle('aggressiv')">Agressiv bei Bedrohung</button>
+        <button class="btn" onclick="checkLifeStyle('naehrung_suess')">Ernährt sich von Süßem</button>
+    </div>
+
+    <div class="question-container" id="question3" style="display:none;">
+        <h2>Welche Bekämpfungsmethoden existieren für das Insekt?</h2>
+        <button class="btn" onclick="checkControl('nest_entfernen')">Nest entfernen</button>
+        <button class="btn" onclick="checkControl('insektizide')">Insektizide</button>
+    </div>
+
+    <div class="question-container" id="question4" style="display:none;">
+        <h2>In welchem Mittel ist der Wirkstoff enthalten?</h2>
+        <button class="btn" onclick="checkProduct('wespen_spray')">Wespen-Spray</button>
+    </div>
+
+    <div class="question-container" id="result" style="display:none;">
+        <h2>Spiel beendet! Gute Arbeit!</h2>
+    </div>
+
+    <script>
+        const insekten = [
+            {
+                "name": "Deutsche Wespe",
+                "images": ["deutsche_wespe.jpg"],
+                "development": "holometabol",
+                "lebensweise": ["Staatenbildend", "Agressiv bei Bedrohung"],
+                "lebensraum": "Gärten, Mülltonnen, Gebäude",
+                "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
+                "mittel": "Wespen-Spray",
+                "wirkstoffe": ["Permethrin", "Cypermethrin"],
+                "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+                "wirkstoffgruppe": "Pyrethroide",
+                "wirkungsort": "Zentralnervensystem"
+            },
+            {
+                "name": "Gemeine Wespe",
+                "images": ["gemeine_wespe.jpg"],
+                "development": "holometabol",
+                "lebensweise": ["Staatenbildend", "Ernährt sich von Süßem und Eiweiß"],
+                "lebensraum": "Gärten, Gebäude, Wälder",
+                "bekaempfungsmethoden": ["Nest entfernen", "Insektizide"],
+                "mittel": "Wespen-Spray",
+                "wirkstoffe": ["Permethrin", "Cypermethrin"],
+                "wirkungsweise_funktionsweise": "Störung der neuronalen Signalübertragung",
+                "wirkstoffgruppe": "Pyrethroide",
+                "wirkungsort": "Zentralnervensystem"
+            }
+        ];
+
+        let selectedInsekt = null;
+
+        function startGame(insektName) {
+            selectedInsekt = insekten.find(i => i.name.toLowerCase().replace(' ', '_') === insektName);
+            document.getElementById('start').style.display = 'none';
+            document.getElementById('question1').style.display = 'block';
+            showInsektImage();
+        }
+
+        function showInsektImage() {
+            let imageContainer = document.createElement('div');
+            imageContainer.classList.add('image-container');
+            let img = document.createElement('img');
+            img.src = selectedInsekt.images[0];
+            img.alt = selectedInsekt.name;
+            imageContainer.appendChild(img);
+            document.getElementById('question1').appendChild(imageContainer);
+        }
+
+        function checkAnswer(answer) {
+            let correctAnswer = selectedInsekt.development;
+            if (answer === correctAnswer) {
+                alert("Richtig!");
+                nextQuestion('question2');
+            } else {
+                alert("Leider falsch. Versuche es noch einmal.");
+            }
+        }
+
+        function checkLifeStyle(answer) {
+            if (selectedInsekt.lebensweise.includes(answer)) {
+                alert("Richtig!");
+                nextQuestion('question3');
+            } else {
+                alert("Leider falsch. Versuche es noch einmal.");
+            }
+        }
+
+        function checkControl(answer) {
+            if (selectedInsekt.bekaempfungsmethoden.includes(answer)) {
+                alert("Richtig!");
+                nextQuestion('question4');
+            } else {
+                alert("Leider falsch. Versuche es noch einmal.");
+            }
+        }
+
+        function checkProduct(answer) {
+            if (selectedInsekt.mittel === answer) {
+                alert("Richtig! Du hast das Spiel gewonnen.");
+                nextQuestion('result');
+            } else {
+                alert("Leider falsch. Versuche es noch einmal.");
+            }
+        }
+
+        function nextQuestion(nextQuestionId) {
+            let currentQuestion = document.querySelector('.question-container[style*="display: block"]');
+            currentQuestion.style.display = 'none';
+            document.getElementById(nextQuestionId).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
