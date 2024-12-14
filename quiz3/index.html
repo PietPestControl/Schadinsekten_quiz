@@ -7,6 +7,7 @@
     <style>
         body {
             font-family: monospace;
+            font-size: 20px;
             background-color: black;
             color: green;
             padding: 20px;
@@ -26,20 +27,8 @@
             text-align: left;
         }
 
-        .options button {
-            background-color: black;
-            color: green;
-            border: 1px solid green;
-            padding: 10px;
-            margin: 5px 0;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-        }
-
-        .options button:hover {
-            background-color: green;
-            color: black;
+        .options {
+            margin-top: 20px;
         }
 
         .hidden {
@@ -51,6 +40,8 @@
     <div class="screen" id="gameScreen">
         <div id="message"></div>
         <div class="options" id="options"></div>
+        <input type="text" id="answerInput" class="hidden" placeholder="Antwort eingeben...">
+        <button id="submitButton" class="hidden">Bestätigen</button>
     </div>
 
     <script>
@@ -212,14 +203,20 @@
             "wirkungsort": "Zentralnervensystem"
             },
     // Add remaining insect objects here...
- ];
+];
 
         let currentInsect = null;
         let questionIndex = 0;
+        let correctAnswer = "";
 
         function startGame() {
             const message = document.getElementById("message");
             const options = document.getElementById("options");
+            const input = document.getElementById("answerInput");
+            const submit = document.getElementById("submitButton");
+
+            input.classList.add("hidden");
+            submit.classList.add("hidden");
 
             message.textContent = "Willkommen im Retro Insekten-Lernspiel! Wähle ein Insekt aus:";
             options.innerHTML = "";
@@ -240,80 +237,52 @@
         function askQuestion() {
             const message = document.getElementById("message");
             const options = document.getElementById("options");
+            const input = document.getElementById("answerInput");
+            const submit = document.getElementById("submitButton");
             options.innerHTML = "";
+            input.value = "";
+
+            input.classList.remove("hidden");
+            submit.classList.remove("hidden");
 
             switch (questionIndex) {
                 case 0:
                     message.textContent = `Frage 1: Welche Entwicklungsform hat die ${currentInsect.name}?`;
-                    ["holometabol", "hemimetabol", "ametabol"].forEach(option => {
-                        const button = document.createElement("button");
-                        button.textContent = option;
-                        button.onclick = () => checkAnswer(option, currentInsect.development);
-                        options.appendChild(button);
-                    });
+                    correctAnswer = currentInsect.development;
                     break;
                 case 1:
-                    message.textContent = `Frage 2: Wähle eine Eigenschaft der Lebensweise der ${currentInsect.name}:`;
-                    const allOptions = [
-                        ...currentInsect.lebensweise,
-                        ...insects.flatMap(insect => insect.lebensweise.filter(lw => !currentInsect.lebensweise.includes(lw)))
-                    ].slice(0, 4);
-                    allOptions.forEach(option => {
-                        const button = document.createElement("button");
-                        button.textContent = option;
-                        button.onclick = () => checkAnswer(option, currentInsect.lebensweise);
-                        options.appendChild(button);
-                    });
+                    message.textContent = `Frage 2: Nenne eine Eigenschaft der Lebensweise der ${currentInsect.name}:`;
+                    correctAnswer = currentInsect.lebensweise[0];
                     break;
                 case 2:
-                    message.textContent = `Frage 3: Welche Bekämpfungsmethode eignet sich für die ${currentInsect.name}?`;
-                    const methods = [
-                        ...currentInsect.bekaempfungsmethoden,
-                        ...insects.flatMap(insect => insect.bekaempfungsmethoden.filter(bm => !currentInsect.bekaempfungsmethoden.includes(bm)))
-                    ].slice(0, 4);
-                    methods.forEach(method => {
-                        const button = document.createElement("button");
-                        button.textContent = method;
-                        button.onclick = () => checkAnswer(method, currentInsect.bekaempfungsmethoden);
-                        options.appendChild(button);
-                    });
+                    message.textContent = `Frage 3: Wie kann die ${currentInsect.name} bekämpft werden?`;
+                    correctAnswer = currentInsect.bekaempfungsmethoden[0];
                     break;
                 case 3:
                     message.textContent = `Frage 4: In welchem Mittel ist der Wirkstoff ${currentInsect.wirkstoff} enthalten?`;
-                    const allMittel = insects.map(insect => insect.mittel);
-                    shuffle(allMittel).forEach(mittel => {
-                        const button = document.createElement("button");
-                        button.textContent = mittel;
-                        button.onclick = () => checkAnswer(mittel, currentInsect.mittel);
-                        options.appendChild(button);
-                    });
+                    correctAnswer = currentInsect.mittel;
                     break;
                 default:
                     message.textContent = "Glückwunsch! Du hast alle Fragen beantwortet. Zurück zur Startseite.";
+                    input.classList.add("hidden");
+                    submit.classList.add("hidden");
+
                     const button = document.createElement("button");
                     button.textContent = "Erneut spielen";
                     button.onclick = startGame;
                     options.appendChild(button);
-                    break;
+                    return;
             }
         }
 
-        function checkAnswer(selected, correct) {
-            const isCorrect = Array.isArray(correct) ? correct.includes(selected) : selected === correct;
-            const feedback = isCorrect ? "Richtig!" : `Falsch! Die richtige Antwort war: ${correct}`;
+        document.getElementById("submitButton").onclick = function() {
+            const input = document.getElementById("answerInput").value.trim();
+            const feedback = input.toLowerCase() === correctAnswer.toLowerCase() ? "Richtig!" : `Falsch! Die richtige Antwort war: ${correctAnswer}`;
 
             alert(feedback);
             questionIndex++;
             askQuestion();
-        }
-
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
+        };
 
         startGame();
     </script>
