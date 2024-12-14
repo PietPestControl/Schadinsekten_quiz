@@ -8,8 +8,8 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 16px;
-            background: linear-gradient(135deg, #2b5876, #4e4376);
-            color: #fff;
+            background-color: #f5f5f5;
+            color: #333;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -20,10 +20,10 @@
         }
 
         .container {
-            background: rgba(0, 0, 0, 0.6);
+            background: #ffffff;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             max-width: 600px;
             width: 90%;
         }
@@ -34,7 +34,7 @@
         }
 
         .button {
-            background-color: #6a3093;
+            background-color: #7ac728;
             border: none;
             color: white;
             padding: 10px 20px;
@@ -46,7 +46,7 @@
         }
 
         .button:hover {
-            background-color: #a044ff;
+            background-color: #68b322;
         }
 
         .options {
@@ -56,22 +56,7 @@
         }
 
         .answers {
-            color: #00ffff;
             margin-top: 20px;
-        }
-
-        input {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #6a3093;
-            margin-top: 10px;
-            width: calc(100% - 24px);
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #a044ff;
         }
     </style>
 </head>
@@ -79,9 +64,6 @@
     <div class="container">
         <h1 id="message">Willkommen im Insekten-Lernspiel!</h1>
         <div id="options" class="options"></div>
-        <div id="answerOptions" class="answers"></div>
-        <input type="text" id="answerInput" placeholder="Antwort eingeben..." class="hidden">
-        <button id="submitButton" class="hidden button">Bestätigen</button>
     </div>
 
     <script>
@@ -252,11 +234,6 @@
         function startGame() {
             const message = document.getElementById("message");
             const options = document.getElementById("options");
-            const input = document.getElementById("answerInput");
-            const submit = document.getElementById("submitButton");
-
-            input.classList.add("hidden");
-            submit.classList.add("hidden");
 
             message.textContent = "Willkommen! Wähle ein Insekt aus:";
             options.innerHTML = "";
@@ -279,16 +256,8 @@
         function askQuestion() {
             const message = document.getElementById("message");
             const options = document.getElementById("options");
-            const answerOptions = document.getElementById("answerOptions");
-            const input = document.getElementById("answerInput");
-            const submit = document.getElementById("submitButton");
 
             options.innerHTML = "";
-            answerOptions.innerHTML = "";
-            input.value = "";
-
-            input.classList.remove("hidden");
-            submit.classList.remove("hidden");
 
             let answers = [];
 
@@ -315,8 +284,6 @@
                     break;
                 default:
                     message.textContent = "Glückwunsch! Du hast alle Fragen beantwortet. Zurück zur Startseite.";
-                    input.classList.add("hidden");
-                    submit.classList.add("hidden");
 
                     const button = document.createElement("button");
                     button.textContent = "Erneut spielen";
@@ -327,10 +294,19 @@
             }
 
             answers.forEach(answer => {
-                const p = document.createElement("p");
-                p.textContent = answer;
-                answerOptions.appendChild(p);
+                const button = document.createElement("button");
+                button.textContent = answer;
+                button.className = "button";
+                button.onclick = () => checkAnswer(answer);
+                options.appendChild(button);
             });
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const isCorrect = selectedAnswer === correctAnswer;
+            alert(isCorrect ? "Richtig!" : `Falsch! Die richtige Antwort war: ${correctAnswer}`);
+            questionIndex++;
+            askQuestion();
         }
 
         function shuffleAnswers(correct, wrong) {
@@ -342,16 +318,7 @@
             return answers;
         }
 
-        document.getElementById("submitButton").onclick = function() {
-            const input = document.getElementById("answerInput").value.trim();
-            const feedback = input.toLowerCase() === correctAnswer.toLowerCase() ? "Richtig!" : `Falsch! Die richtige Antwort war: ${correctAnswer}`;
-
-            alert(feedback);
-            questionIndex++;
-            askQuestion();
-        };
-
-                    startGame();
-                </script>
-            </body>
-            </html>
+        startGame();
+    </script>
+</body>
+</html>
