@@ -3,74 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Insekten-Lernspiel</title>
+    <title>Insekten-Lernspiel</title>
     <style>
         body {
-            font-family: monospace;
-            font-size: 28px;
-            background-color: black;
-            color: green;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+            color: #fff;
             margin: 0;
-            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
         }
 
-        .screen {
-            border: 4px solid green;
+        .container {
+            background: rgba(0, 0, 0, 0.6);
             padding: 20px;
-            width: 80%;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             max-width: 600px;
-            text-align: left;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .button {
+            background-color: #6a3093;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #a044ff;
         }
 
         .options {
-            margin-top: 20px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        button {
-            background-color: black;
-            color: green;
-            border: 2px solid green;
-            padding: 10px 15px;
-            font-size: 28px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: green;
-            color: black;
-        }
-
-        input {
-            background-color: black;
-            color: green;
-            border: 2px solid green;
-            font-size: 28px;
-            padding: 10px;
-            width: calc(100% - 24px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .answers {
-            color: blue;
+            color: #00ffff;
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #6a3093;
             margin-top: 10px;
+            width: calc(100% - 24px);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #a044ff;
         }
     </style>
 </head>
 <body>
-    <div class="screen" id="gameScreen">
-        <div id="message"></div>
-        <div class="answers" id="answerOptions"></div>
-        <div class="options" id="options"></div>
-        <input type="text" id="answerInput" class="hidden" placeholder="Antwort eingeben...">
-        <button id="submitButton" class="hidden">Bestätigen</button>
+    <div class="container">
+        <h1 id="message">Willkommen im Insekten-Lernspiel!</h1>
+        <div id="options" class="options"></div>
+        <div id="answerOptions" class="answers"></div>
+        <input type="text" id="answerInput" placeholder="Antwort eingeben..." class="hidden">
+        <button id="submitButton" class="hidden button">Bestätigen</button>
     </div>
 
     <script>
@@ -247,11 +258,13 @@
             input.classList.add("hidden");
             submit.classList.add("hidden");
 
-            message.textContent = "Willkommen im Retro Insekten-Lernspiel! Wähle ein Insekt aus:";
+            message.textContent = "Willkommen! Wähle ein Insekt aus:";
             options.innerHTML = "";
+
             insects.forEach((insect, index) => {
                 const button = document.createElement("button");
                 button.textContent = insect.name;
+                button.className = "button";
                 button.onclick = () => selectInsect(index);
                 options.appendChild(button);
             });
@@ -269,6 +282,7 @@
             const answerOptions = document.getElementById("answerOptions");
             const input = document.getElementById("answerInput");
             const submit = document.getElementById("submitButton");
+
             options.innerHTML = "";
             answerOptions.innerHTML = "";
             input.value = "";
@@ -306,6 +320,7 @@
 
                     const button = document.createElement("button");
                     button.textContent = "Erneut spielen";
+                    button.className = "button";
                     button.onclick = startGame;
                     options.appendChild(button);
                     return;
