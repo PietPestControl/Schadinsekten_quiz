@@ -302,15 +302,16 @@
             });
         }
 
-       function checkAnswer(selectedAnswer) {
+function checkAnswer(selectedAnswer) {
     const isCorrect = selectedAnswer === correctAnswer;
-    if (!isCorrect) {
-        alert(`Falsch! Die richtige Antwort war: ${correctAnswer}`);
+    if (isCorrect) {
+        alert("Richtig!");
+        questionIndex++;
+        askQuestion();
+    } else {
+        alert("Falsch! Bitte versuche es erneut.");
     }
-    questionIndex++;
-    askQuestion();
-        }
-
+}
         function shuffleAnswers(correct, wrong) {
             const answers = [correct, ...wrong];
             for (let i = answers.length - 1; i > 0; i--) {
