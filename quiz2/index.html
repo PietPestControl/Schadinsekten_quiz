@@ -41,10 +41,22 @@
     </style>
 </head>
 <body>
-    <a href="https://PietPestControl.github.io/Schadinsekten_quiz/" class="quiz-link">Zurück zum Insekten Quiz</a>
+<div class="button-container">
+  <a href="https://PietPestControl.github.io/Schadinsekten_quiz/" class="quiz-link">Insekten Quiz</a>
+  <a href="https://pietpestcontrol.github.io/Schadinsekten_quiz/quiz2/" class="quiz-link">Wirkstoff Quiz</a>
+  <a href="https://pietpestcontrol.github.io/Schadinsekten_quiz/quiz3/" class="quiz-link">Bekämpfungs Quiz</a>
+</div>
 
 <style>
-.quiz-link {
+  /* Container für die Buttons */
+  .button-container {
+    display: flex; /* Flexbox für horizontale Anordnung */
+    justify-content: center; /* Zentriert die Buttons */
+    gap: 10px; /* Abstand zwischen den Buttons */
+    margin-top: 50px; /* Abstand vom oberen Rand */
+  }
+
+  .quiz-link {
     text-decoration: none;
     background-color: #7ac728; /* Grün für den Hintergrund */
     color: white; /* Weiße Schriftfarbe */
@@ -53,14 +65,14 @@
     font-size: 16px; /* Größere Schrift */
     font-weight: bold; /* Fettere Schrift */
     transition: background-color 0.3s ease; /* Sanfte Farbänderung bei Hover */
-    display: inline-block; /* Zeilenblock für Abstand */
-    margin-top: 50px; /* Abstand vom oberen Rand */
   }
 
+  /* Hover-Effekt für die Buttons */
   .quiz-link:hover {
     background-color: #7ac728; /* Dunkleres Grün bei Hover */
   }
 </style>
+
 
     <div id="quiz-container">
         <h1>Wirkstoff Quiz</h1>
