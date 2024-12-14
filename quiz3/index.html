@@ -56,7 +56,7 @@
         }
 
         .next-btn:hover {
-            background-color: #5e8e1d; 
+            background-color: #5e8e1d;
         }
     </style>
 </head>
@@ -234,111 +234,57 @@
  ];
 
         let currentQuestionIndex = 0;
-        let currentInsectIndex = 0;
+        let selectedInsect = null;
 
-        function loadQuestion() {
-            const questionData = insects[currentInsectIndex];
-            if (currentQuestionIndex === 0) {
-                document.getElementById("question").textContent = `Wähle ein Insekt aus: ${questionData.name}`;
-                const answersDiv = document.getElementById("answers");
-                answersDiv.innerHTML = "";
-                const button = document.createElement("button");
-                button.textContent = questionData.name;
-                button.classList.add("answer-btn");
-                button.onclick = () => startGame(questionData);
-                answersDiv.appendChild(button);
-            } else if (currentQuestionIndex === 1) {
-                document.getElementById("question").textContent = `Welche Entwicklungsform hat die ${insects[currentInsectIndex].name}?`;
-                const answersDiv = document.getElementById("answers");
-                answersDiv.innerHTML = "";
-                const allAnswers = ["Holometabol", "Hemimetabol", "Ametabol"];
-                allAnswers.forEach(answer => {
-                    const button = document.createElement("button");
-                    button.textContent = answer;
-                    button.classList.add("answer-btn");
-                    button.onclick = () => checkAnswer(answer);
-                    answersDiv.appendChild(button);
-                });
-            } else if (currentQuestionIndex === 2) {
-                document.getElementById("question").textContent = `Welche Lebensweise hat die ${insects[currentInsectIndex].name}?`;
-                const answersDiv = document.getElementById("answers");
-                answersDiv.innerHTML = "";
-                insects[currentInsectIndex].lebensweise.forEach(answer => {
-                    const button = document.createElement("button");
-                    button.textContent = answer;
-                    button.classList.add("answer-btn");
-                    button.onclick = () => checkAnswer(answer);
-                    answersDiv.appendChild(button);
-                });
-            } else if (currentQuestionIndex === 3) {
-                document.getElementById("question").textContent = `Welche Bekämpfungsmethoden existieren für die ${insects[currentInsectIndex].name}?`;
-                const answersDiv = document.getElementById("answers");
-                answersDiv.innerHTML = "";
-                insects[currentInsectIndex].bekaempfungsmethoden.forEach(answer => {
-                    const button = document.createElement("button");
-                    button.textContent = answer;
-                    button.classList.add("answer-btn");
-                    button.onclick = () => checkAnswer(answer);
-                    answersDiv.appendChild(button);
-                });
-            } else if (currentQuestionIndex === 4) {
-                document.getElementById("question").textContent = `In welchem Mittel ist der Wirkstoff enthalten?`;
-                const answersDiv = document.getElementById("answers");
-                answersDiv.innerHTML = "";
-                const allAnswers = [insects[currentInsectIndex].mittel];
-                allAnswers.forEach(answer => {
-                    const button = document.createElement("button");
-                    button.textContent = answer;
-                    button.classList.add("answer-btn");
-                    button.onclick = () => checkAnswer(answer);
-                    answersDiv.appendChild(button);
-                });
-            }
-        }
-
-        function startGame(insect) {
-            currentInsectIndex = insects.indexOf(insect);
-            currentQuestionIndex = 1;
+        // Zufälliges Insekt auswählen
+        function selectInsect() {
+            selectedInsect = insects[Math.floor(Math.random() * insects.length)];
             loadQuestion();
         }
 
-        function checkAnswer(selectedAnswer) {
-            const questionData = insects[currentInsectIndex];
+        function loadQuestion() {
+            const questionData = selectedInsect;
+
+            // Frage 1: Entwicklungsform
+            document.getElementById("question").textContent = `Welche Entwicklungsform hat die ${questionData.name}?`;
+
+            const developmentOptions = ["Holometabol", "Hemimetabol", "Ametabol"];
+            const answersDiv = document.getElementById("answers");
+            answersDiv.innerHTML = "";
+
+            developmentOptions.forEach(answer => {
+                const button = document.createElement("button");
+                button.textContent = answer;
+                button.classList.add("answer-btn");
+                button.onclick = () => checkAnswer(answer, questionData.development);
+                answersDiv.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedAnswer, correctAnswer) {
             const feedback = document.getElementById("feedback");
 
-            let correctAnswer = "";
-            if (currentQuestionIndex === 1) {
-                correctAnswer = questionData.development;
-            } else if (currentQuestionIndex === 2) {
-                correctAnswer = questionData.lebensweise.join(", ");
-            } else if (currentQuestionIndex === 3) {
-                correctAnswer = questionData.bekaempfungsmethoden.join(", ");
-            } else if (currentQuestionIndex === 4) {
-                correctAnswer = questionData.mittel;
-            }
-
-            if (selectedAnswer === correctAnswer) {
+            if (selectedAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 feedback.textContent = "Richtig! Du hast die richtige Antwort gewählt.";
             } else {
                 feedback.textContent = `Falsch! Die richtige Antwort wäre: ${correctAnswer}`;
             }
 
-            // Warte 1 Sekunde und lade die nächste Frage automatisch
+            // Warte 1 Sekunde und lade die nächste Frage
             setTimeout(nextQuestion, 1000);
         }
 
         function nextQuestion() {
             currentQuestionIndex++;
-            if (currentQuestionIndex < 5) {
+            if (currentQuestionIndex < 1) {  // Wechselt zu Frage 2
                 loadQuestion();
-                document.getElementById("feedback").textContent = "";
             } else {
                 document.getElementById("feedback").textContent = "Das Spiel ist beendet!";
             }
         }
 
-        // Lade die erste Frage
-        loadQuestion();
+        // Spiel starten
+        selectInsect();
     </script>
 
 </body>
