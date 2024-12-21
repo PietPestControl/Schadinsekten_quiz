@@ -292,17 +292,31 @@
         initializeQuiz();
         loadNewQuestion();
     };
-        const logoCount = 100; // Anzahl der Logos
-const body = document.body;
+       // Hintergrundlogo
+        function createBackgroundGrid(rows, cols, logoSize) {
+    const body = document.body;
+    const bodyWidth = window.innerWidth;
+    const bodyHeight = window.innerHeight;
 
-for (let i = 0; i < logoCount; i++) {
-    const logo = document.createElement('div');
-    logo.classList.add('logo');
-    logo.style.top = Math.random() * window.innerHeight + 'px'; // Zufällige Position oben
-    logo.style.left = Math.random() * window.innerWidth + 'px'; // Zufällige Position links
-    logo.style.transform = `rotate(${Math.random() * 360}deg)`; // Zufällige Rotation
-    body.appendChild(logo);
+    const horizontalSpacing = bodyWidth / cols; // Abstand zwischen Logos horizontal
+    const verticalSpacing = bodyHeight / rows; // Abstand zwischen Logos vertikal
+
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            const logo = document.createElement('div');
+            logo.classList.add('logo');
+            logo.style.width = `${logoSize}px`; // Logo-Größe
+            logo.style.height = `${logoSize}px`;
+            logo.style.left = `${col * horizontalSpacing}px`; // Horizontale Position
+            logo.style.top = `${row * verticalSpacing}px`; // Vertikale Position
+            body.appendChild(logo);
+        }
+    }
 }
+
+// Anpassen: Anzahl der Zeilen, Spalten und Größe der Logos
+createBackgroundGrid(5, 7, 80); // 5 Zeilen, 7 Spalten, 80px Logo-Größe
+
 
 </script>
 </body>
