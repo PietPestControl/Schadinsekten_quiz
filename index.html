@@ -13,6 +13,7 @@
             background-image: url('nobaxxlogo.png');
             background-size: contain;
             background-repeat: no-repeat;
+            z-index: -1; /* In den Hintergrund schieben */
         }
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +29,7 @@
             background: #848484;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            z-index: 1; /* In den Vordergrund setzen */
         }
                img {
     max-width: 300px; /* Maximale Breite des Bildes */
