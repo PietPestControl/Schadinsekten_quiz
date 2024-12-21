@@ -59,6 +59,16 @@
   <a href="https://pietpestcontrol.github.io/Schadinsekten_quiz/quiz3/" class="quiz-link">Bekämpfung</a>
 </div>
 
+.logo {
+    position: absolute;
+    width: 80px; /* Größe des Logos */
+    height: 80px;
+    opacity: 0.5; /* Transparenz */
+    background-image: url('nobaxxlogo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 <style>
   /* Container für die Buttons */
   .button-container {
@@ -282,6 +292,18 @@
         initializeQuiz();
         loadNewQuestion();
     };
+        const logoCount = 20; // Anzahl der Logos
+const body = document.body;
+
+for (let i = 0; i < logoCount; i++) {
+    const logo = document.createElement('div');
+    logo.classList.add('logo');
+    logo.style.top = Math.random() * window.innerHeight + 'px'; // Zufällige Position oben
+    logo.style.left = Math.random() * window.innerWidth + 'px'; // Zufällige Position links
+    logo.style.transform = `rotate(${Math.random() * 360}deg)`; // Zufällige Rotation
+    body.appendChild(logo);
+}
+
 </script>
 </body>
 </html>
