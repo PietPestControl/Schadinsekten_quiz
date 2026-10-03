@@ -1,92 +1,276 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <title>Schadinsekten-Quiz</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; }
-    img { max-width: 300px; height: auto; }
-    button { margin: 10px; padding: 10px; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schadinsekten-Scanner 20230</title>
+<style>
+  :root {
+    --bg: #0c1424; --panel: #14203a; --line: #2b3f6b;
+    --text: #e6eefc; --muted: #8fa3c7;
+    --scan: #5ef2d6; --ok: #5ef2d6; --bad: #ff6b9a; --warm: #ffd166;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: radial-gradient(900px 500px at 50% -10%, #1d3566 0%, var(--bg) 70%) fixed;
+    color: var(--text);
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    display: flex; justify-content: center; padding: 20px 14px 40px;
+  }
+  main { width: 100%; max-width: 620px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  h1 { font-size: 1.35rem; margin: 0; letter-spacing: .02em; }
+  .year { color: var(--warm); font-variant-numeric: tabular-nums; }
+  .stats { display: flex; gap: 14px; color: var(--muted); font-size: .9rem; }
+  .stats b { color: var(--text); }
+  .bar { height: 6px; background: var(--panel); border-radius: 3px; margin: 14px 0 18px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--scan); transition: width .35s; }
+
+  .scanner {
+    position: relative; aspect-ratio: 4/3; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    display: grid; place-items: center;
+  }
+  .scanner img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .scanner .fallback { position: absolute; inset: 0; display: none; place-items: center; text-align: center; color: var(--muted); padding: 20px; font-size: .95rem; }
+  .scanner::before, .scanner::after {
+    content: ""; position: absolute; width: 26px; height: 26px; border: 2px solid var(--scan); pointer-events: none; z-index: 2;
+  }
+  .scanner::before { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+  .scanner::after { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+  .sweep { position: absolute; left: 0; right: 0; height: 3px; background: var(--scan); box-shadow: 0 0 18px 4px rgba(94,242,214,.45); top: 0; opacity: 0; z-index: 1; }
+  .scanner.scan .sweep { animation: sweep .9s ease-out; }
+  @keyframes sweep { 0% { top: 0; opacity: .9; } 100% { top: 100%; opacity: 0; } }
+
+  #choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  @media (max-width: 480px) { #choices { grid-template-columns: 1fr; } }
+  .choice {
+    font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px 12px; text-align: left; cursor: pointer;
+    display: flex; gap: 10px; align-items: center; transition: border-color .15s, transform .1s;
+  }
+  .choice:hover:not(:disabled) { border-color: var(--scan); }
+  .choice:active:not(:disabled) { transform: scale(.98); }
+  .choice:focus-visible, .btn:focus-visible { outline: 2px solid var(--warm); outline-offset: 2px; }
+  .choice kbd { background: var(--bg); border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px; font-size: .8rem; color: var(--muted); }
+  .choice.ok { border-color: var(--ok); background: rgba(94,242,214,.14); }
+  .choice.bad { border-color: var(--bad); background: rgba(255,107,154,.14); }
+  .choice:disabled { cursor: default; }
+
+  #msg { min-height: 1.6em; margin: 14px 2px 0; font-size: 1rem; }
+  #msg.ok { color: var(--ok); } #msg.bad { color: var(--bad); }
+  .btn {
+    font: inherit; font-weight: 700; color: var(--bg); background: var(--scan); border: 0;
+    border-radius: 10px; padding: 12px 20px; cursor: pointer; margin-top: 12px;
+  }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  .hidden { display: none !important; }
+
+  #result h2 { margin: 6px 0 4px; font-size: 1.5rem; }
+  .rank { color: var(--warm); font-size: 1.1rem; margin: 0 0 10px; }
+  #result ul { padding-left: 18px; color: var(--muted); line-height: 1.6; }
+  #result li b { color: var(--text); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  @media (prefers-reduced-motion: reduce) { .scanner.scan .sweep { animation: none; } .bar i { transition: none; } }
+</style>
 </head>
 <body>
-  <h1>Schadinsekten Quiz</h1>
-  <div id="quiz">
-    <img id="insect-image" src="" alt="Insekt">
+<main>
+  <header>
+    <h1>Schadinsekten-Scanner <span class="year">20230</span></h1>
+    <div class="stats">
+      <span>Treffer <b id="score">0</b></span>
+      <span>Serie <b id="streak">0</b></span>
+      <span>Rekord <b id="best">–</b></span>
+    </div>
+  </header>
+  <div class="bar"><i id="progress"></i></div>
+
+  <section id="quiz">
+    <div class="scanner" id="scanner">
+      <img id="insect-image" alt="Unbekanntes Insekt, bitte bestimmen">
+      <div class="fallback" id="fallback">Bild nicht gefunden. Lege die Datei in den Ordner neben index.html.</div>
+      <div class="sweep"></div>
+    </div>
     <div id="choices"></div>
-  </div>
-  <script>
-    // Datenbank der Insekten
-    const insects = [
-{"image": "reismehlkaefer.jpg", "name": "Reismehlkäfer"}, 
-{"image": "brotkaefer.jpg", "name": "Brotkäfer"}, 
-{"image": "mehlkaefer.jpg", "name": "Mehlkäfer"}, 
-{"image": "getreideplattkaefer.jpg", "name": "Getreideplattkäfer"}, 
-{"image": "kornkaefer.jpg", "name": "Kornkäfer"}, 
-{"image": "reiskaefer.jpg", "name": "Reiskäfer"}, 
-{"image": "doerrobstmotte.jpg","name": "Dörrobstmotte"}, 
-{"image": "mehlmotte.jpg", "name": "Mehlmotte"}, 
-{"image": "kakaomotte.jpg", "name":"Kakaomotte"}, 
-{"image": "mehlmilbe.jpg", "name": "Mehlmilbe"}, 
-{"image": "stubenfliege.jpg", "name": „Stubenfliege"},
-{"image": "schmeissfliege.jpg", "name": "Schmeißfliege"}, 
-{"image": "fruchtfliege.jpg", "name": "Fruchtfliege"}, 
-{"image": "deutsche_schabe.jpg", "name": "Deutsche Schabe"}, 
-{"image": "orientalische_schabe.jpg", "name": "Orientalische Schabe"}, 
-{"image": "amerikanische_schabe.jpg", "name": "Amerikanische Schabe"}, 
-{"image": "schwarze_wegameise.jpg","name": "Schwarze Wegameise"}, 
-{"image": "pharaoameise.jpg", "name": "Pharaoameise"}, 
-{"image": "menschenfloh.jpg","name": "Menschenfloh"}, 
-{"image": "katzenfloh.jpg", "name": "Katzenfloh"}, 
-{"image": "hausbock.jpg", "name":"Hausbock"}, 
-{"image": "gemeiner_nagekaefer.jpg", "name": "Gemeiner Nagekäfer"}, 
-{"image": "kleidermotte.jpg", "name":"Kleidermotte"}, 
-{"image": "pelzmotte.jpg", "name": "Pelzmotte"}, 
-{"image": "deutsche_wespe.jpg", "name": "Deutsche Wespe"}, 
-{"image": "gemeine_wespe.jpg", "name": "Gemeine Wespe"}, 
-{"image": "hausmuecke.jpg", "name":"Hausmücke"}, 
-{"image": "silberfischchen.jpg", "name": "Silberfischchen"}, 
-{"image": "maeuseassel.jpg", „name":"Mäuseassel"},
-    ];
+    <div id="msg" role="status" aria-live="polite"></div>
+    <button class="btn hidden" id="next">Nächstes Insekt</button>
+  </section>
 
-    const quizDiv = document.getElementById('quiz');
-    const imgElement = document.getElementById('insect-image');
-    const choicesDiv = document.getElementById('choices');
+  <section id="result" class="hidden">
+    <h2 id="r-title"></h2>
+    <p class="rank" id="r-rank"></p>
+    <div id="r-wrong"></div>
+    <div class="row">
+      <button class="btn" id="again">Neue Runde</button>
+      <button class="btn ghost" id="redo">Nur Fehler wiederholen</button>
+    </div>
+  </section>
+</main>
 
-    function startQuiz() {
-      // Zufälliges Insekt auswählen
-      const correct = insects[Math.floor(Math.random() * insects.length)];
-      imgElement.src = correct.image;
+<script>
+  // Datenbank der Insekten
+  const insects = [
+    {image: "reismehlkaefer.jpg", name: "Reismehlkäfer"},
+    {image: "brotkaefer.jpg", name: "Brotkäfer"},
+    {image: "mehlkaefer.jpg", name: "Mehlkäfer"},
+    {image: "getreideplattkaefer.jpg", name: "Getreideplattkäfer"},
+    {image: "kornkaefer.jpg", name: "Kornkäfer"},
+    {image: "reiskaefer.jpg", name: "Reiskäfer"},
+    {image: "doerrobstmotte.jpg", name: "Dörrobstmotte"},
+    {image: "mehlmotte.jpg", name: "Mehlmotte"},
+    {image: "kakaomotte.jpg", name: "Kakaomotte"},
+    {image: "mehlmilbe.jpg", name: "Mehlmilbe"},
+    {image: "stubenfliege.jpg", name: "Stubenfliege"},
+    {image: "schmeissfliege.jpg", name: "Schmeißfliege"},
+    {image: "fruchtfliege.jpg", name: "Fruchtfliege"},
+    {image: "deutsche_schabe.jpg", name: "Deutsche Schabe"},
+    {image: "orientalische_schabe.jpg", name: "Orientalische Schabe"},
+    {image: "amerikanische_schabe.jpg", name: "Amerikanische Schabe"},
+    {image: "schwarze_wegameise.jpg", name: "Schwarze Wegameise"},
+    {image: "pharaoameise.jpg", name: "Pharaoameise"},
+    {image: "menschenfloh.jpg", name: "Menschenfloh"},
+    {image: "katzenfloh.jpg", name: "Katzenfloh"},
+    {image: "hausbock.jpg", name: "Hausbock"},
+    {image: "gemeiner_nagekaefer.jpg", name: "Gemeiner Nagekäfer"},
+    {image: "kleidermotte.jpg", name: "Kleidermotte"},
+    {image: "pelzmotte.jpg", name: "Pelzmotte"},
+    {image: "deutsche_wespe.jpg", name: "Deutsche Wespe"},
+    {image: "gemeine_wespe.jpg", name: "Gemeine Wespe"},
+    {image: "hausmuecke.jpg", name: "Hausmücke"},
+    {image: "silberfischchen.jpg", name: "Silberfischchen"},
+    {image: "maeuseassel.jpg", name: "Mäuseassel"}
+  ];
 
-      // Drei Antworten generieren (inkl. richtige Antwort)
-      const options = [correct];
-      while (options.length < 3) {
-        const random = insects[Math.floor(Math.random() * insects.length)];
-        if (!options.includes(random)) {
-          options.push(random);
-        }
-      }
-      // Antworten mischen
-      options.sort(() => Math.random() - 0.5);
+  const ROUND = 20;
+  const $ = id => document.getElementById(id);
+  const img = $('insect-image'), scanner = $('scanner'), choicesDiv = $('choices'),
+        msg = $('msg'), nextBtn = $('next');
 
-      // Buttons anzeigen
-      choicesDiv.innerHTML = '';
-      options.forEach(option => {
-        const button = document.createElement('button');
-        button.textContent = option.name;
-        button.onclick = () => {
-          if (option.name === correct.name) {
-            alert("Richtig!");
-          } else {
-            alert("Falsch. Die richtige Antwort war: " + correct.name);
-          }
-          startQuiz(); // Nächste Frage starten
-        };
-        choicesDiv.appendChild(button);
-      });
+  let deck = [], idx = 0, score = 0, streak = 0, wrong = [], current = null, locked = false;
+
+  // Fisher-Yates statt sort(random): wirklich gleichmäßig gemischt
+  function shuffle(a) {
+    a = a.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
+    return a;
+  }
 
-    // Quiz starten
-    startQuiz();
-  </script>
+  function loadBest() { try { return localStorage.getItem('insekten-best'); } catch (e) { return null; } }
+  function saveBest(v) { try { localStorage.setItem('insekten-best', v); } catch (e) {} }
+
+  function newRound(pool) {
+    deck = shuffle(pool || insects).slice(0, ROUND);
+    idx = 0; score = 0; streak = 0; wrong = [];
+    $('result').classList.add('hidden');
+    $('quiz').classList.remove('hidden');
+    updateStats();
+    showQuestion();
+  }
+
+  function updateStats() {
+    $('score').textContent = score;
+    $('streak').textContent = streak;
+    const b = loadBest();
+    $('best').textContent = b ? b + '/' + ROUND : '–';
+    $('progress').style.width = (idx / deck.length * 100) + '%';
+  }
+
+  function showQuestion() {
+    locked = false;
+    current = deck[idx];
+    msg.textContent = ''; msg.className = '';
+    nextBtn.classList.add('hidden');
+
+    $('fallback').style.display = 'none';
+    img.style.display = '';
+    img.onerror = () => { img.style.display = 'none'; $('fallback').style.display = 'grid'; };
+    img.src = current.image;
+    scanner.classList.remove('scan'); void scanner.offsetWidth; scanner.classList.add('scan');
+
+    const others = shuffle(insects.filter(i => i.name !== current.name)).slice(0, 3);
+    const options = shuffle([current, ...others]);
+
+    choicesDiv.innerHTML = '';
+    options.forEach((o, n) => {
+      const b = document.createElement('button');
+      b.className = 'choice';
+      b.dataset.name = o.name;
+      b.innerHTML = '<kbd>' + (n + 1) + '</kbd><span></span>';
+      b.lastChild.textContent = o.name;
+      b.onclick = () => answer(b);
+      choicesDiv.appendChild(b);
+    });
+  }
+
+  function answer(btn) {
+    if (locked) return;
+    locked = true;
+    const ok = btn.dataset.name === current.name;
+    [...choicesDiv.children].forEach(c => {
+      c.disabled = true;
+      if (c.dataset.name === current.name) c.classList.add('ok');
+    });
+    if (ok) {
+      score++; streak++;
+      msg.textContent = streak >= 3 ? 'Richtig! ' + streak + ' in Folge.' : 'Richtig!';
+      msg.className = 'ok';
+    } else {
+      streak = 0; wrong.push(current);
+      btn.classList.add('bad');
+      msg.textContent = 'Falsch. Das war: ' + current.name;
+      msg.className = 'bad';
+    }
+    idx++;
+    updateStats();
+    nextBtn.textContent = idx >= deck.length ? 'Auswertung ansehen' : 'Nächstes Insekt';
+    nextBtn.classList.remove('hidden');
+    nextBtn.focus();
+  }
+
+  function rankFor(p) {
+    if (p >= .95) return 'Rang: Großmeister der Schädlingsbekämpfung';
+    if (p >= .8)  return 'Rang: Prüfungsreif';
+    if (p >= .6)  return 'Rang: Auf gutem Weg';
+    return 'Rang: Noch etwas üben';
+  }
+
+  function finish() {
+    $('quiz').classList.add('hidden');
+    $('result').classList.remove('hidden');
+    $('progress').style.width = '100%';
+    const total = deck.length;
+    $('r-title').textContent = score + ' von ' + total + ' richtig';
+    $('r-rank').textContent = rankFor(score / total);
+    const b = parseInt(loadBest() || '0', 10);
+    if (total === ROUND && score > b) { saveBest(score); updateStats(); }
+
+    const w = $('r-wrong');
+    if (wrong.length) {
+      w.innerHTML = '<p>Das solltest du noch einmal ansehen:</p><ul>' +
+        wrong.map(i => '<li><b>' + i.name + '</b></li>').join('') + '</ul>';
+    } else {
+      w.innerHTML = '<p>Keine Fehler. Sauber gescannt.</p>';
+    }
+    $('redo').classList.toggle('hidden', wrong.length === 0);
+  }
+
+  nextBtn.onclick = () => (idx >= deck.length ? finish() : showQuestion());
+  $('again').onclick = () => newRound();
+  $('redo').onclick = () => newRound(wrong);
+
+  // Tastatur: 1–4 wählt, Enter geht weiter
+  document.addEventListener('keydown', e => {
+    if ($('quiz').classList.contains('hidden')) return;
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 4 && !locked && choicesDiv.children[n - 1]) answer(choicesDiv.children[n - 1]);
+  });
+
+  newRound();
+</script>
 </body>
 </html>
